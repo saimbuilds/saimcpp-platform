@@ -419,7 +419,13 @@ async function runCode() {
 
     try {
         // Convert \\n to actual newlines in input
-        const cleanInput = (testCase.input || '').replace(/\\\\n/g, '\n');
+        const rawInput = testCase.input || '';
+        console.log('Raw input from JSON:', rawInput);
+
+        const cleanInput = rawInput.replace(/\\n/g, '\n');
+        console.log('Clean input (after replace):', cleanInput);
+        console.log('Clean input (escaped for display):', JSON.stringify(cleanInput));
+
         const result = await executeCode(code, cleanInput);
 
         if (result.error) {
@@ -427,6 +433,9 @@ async function runCode() {
         } else {
             const output = result.output.trim();
             const expected = (testCase.expectedOutput || testCase.output || '').trim();
+
+            console.log('Output:', output);
+            console.log('Expected:', expected);
 
             if (output === expected) {
                 displayOutput(`Success!\n\nOutput:\n${output}`, 'success');
