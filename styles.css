@@ -453,7 +453,11 @@ body {
 }
 
 .filters {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
     margin-top: 1rem;
+    flex-wrap: wrap;
 }
 
 .filter-select {
@@ -463,6 +467,27 @@ body {
     border-radius: 6px;
     color: var(--text-primary);
     font-size: 0.875rem;
+    cursor: pointer;
+}
+
+.favorites-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-default);
+    border-radius: 6px;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+}
+
+.favorites-toggle:hover {
+    background: var(--bg-hover);
+}
+
+.favorites-toggle input[type="checkbox"] {
     cursor: pointer;
 }
 
@@ -493,6 +518,29 @@ body {
     justify-content: space-between;
     align-items: start;
     margin-bottom: 1rem;
+    gap: 1rem;
+}
+
+.problem-card-title {
+    flex: 1;
+}
+
+.favorite-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.2s;
+    filter: grayscale(100%);
+}
+
+.favorite-btn.active {
+    filter: grayscale(0%);
+}
+
+.favorite-btn:hover {
+    transform: scale(1.2);
 }
 
 .problem-card h3 {
@@ -612,12 +660,21 @@ body {
 .profile-avatar {
     width: 80px;
     height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--border-default);
+}
+
+.profile-avatar-fallback {
+    width: 80px;
+    height: 80px;
     font-size: 3rem;
     display: flex;
     align-items: center;
     justify-content: center;
     background: var(--bg-tertiary);
     border-radius: 50%;
+    border: 2px solid var(--border-default);
 }
 
 .profile-info h2 {
@@ -625,9 +682,10 @@ body {
     margin-bottom: 0.25rem;
 }
 
-.profile-joined {
-    color: var(--text-secondary);
+.profile-rank {
+    color: var(--accent-blue);
     font-size: 0.875rem;
+    font-weight: 600;
 }
 
 .stats-grid {

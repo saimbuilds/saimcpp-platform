@@ -12,6 +12,8 @@ let monacoEditor = null;
 let currentProblem = null;
 let problemLoader = new ProblemLoader();
 let allProblems = [];
+let userFavorites = [];
+let allUsers = [];
 
 // ========================================
 // INITIALIZATION
@@ -78,6 +80,9 @@ function setupEventListeners() {
         btn.addEventListener('click', (e) => {
             const view = e.target.dataset.view;
             switchView(view);
+            if (view === 'profile') {
+                renderProfile();
+            }
         });
     });
 
@@ -92,8 +97,10 @@ function setupEventListeners() {
     document.getElementById('submitCodeBtn')?.addEventListener('click', submitCode);
     document.getElementById('clearOutput')?.addEventListener('click', clearOutput);
 
-    // Difficulty filter
+    // Filters
+    document.getElementById('categoryFilter')?.addEventListener('change', renderProblems);
     document.getElementById('difficultyFilter')?.addEventListener('change', renderProblems);
+    document.getElementById('favoritesOnly')?.addEventListener('change', renderProblems);
 }
 
 // ========================================
@@ -211,7 +218,6 @@ function showLoginScreen() {
 }
 
 function showDashboard() {
-    console.log('showDashboard called');
     showScreen('dashboardScreen');
 
     // Scroll to top multiple times to ensure it works
@@ -228,7 +234,11 @@ function showDashboard() {
     }, 100);
 
     updateHeader();
-    renderProblems();
+
+    // Load favorites
+    loadFavorites().then(() => {
+        renderProblems();
+    });
 
     // These might fail if no data yet, don't let them break the UI
     try {
@@ -321,18 +331,39 @@ function updateHeader() {
 
 function renderProblems() {
     const container = document.getElementById('problemsGrid');
-    const filter = document.getElementById('difficultyFilter')?.value || 'all';
+    const categoryFilter = document.getElementById('categoryFilter')?.value || 'all';
+    const difficultyFilter = document.getElementById('difficultyFilter')?.value || 'all';
+    const favoritesOnly = document.getElementById('favoritesOnly')?.checked || false;
 
-    let filtered = filter === 'all' ? allProblems : allProblems.filter(p => p.difficulty === filter);
+    let filtered = allProblems;
 
-    console.log(`Rendering ${filtered.length} problems`);
+    // Filter by category
+    if (categoryFilter !== 'all') {
+        filtered = filtered.filter(p => p.category.includes(categoryFilter));
+    }
+
+    // Filter by difficulty
+    if (difficultyFilter !== 'all') {
+        filtered = filtered.filter(p => p.difficulty === difficultyFilter);
+    }
+
+    // Filter by favorites
+    if (favoritesOnly) {
+        filtered = filtered.filter(p => userFavorites.includes(p.id));
+    }
 
     container.innerHTML = filtered.map(problem => {
+        const isFavorite = userFavorites.includes(problem.id);
         return `
       <div class="problem-card" onclick="openProblem(${problem.id})">
         <div class="problem-card-header">
-          <h3>${problem.title}</h3>
-          <span class="difficulty-badge ${problem.difficulty}">${problem.difficulty}</span>
+          <div class="problem-card-title">
+            <h3>${problem.title}</h3>
+            <span class="difficulty-badge ${problem.difficulty}">${problem.difficulty}</span>
+          </div>
+          <button class="favorite-btn ${isFavorite ? 'active' : ''}" onclick="event.stopPropagation(); toggleFavorite(${problem.id})">
+            ⭐
+          </button>
         </div>
         <p>${problem.description.substring(0, 100)}...</p>
         <div class="problem-meta">
@@ -342,8 +373,6 @@ function renderProblems() {
       </div>
     `;
     }).join('');
-
-    console.log('Problems rendered to container:', container);
 }
 
 // ========================================
@@ -577,11 +606,77 @@ async function renderLeaderboard() {
 // PROFILE
 // ========================================
 
-function renderProfile() {
+async function renderProfile() {
     document.getElementById('profileUsername').textContent = userProfile.full_name;
     document.getElementById('profileSolved').textContent = userProfile.problems_solved || 0;
     document.getElementById('profileScore').textContent = userProfile.total_score || 0;
     document.getElementById('profileStreak').textContent = userProfile.current_streak || 0;
+
+    // Set profile avatar
+    const avatarImg = document.getElementById('profileAvatar');
+    if (userProfile.avatar_url) {
+        avatarImg.src = userProfile.avatar_url;
+        avatarImg.style.display = 'block';
+    }
+
+    // Calculate and display global rank
+    await calculateGlobalRank();
+}
+
+async function calculateGlobalRank() {
+    if (!allUsers.length) {
+        const { data: users } = await supabaseClient
+            .from('profiles')
+            .select('id, total_score')
+            .order('total_score', { ascending: false });
+        allUsers = users || [];
+    }
+
+    const userRank = allUsers.findIndex(u => u.id === userProfile.id) + 1;
+    const totalUsers = allUsers.length;
+
+    document.getElementById('profileRank').textContent = `Rank: #${userRank} / ${totalUsers} users`;
+}
+
+// ========================================
+// FAVORITES
+// ========================================
+
+async function loadFavorites() {
+    const { data } = await supabaseClient
+        .from('favorites')
+        .select('problem_id')
+        .eq('user_id', userProfile.id);
+
+    userFavorites = (data || []).map(f => f.problem_id);
+}
+
+async function toggleFavorite(problemId) {
+    const isFavorite = userFavorites.includes(problemId);
+
+    if (isFavorite) {
+        // Remove from favorites
+        await supabaseClient
+            .from('favorites')
+            .delete()
+            .eq('user_id', userProfile.id)
+            .eq('problem_id', problemId);
+
+        userFavorites = userFavorites.filter(id => id !== problemId);
+    } else {
+        // Add to favorites
+        await supabaseClient
+            .from('favorites')
+            .insert({
+                user_id: userProfile.id,
+                problem_id: problemId
+            });
+
+        userFavorites.push(problemId);
+    }
+
+    renderProblems();
 }
 
 window.openProblem = openProblem;
+window.toggleFavorite = toggleFavorite;
