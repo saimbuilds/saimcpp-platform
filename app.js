@@ -327,15 +327,19 @@ function openProblem(problemId) {
     document.getElementById('problemInput').textContent = currentProblem.inputFormat;
     document.getElementById('problemOutput').textContent = currentProblem.outputFormat;
 
-    // Show first sample test case
+    // Show first sample test case - clean up display
     const sampleTest = currentProblem.sampleTestCases?.[0] || currentProblem.testCases?.[0];
-    document.getElementById('sampleInput').textContent = sampleTest?.input || '';
-    document.getElementById('sampleOutput').textContent = sampleTest?.expectedOutput || sampleTest?.output || '';
+    const cleanInput = (sampleTest?.input || '').replace(/\\n/g, '\n');
+    const cleanOutput = (sampleTest?.expectedOutput || sampleTest?.output || '').replace(/\\n/g, '\n');
+    document.getElementById('sampleInput').textContent = cleanInput;
+    document.getElementById('sampleOutput').textContent = cleanOutput;
 
     if (!monacoEditor) {
         initMonacoEditor();
     } else {
-        monacoEditor.setValue(currentProblem.starterCode);
+        // Ensure code is set with proper newlines
+        const cleanCode = currentProblem.starterCode || '';
+        monacoEditor.setValue(cleanCode);
     }
 
     showScreen('editorScreen');
