@@ -39,7 +39,7 @@ async function checkAuth() {
 
 async function loadUserProfile() {
     console.log('Loading profile for user:', currentUser.id);
-    
+
     const { data, error } = await supabaseClient
         .from('profiles')
         .select('*')
@@ -210,6 +210,7 @@ function showLoginScreen() {
 }
 
 function showDashboard() {
+    console.log('showDashboard called');
     showScreen('dashboardScreen');
     updateHeader();
     renderProblems();
@@ -218,10 +219,19 @@ function showDashboard() {
 }
 
 function showScreen(screenId) {
+    console.log('Switching to screen:', screenId);
     document.querySelectorAll('.screen').forEach(screen => {
         screen.classList.add('hidden');
+        console.log('Hiding screen:', screen.id);
     });
-    document.getElementById(screenId).classList.remove('hidden');
+    const targetScreen = document.getElementById(screenId);
+    console.log('Target screen:', targetScreen);
+    if (targetScreen) {
+        targetScreen.classList.remove('hidden');
+        console.log('Showing screen:', screenId);
+    } else {
+        console.error('Screen not found:', screenId);
+    }
 }
 
 function switchView(viewName) {
