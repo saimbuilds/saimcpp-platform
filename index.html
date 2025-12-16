@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeGrind Arena - Competitive C++ Learning</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Monaco Editor -->
+    <link rel="stylesheet" data-name="vs/editor/editor.main"
+        href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.min.css">
+</head>
+
+<body>
+    <!-- Mobile Blocker -->
+    <div id="mobileBlocker" class="mobile-blocker hidden">
+        <div class="mobile-content">
+            <h1>🚫 Whoa there, mobile warrior!</h1>
+            <div class="meme-container">
+                <img src="https://i.imgflip.com/2/1ur9b0.jpg" alt="Real coders use laptops"
+                    style="max-width: 400px; border-radius: 8px;">
+            </div>
+            <p class="mobile-message">
+                CodeGrind Arena is optimized for <strong>laptop/desktop</strong> only.<br>
+                Why? Because you can't master C++ on a 6-inch screen! 😅
+            </p>
+            <p class="mobile-cta">Go grab your laptop and come back ready to GRIND! 💻🔥</p>
+            <button class="btn-primary" onclick="alert('Nice try! But seriously, use a laptop 😄')">I'll be
+                back!</button>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="app" class="app-container">
+
+        <!-- Login Screen -->
+        <div id="loginScreen" class="screen">
+            <div class="login-container">
+                <div class="login-header">
+                    <h1 class="logo">⚡ CodeGrind Arena</h1>
+                    <p class="tagline">Grind. Compete. Conquer C++</p>
+                </div>
+
+                <div class="login-card">
+                    <h2>Welcome Back, Coder!</h2>
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" placeholder="Enter your username" required>
+                        </div>
+                        <button type="submit" class="btn-primary btn-large">Start Grinding 🔥</button>
+                    </form>
+                    <p class="login-note">Quick prototype - just enter any username to start!</p>
+                </div>
+
+                <div class="stats-banner">
+                    <div class="stat-item">
+                        <span class="stat-value" id="totalUsers">0</span>
+                        <span class="stat-label">Coders Grinding</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="totalSolved">0</span>
+                        <span class="stat-label">Problems Solved Today</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Dashboard -->
+        <div id="dashboardScreen" class="screen hidden">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <h1 class="logo-small">⚡ CodeGrind</h1>
+                </div>
+                <nav class="nav">
+                    <button class="nav-btn active" data-view="problems">Problems</button>
+                    <button class="nav-btn" data-view="leaderboard">Leaderboard</button>
+                    <button class="nav-btn" data-view="profile">Profile</button>
+                </nav>
+                <div class="header-right">
+                    <div class="user-info">
+                        <span class="username-display" id="usernameDisplay"></span>
+                        <span class="streak">🔥 <span id="streakDisplay">0</span></span>
+                        <span class="score">⭐ <span id="scoreDisplay">0</span></span>
+                    </div>
+                    <button class="btn-secondary btn-small" id="logoutBtn">Logout</button>
+                </div>
+            </header>
+
+            <!-- Main Content Area -->
+            <main class="main-content">
+
+                <!-- Problems View -->
+                <div id="problemsView" class="view active">
+                    <div class="view-header">
+                        <h2>Problem Bank</h2>
+                        <div class="filters">
+                            <select id="difficultyFilter" class="filter-select">
+                                <option value="all">All Difficulties</option>
+                                <option value="easy">Easy</option>
+                                <option value="medium">Medium</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="problems-grid" id="problemsGrid">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Leaderboard View -->
+                <div id="leaderboardView" class="view">
+                    <div class="view-header">
+                        <h2>🏆 Leaderboard</h2>
+                        <p class="subtitle">Top performers this week</p>
+                    </div>
+
+                    <div class="leaderboard-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Username</th>
+                                    <th>Score</th>
+                                    <th>Solved</th>
+                                    <th>Streak</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leaderboardBody">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Profile View -->
+                <div id="profileView" class="view">
+                    <div class="profile-header">
+                        <div class="profile-avatar">👨‍💻</div>
+                        <div class="profile-info">
+                            <h2 id="profileUsername"></h2>
+                            <p class="profile-joined">Joined today</p>
+                        </div>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">✅</div>
+                            <div class="stat-number" id="profileSolved">0</div>
+                            <div class="stat-name">Problems Solved</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">⭐</div>
+                            <div class="stat-number" id="profileScore">0</div>
+                            <div class="stat-name">Total Score</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🔥</div>
+                            <div class="stat-number" id="profileStreak">0</div>
+                            <div class="stat-name">Current Streak</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🏆</div>
+                            <div class="stat-number" id="profileRank">-</div>
+                            <div class="stat-name">Global Rank</div>
+                        </div>
+                    </div>
+
+                    <div class="submissions-section">
+                        <h3>Recent Submissions</h3>
+                        <div id="submissionsHistory" class="submissions-list">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+
+        <!-- Code Editor Screen -->
+        <div id="editorScreen" class="screen hidden">
+            <div class="editor-container">
+                <!-- Left Panel - Problem Description -->
+                <div class="problem-panel">
+                    <button class="back-btn" id="backToProblems">← Back to Problems</button>
+
+                    <div class="problem-header">
+                        <h2 id="problemTitle"></h2>
+                        <span class="difficulty-badge" id="problemDifficulty"></span>
+                    </div>
+
+                    <div class="problem-content">
+                        <div class="section">
+                            <h3>Description</h3>
+                            <p id="problemDescription"></p>
+                        </div>
+
+                        <div class="section">
+                            <h3>Input Format</h3>
+                            <p id="problemInput"></p>
+                        </div>
+
+                        <div class="section">
+                            <h3>Output Format</h3>
+                            <p id="problemOutput"></p>
+                        </div>
+
+                        <div class="section">
+                            <h3>Sample Test Case</h3>
+                            <div class="test-case">
+                                <div>
+                                    <strong>Input:</strong>
+                                    <pre id="sampleInput"></pre>
+                                </div>
+                                <div>
+                                    <strong>Output:</strong>
+                                    <pre id="sampleOutput"></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Panel - Code Editor -->
+                <div class="code-panel">
+                    <div class="editor-header">
+                        <span class="editor-title">main.cpp</span>
+                        <div class="editor-actions">
+                            <button class="btn-secondary btn-small" id="runCodeBtn">▶ Run</button>
+                            <button class="btn-primary btn-small" id="submitCodeBtn">Submit</button>
+                        </div>
+                    </div>
+
+                    <div id="codeEditor" class="code-editor"></div>
+
+                    <div class="output-panel">
+                        <div class="output-header">
+                            <span>Output</span>
+                            <button class="btn-small" id="clearOutput">Clear</button>
+                        </div>
+                        <div id="output" class="output-content">
+                            <p class="output-placeholder">Run your code to see output here...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js"></script>
+    <script src="app.js" type="module"></script>
+</body>
+
+</html>
