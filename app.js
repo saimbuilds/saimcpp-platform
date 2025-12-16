@@ -240,6 +240,8 @@ function showScreen(screenId) {
     document.querySelectorAll('.screen').forEach(screen => {
         screen.classList.add('hidden');
         screen.style.display = 'none'; // Force hide
+        screen.style.position = 'absolute'; // Remove from layout
+        screen.style.top = '-9999px'; // Move off screen
         console.log('Hiding screen:', screen.id);
     });
     const targetScreen = document.getElementById(screenId);
@@ -251,6 +253,7 @@ function showScreen(screenId) {
         targetScreen.style.opacity = '1'; // Force opaque
         targetScreen.style.zIndex = '9999'; // Force on top
         targetScreen.style.position = 'relative'; // Ensure positioning
+        targetScreen.style.top = '0'; // Reset position
         console.log('Showing screen:', screenId);
         console.log('Screen styles applied:', {
             display: targetScreen.style.display,
@@ -356,13 +359,18 @@ function initMonacoEditor() {
     require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' } });
 
     require(['vs/editor/editor.main'], function () {
+        // Ensure newlines are properly formatted
+        const code = currentProblem.starterCode || '';
+
         monacoEditor = monaco.editor.create(document.getElementById('codeEditor'), {
-            value: currentProblem.starterCode,
+            value: code,
             language: 'cpp',
             theme: 'vs-dark',
             fontSize: 14,
             minimap: { enabled: false },
-            automaticLayout: true
+            automaticLayout: true,
+            wordWrap: 'on',
+            lineNumbers: 'on'
         });
     });
 }
