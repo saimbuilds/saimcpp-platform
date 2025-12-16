@@ -1,0 +1,9 @@
+{
+  "name": "saimcpp",
+  "version": "1.0.0",
+  "description": "Competitive C++ Learning Platform",
+  "scripts": {
+    "dev": "python3 -m http.server 8080",
+    "build": "echo 'Static site - no build needed'"
+  }
+}

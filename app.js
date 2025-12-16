@@ -1,55 +1,27 @@
 // ========================================
-// CodeGrind Arena - Full Stack with Supabase
+// SaimCPP - Full Stack with Supabase
 // ========================================
 
 import supabaseClient from './lib/supabase.js';
-
-// Sample Problems (will be replaced with Supabase data)
-const SAMPLE_PROBLEMS = [
-    {
-        id: 1,
-        title: "Hello World",
-        difficulty: "easy",
-        category: "Basics",
-        description: "Write a program that prints 'Hello, World!' to the console.",
-        inputFormat: "No input required.",
-        outputFormat: "Print 'Hello, World!' exactly as shown.",
-        sampleInput: "",
-        sampleOutput: "Hello, World!",
-        testCases: [{ input: "", expectedOutput: "Hello, World!" }],
-        points: 10,
-        starterCode: `#include <iostream>\nusing namespace std;\n\nint main() {\n    // Write your code here\n    \n    return 0;\n}`
-    },
-    {
-        id: 2,
-        title: "Sum of Two Numbers",
-        difficulty: "easy",
-        category: "Basics",
-        description: "Given two integers, calculate and print their sum.",
-        inputFormat: "Two space-separated integers a and b.",
-        outputFormat: "Print the sum of a and b.",
-        sampleInput: "5 3",
-        sampleOutput: "8",
-        testCases: [
-            { input: "5 3", expectedOutput: "8" },
-            { input: "10 20", expectedOutput: "30" }
-        ],
-        points: 10,
-        starterCode: `#include <iostream>\nusing namespace std;\n\nint main() {\n    int a, b;\n    cin >> a >> b;\n    \n    return 0;\n}`
-    }
-];
+import ProblemLoader from './lib/problemLoader.js';
 
 // Application State
 let currentUser = null;
 let userProfile = null;
 let monacoEditor = null;
 let currentProblem = null;
+let problemLoader = new ProblemLoader();
+let allProblems = [];
 
 // ========================================
 // INITIALIZATION
 // ========================================
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    // Load problems first
+    allProblems = await problemLoader.loadAll();
+    console.log(`Loaded ${allProblems.length} problems`);
+
     checkAuth();
     setupEventListeners();
 });
@@ -110,6 +82,9 @@ function setupEventListeners() {
     document.getElementById('runCodeBtn')?.addEventListener('click', runCode);
     document.getElementById('submitCodeBtn')?.addEventListener('click', submitCode);
     document.getElementById('clearOutput')?.addEventListener('click', clearOutput);
+
+    // Difficulty filter
+    document.getElementById('difficultyFilter')?.addEventListener('change', renderProblems);
 }
 
 // ========================================
@@ -270,18 +245,21 @@ function updateHeader() {
 
 function renderProblems() {
     const container = document.getElementById('problemsGrid');
+    const filter = document.getElementById('difficultyFilter')?.value || 'all';
 
-    container.innerHTML = SAMPLE_PROBLEMS.map(problem => {
+    let filtered = filter === 'all' ? allProblems : allProblems.filter(p => p.difficulty === filter);
+
+    container.innerHTML = filtered.map(problem => {
         return `
       <div class="problem-card" onclick="openProblem(${problem.id})">
         <div class="problem-card-header">
           <h3>${problem.title}</h3>
           <span class="difficulty-badge ${problem.difficulty}">${problem.difficulty}</span>
         </div>
-        <p>${problem.description}</p>
+        <p>${problem.description.substring(0, 100)}...</p>
         <div class="problem-meta">
-          <span>💎 ${problem.points} pts</span>
-          <span>📚 ${problem.category}</span>
+          <span>${problem.points} pts</span>
+          <span>${problem.category}</span>
         </div>
       </div>
     `;
@@ -293,7 +271,7 @@ function renderProblems() {
 // ========================================
 
 function openProblem(problemId) {
-    currentProblem = SAMPLE_PROBLEMS.find(p => p.id === problemId);
+    currentProblem = allProblems.find(p => p.id === problemId);
     if (!currentProblem) return;
 
     document.getElementById('problemTitle').textContent = currentProblem.title;
@@ -302,8 +280,11 @@ function openProblem(problemId) {
     document.getElementById('problemDescription').textContent = currentProblem.description;
     document.getElementById('problemInput').textContent = currentProblem.inputFormat;
     document.getElementById('problemOutput').textContent = currentProblem.outputFormat;
-    document.getElementById('sampleInput').textContent = currentProblem.sampleInput;
-    document.getElementById('sampleOutput').textContent = currentProblem.sampleOutput;
+
+    // Show first sample test case
+    const sampleTest = currentProblem.sampleTestCases?.[0] || currentProblem.testCases?.[0];
+    document.getElementById('sampleInput').textContent = sampleTest?.input || '';
+    document.getElementById('sampleOutput').textContent = sampleTest?.expectedOutput || sampleTest?.output || '';
 
     if (!monacoEditor) {
         initMonacoEditor();
@@ -343,19 +324,19 @@ async function runCode() {
     try {
         const result = await executeCode(code, testCase.input);
         if (result.error) {
-            displayOutput(`❌ Error:\n${result.error}`, 'error');
+            displayOutput(`Error:\n${result.error}`, 'error');
         } else {
             const output = result.output.trim();
             const expected = testCase.expectedOutput.trim();
 
             if (output === expected) {
-                displayOutput(`✅ Success!\n\nOutput:\n${output}`, 'success');
+                displayOutput(`Success!\n\nOutput:\n${output}`, 'success');
             } else {
-                displayOutput(`❌ Wrong Answer\n\nYour Output:\n${output}\n\nExpected:\n${expected}`, 'error');
+                displayOutput(`Wrong Answer\n\nYour Output:\n${output}\n\nExpected:\n${expected}`, 'error');
             }
         }
     } catch (error) {
-        displayOutput(`❌ Error:\n${error.message}`, 'error');
+        displayOutput(`Error:\n${error.message}`, 'error');
     }
 }
 
@@ -385,12 +366,12 @@ async function submitCode() {
     // Save to Supabase
     await saveSubmission(code, status, passed, total);
 
-    const resultMessage = `${failed === 0 ? '🎉 All Tests Passed!' : '❌ Some Failed'}\n\nPassed: ${passed}/${total}`;
+    const resultMessage = `${failed === 0 ? 'All Tests Passed!' : 'Some Failed'}\n\nPassed: ${passed}/${total}`;
     displayOutput(resultMessage, failed === 0 ? 'success' : 'error');
 
     if (status === 'accepted') {
         await updateUserScore(currentProblem.points);
-        setTimeout(() => alert(`🎉 +${currentProblem.points} points!`), 500);
+        setTimeout(() => alert(`+${currentProblem.points} points!`), 500);
     }
 }
 
@@ -461,7 +442,7 @@ async function renderLeaderboard() {
     const tbody = document.getElementById('leaderboardBody');
     tbody.innerHTML = users.map((user, index) => {
         const rank = index + 1;
-        const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : rank;
+        const medal = rank === 1 ? '#1' : rank === 2 ? '#2' : rank === 3 ? '#3' : rank;
         return `
       <tr style="${user.id === userProfile.id ? 'background: var(--bg-hover); font-weight: 600;' : ''}">
         <td class="rank-cell">${typeof medal === 'string' ? `<span class="rank-medal">${medal}</span>` : medal}</td>

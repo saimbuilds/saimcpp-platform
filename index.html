@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CodeGrind Arena - Competitive C++ Learning</title>
+    <title>SaimCPP - Competitive C++ Platform</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="modal.css">
     <!-- Supabase JS Client -->
@@ -40,12 +40,12 @@
         <div id="loginScreen" class="screen">
             <div class="login-container">
                 <div class="login-header">
-                    <h1 class="logo">⚡ CodeGrind Arena</h1>
+                    <h1 class="logo">SaimCPP</h1>
                     <p class="tagline">Grind. Compete. Conquer C++</p>
                 </div>
 
                 <div class="login-card">
-                    <h2>Welcome to CodeGrind Arena!</h2>
+                    <h2>Welcome to SaimCPP</h2>
                     <p style="color: var(--text-secondary); margin-bottom: 2rem;">Sign in with Google to start solving
                         C++ problems</p>
 
@@ -89,7 +89,7 @@
         <!-- Header -->
         <header class="header">
             <div class="header-left">
-                <h1 class="logo-small">⚡ CodeGrind</h1>
+                <h1 class="logo-small">SaimCPP</h1>
             </div>
             <nav class="nav">
                 <button class="nav-btn active" data-view="problems">Problems</button>
@@ -99,8 +99,8 @@
             <div class="header-right">
                 <div class="user-info">
                     <span class="username-display" id="usernameDisplay"></span>
-                    <span class="streak">🔥 <span id="streakDisplay">0</span></span>
-                    <span class="score">⭐ <span id="scoreDisplay">0</span></span>
+                    <span class="streak">Streak: <span id="streakDisplay">0</span></span>
+                    <span class="score">Score: <span id="scoreDisplay">0</span></span>
                 </div>
                 <button class="btn-secondary btn-small" id="logoutBtn">Logout</button>
             </div>
@@ -130,7 +130,7 @@
             <!-- Leaderboard View -->
             <div id="leaderboardView" class="view">
                 <div class="view-header">
-                    <h2>🏆 Leaderboard</h2>
+                    <h2>Leaderboard</h2>
                     <p class="subtitle">Top performers this week</p>
                 </div>
 
@@ -155,7 +155,7 @@
             <!-- Profile View -->
             <div id="profileView" class="view">
                 <div class="profile-header">
-                    <div class="profile-avatar">👨‍💻</div>
+                    <div class="profile-avatar">User</div>
                     <div class="profile-info">
                         <h2 id="profileUsername"></h2>
                         <p class="profile-joined">Joined today</p>
@@ -164,22 +164,22 @@
 
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-icon">✅</div>
+                        <div class="stat-icon"></div>
                         <div class="stat-number" id="profileSolved">0</div>
                         <div class="stat-name">Problems Solved</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon">⭐</div>
+                        <div class="stat-icon"></div>
                         <div class="stat-number" id="profileScore">0</div>
                         <div class="stat-name">Total Score</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon">🔥</div>
+                        <div class="stat-icon"></div>
                         <div class="stat-number" id="profileStreak">0</div>
                         <div class="stat-name">Current Streak</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon">🏆</div>
+                        <div class="stat-icon"></div>
                         <div class="stat-number" id="profileRank">-</div>
                         <div class="stat-name">Global Rank</div>
                     </div>
