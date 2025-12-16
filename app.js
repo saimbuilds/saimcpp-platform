@@ -38,17 +38,26 @@ async function checkAuth() {
 }
 
 async function loadUserProfile() {
+    console.log('Loading profile for user:', currentUser.id);
+    
     const { data, error } = await supabaseClient
         .from('profiles')
         .select('*')
         .eq('id', currentUser.id)
-        .single();
+        .maybeSingle();
 
-    if (error || !data) {
+    console.log('Profile query result:', { data, error });
+
+    if (error) {
+        console.error('Error loading profile:', error);
+        showProfileCompletion();
+    } else if (!data) {
         // First time user - show profile completion
+        console.log('No profile found, showing completion form');
         showProfileCompletion();
     } else {
         userProfile = data;
+        console.log('Profile loaded:', userProfile);
         showDashboard();
     }
 }
