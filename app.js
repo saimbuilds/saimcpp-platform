@@ -246,30 +246,33 @@ function showDashboard() {
 
 function showScreen(screenId) {
     console.log('Switching to screen:', screenId);
+
+    // Completely hide all screens
     document.querySelectorAll('.screen').forEach(screen => {
         screen.classList.add('hidden');
-        screen.style.display = 'none'; // Force hide
-        screen.style.position = 'absolute'; // Remove from layout
-        screen.style.top = '-9999px'; // Move off screen
+        screen.style.display = 'none';
+        screen.style.visibility = 'hidden';
+        screen.style.height = '0';
+        screen.style.overflow = 'hidden';
+        screen.style.position = 'absolute';
+        screen.style.top = '-99999px';
         console.log('Hiding screen:', screen.id);
     });
+
+    // Show target screen
     const targetScreen = document.getElementById(screenId);
     console.log('Target screen:', targetScreen);
     if (targetScreen) {
         targetScreen.classList.remove('hidden');
-        targetScreen.style.display = 'block'; // Force show
-        targetScreen.style.visibility = 'visible'; // Force visible
-        targetScreen.style.opacity = '1'; // Force opaque
-        targetScreen.style.zIndex = '9999'; // Force on top
-        targetScreen.style.position = 'relative'; // Ensure positioning
-        targetScreen.style.top = '0'; // Reset position
+        targetScreen.style.display = 'block';
+        targetScreen.style.visibility = 'visible';
+        targetScreen.style.height = 'auto';
+        targetScreen.style.overflow = 'visible';
+        targetScreen.style.opacity = '1';
+        targetScreen.style.zIndex = '9999';
+        targetScreen.style.position = 'relative';
+        targetScreen.style.top = '0';
         console.log('Showing screen:', screenId);
-        console.log('Screen styles applied:', {
-            display: targetScreen.style.display,
-            visibility: targetScreen.style.visibility,
-            opacity: targetScreen.style.opacity,
-            zIndex: targetScreen.style.zIndex
-        });
     } else {
         console.error('Screen not found:', screenId);
     }
