@@ -233,13 +233,25 @@ function showScreen(screenId) {
     console.log('Switching to screen:', screenId);
     document.querySelectorAll('.screen').forEach(screen => {
         screen.classList.add('hidden');
+        screen.style.display = 'none'; // Force hide
         console.log('Hiding screen:', screen.id);
     });
     const targetScreen = document.getElementById(screenId);
     console.log('Target screen:', targetScreen);
     if (targetScreen) {
         targetScreen.classList.remove('hidden');
+        targetScreen.style.display = 'block'; // Force show
+        targetScreen.style.visibility = 'visible'; // Force visible
+        targetScreen.style.opacity = '1'; // Force opaque
+        targetScreen.style.zIndex = '9999'; // Force on top
+        targetScreen.style.position = 'relative'; // Ensure positioning
         console.log('Showing screen:', screenId);
+        console.log('Screen styles applied:', {
+            display: targetScreen.style.display,
+            visibility: targetScreen.style.visibility,
+            opacity: targetScreen.style.opacity,
+            zIndex: targetScreen.style.zIndex
+        });
     } else {
         console.error('Screen not found:', screenId);
     }
