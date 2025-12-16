@@ -361,34 +361,38 @@ function openProblem(problemId) {
     document.getElementById('problemInput').textContent = currentProblem.inputFormat;
     document.getElementById('problemOutput').textContent = currentProblem.outputFormat;
 
-    // Show first sample test case - clean up display
+    // Show first sample test case
     const sampleTest = currentProblem.sampleTestCases?.[0] || currentProblem.testCases?.[0];
     const cleanInput = (sampleTest?.input || '').replace(/\\n/g, '\n');
     const cleanOutput = (sampleTest?.expectedOutput || sampleTest?.output || '').replace(/\\n/g, '\n');
     document.getElementById('sampleInput').textContent = cleanInput;
     document.getElementById('sampleOutput').textContent = cleanOutput;
 
+    // Load saved code from localStorage or use starter code
+    const savedCode = localStorage.getItem(`problem_${problemId}_code`);
+    const codeToUse = savedCode || currentProblem.starterCode;
+
     if (!monacoEditor) {
-        initMonacoEditor();
+        initMonacoEditor(codeToUse);
     } else {
-        // Convert literal \n to actual newlines for Monaco
-        const cleanCode = (currentProblem.starterCode || '').replace(/\\n/g, '\n');
-        monacoEditor.setValue(cleanCode);
+        monacoEditor.setValue(codeToUse);
     }
+
+    // Save code to localStorage on change
+    monacoEditor.onDidChangeModelContent(() => {
+        localStorage.setItem(`problem_${problemId}_code`, monacoEditor.getValue());
+    });
 
     showScreen('editorScreen');
     clearOutput();
 }
 
-function initMonacoEditor() {
+function initMonacoEditor(initialCode) {
     require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' } });
 
     require(['vs/editor/editor.main'], function () {
-        // Convert literal \n to actual newlines
-        const code = (currentProblem.starterCode || '').replace(/\\n/g, '\n');
-
         monacoEditor = monaco.editor.create(document.getElementById('codeEditor'), {
-            value: code,
+            value: initialCode,
             language: 'cpp',
             theme: 'vs-dark',
             fontSize: 14,
@@ -420,8 +424,6 @@ async function runCode() {
     try {
         // Input is already clean from problemLoader
         const cleanInput = testCase.input || '';
-        console.log('Input being sent to compiler:', JSON.stringify(cleanInput));
-
         const result = await executeCode(code, cleanInput);
 
         if (result.error) {
@@ -429,9 +431,6 @@ async function runCode() {
         } else {
             const output = result.output.trim();
             const expected = (testCase.expectedOutput || testCase.output || '').trim();
-
-            console.log('Output:', output);
-            console.log('Expected:', expected);
 
             if (output === expected) {
                 displayOutput(`Success!\n\nOutput:\n${output}`, 'success');
