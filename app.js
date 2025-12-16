@@ -406,17 +406,27 @@ function initMonacoEditor() {
 
 async function runCode() {
     const code = monacoEditor.getValue();
-    const testCase = currentProblem.testCases[0];
 
+    // Use sampleTestCases if available, otherwise use testCases
+    const testCases = currentProblem.sampleTestCases || currentProblem.testCases || [];
+    if (testCases.length === 0) {
+        displayOutput('No test cases available', 'error');
+        return;
+    }
+
+    const testCase = testCases[0];
     displayOutput('Running...');
 
     try {
-        const result = await executeCode(code, testCase.input);
+        // Convert \\n to actual newlines in input
+        const cleanInput = (testCase.input || '').replace(/\\\\n/g, '\n');
+        const result = await executeCode(code, cleanInput);
+
         if (result.error) {
             displayOutput(`Error:\n${result.error}`, 'error');
         } else {
             const output = result.output.trim();
-            const expected = testCase.expectedOutput.trim();
+            const expected = (testCase.expectedOutput || testCase.output || '').trim();
 
             if (output === expected) {
                 displayOutput(`Success!\n\nOutput:\n${output}`, 'success');
@@ -436,10 +446,25 @@ async function submitCode() {
     let passed = 0;
     let failed = 0;
 
-    for (let testCase of currentProblem.testCases) {
+    // Use both sample and hidden test cases
+    const allTestCases = [
+        ...(currentProblem.sampleTestCases || []),
+        ...(currentProblem.hiddenTestCases || [])
+    ];
+
+    if (allTestCases.length === 0) {
+        displayOutput('No test cases available', 'error');
+        return;
+    }
+
+    for (let testCase of allTestCases) {
         try {
-            const result = await executeCode(code, testCase.input);
-            if (!result.error && result.output.trim() === testCase.expectedOutput.trim()) {
+            // Convert \\n to actual newlines
+            const cleanInput = (testCase.input || '').replace(/\\\\n/g, '\n');
+            const result = await executeCode(code, cleanInput);
+            const expected = (testCase.expectedOutput || testCase.output || '').trim();
+
+            if (!result.error && result.output.trim() === expected) {
                 passed++;
             } else {
                 failed++;
@@ -449,7 +474,7 @@ async function submitCode() {
         }
     }
 
-    const total = currentProblem.testCases.length;
+    const total = allTestCases.length;
     const status = failed === 0 ? 'accepted' : 'wrong';
 
     // Save to Supabase
