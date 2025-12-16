@@ -418,13 +418,9 @@ async function runCode() {
     displayOutput('Running...');
 
     try {
-        // Convert \\n to actual newlines in input
-        const rawInput = testCase.input || '';
-        console.log('Raw input from JSON:', rawInput);
-
-        const cleanInput = rawInput.replace(/\\n/g, '\n');
-        console.log('Clean input (after replace):', cleanInput);
-        console.log('Clean input (escaped for display):', JSON.stringify(cleanInput));
+        // Input is already clean from problemLoader
+        const cleanInput = testCase.input || '';
+        console.log('Input being sent to compiler:', JSON.stringify(cleanInput));
 
         const result = await executeCode(code, cleanInput);
 
@@ -468,8 +464,8 @@ async function submitCode() {
 
     for (let testCase of allTestCases) {
         try {
-            // Convert \\n to actual newlines
-            const cleanInput = (testCase.input || '').replace(/\\\\n/g, '\n');
+            // Input is already clean from problemLoader
+            const cleanInput = testCase.input || '';
             const result = await executeCode(code, cleanInput);
             const expected = (testCase.expectedOutput || testCase.output || '').trim();
 
