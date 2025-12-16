@@ -2,704 +2,139 @@
   "category": "Arrays 1D - Medium",
   "problems": [
     {
-      "title": "Array Rotation Challenge",
-      "difficulty": "medium",
-      "description": "Given an array of n integers and a number k, rotate the array to the right by k positions in-place without using extra space.",
-      "inputFormat": "First line: n (array size) and k (rotation count)\\nSecond line: n space-separated integers",
-      "outputFormat": "Print the rotated array elements space-separated",
-      "constraints": "1 \u2264 n \u2264 1000\\n1 \u2264 k \u2264 n\\n-10^6 \u2264 array[i] \u2264 10^6",
-      "sampleTestCases": [
-        {
-          "input": "5 2\\n1 2 3 4 5",
-          "output": "4 5 1 2 3",
-          "explanation": "Rotating [1,2,3,4,5] right by 2 gives [4,5,1,2,3]"
-        }
-      ],
-      "hiddenTestCases": [
-        {
-          "input": "7 3\\n10 20 30 40 50 60 70",
-          "output": "50 60 70 10 20 30 40"
-        },
-        {
-          "input": "4 4\\n1 2 3 4",
-          "output": "1 2 3 4"
-        },
-        {
-          "input": "6 1\\n5 10 15 20 25 30",
-          "output": "30 5 10 15 20 25"
-        },
-        {
-          "input": "3 2\\n7 14 21",
-          "output": "14 21 7"
-        }
-      ],
-      "points": 25,
-      "starterCode": "#include <iostream>\\nusing namespace std;\\n\\nint main() {\\n    int n, k;\\n    cin >> n >> k;\\n    \\n    int arr[1000];\\n    for(int i = 0; i < n; i++) {\\n        cin >> arr[i];\\n    }\\n    \\n    // Your code here\\n    \\n    return 0;\\n}"
-    },
-    {
       "title": "Second Largest Element",
       "difficulty": "medium",
-      "description": "Find the second largest element in an array. If it doesn't exist, print -1.",
-      "inputFormat": "First line: n (array size)\\nSecond line: n space-separated integers",
-      "outputFormat": "Print the second largest element or -1",
-      "constraints": "1 \u2264 n \u2264 1000\\n-10^6 \u2264 array[i] \u2264 10^6",
+      "description": "Find the second largest element in the array.",
+      "inputFormat": "First line: n (array size)\nSecond line: n space-separated integers",
+      "outputFormat": "Print the second largest element",
+      "constraints": "2 ≤ n ≤ 100\n-1000 ≤ array[i] ≤ 1000",
       "sampleTestCases": [
         {
-          "input": "5\\n12 35 1 10 34",
-          "output": "34",
-          "explanation": "Largest is 35, second largest is 34"
+          "input": "5\n10 20 30 40 50",
+          "output": "40",
+          "explanation": "Second largest after 50 is 40"
         }
       ],
       "hiddenTestCases": [
         {
-          "input": "3\\n5 5 5",
-          "output": "-1"
+          "input": "4\n5 5 3 2",
+          "output": "3"
         },
         {
-          "input": "6\\n1 2 3 4 5 6",
-          "output": "5"
-        },
-        {
-          "input": "1\\n10",
-          "output": "-1"
-        },
-        {
-          "input": "4\\n100 200 100 50",
-          "output": "100"
+          "input": "3\n100 50 75",
+          "output": "75"
         }
       ],
       "points": 20,
-      "starterCode": "#include <iostream>\\nusing namespace std;\\n\\nint main() {\\n    int n;\\n    cin >> n;\\n    \\n    int arr[1000];\\n    for(int i = 0; i < n; i++) {\\n        cin >> arr[i];\\n    }\\n    \\n    // Your code here\\n    \\n    return 0;\\n}"
+      "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int arr[100];\n    for(int i = 0; i < n; i++) {\n        cin >> arr[i];\n    }\n    \n    // Your code here\n    \n    return 0;\n}"
+    },
+    {
+      "title": "Array Rotation",
+      "difficulty": "medium",
+      "description": "Rotate array to the right by k positions.",
+      "inputFormat": "First line: n (array size)\nSecond line: n space-separated integers\nThird line: k (rotation count)",
+      "outputFormat": "Print rotated array, space-separated",
+      "constraints": "1 ≤ n ≤ 100\n1 ≤ k ≤ 100",
+      "sampleTestCases": [
+        {
+          "input": "5\n1 2 3 4 5\n2",
+          "output": "4 5 1 2 3",
+          "explanation": "Rotate right by 2: [1,2,3,4,5] -> [4,5,1,2,3]"
+        }
+      ],
+      "hiddenTestCases": [
+        {
+          "input": "4\n10 20 30 40\n1",
+          "output": "40 10 20 30"
+        },
+        {
+          "input": "3\n5 10 15\n3",
+          "output": "5 10 15"
+        }
+      ],
+      "points": 20,
+      "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int arr[100];\n    for(int i = 0; i < n; i++) {\n        cin >> arr[i];\n    }\n    \n    int k;\n    cin >> k;\n    \n    // Your code here\n    \n    return 0;\n}"
     },
     {
       "title": "Remove Duplicates",
       "difficulty": "medium",
-      "description": "Remove all duplicate elements from the array and print unique elements in their original order.",
-      "inputFormat": "First line: n (array size)\\nSecond line: n space-separated integers",
-      "outputFormat": "Print unique elements space-separated in original order",
-      "constraints": "1 \u2264 n \u2264 1000\\n-10^6 \u2264 array[i] \u2264 10^6",
+      "description": "Remove duplicate elements and print unique elements in order.",
+      "inputFormat": "First line: n (array size)\nSecond line: n space-separated integers",
+      "outputFormat": "Print unique elements, space-separated",
+      "constraints": "1 ≤ n ≤ 100\n-1000 ≤ array[i] ≤ 1000",
       "sampleTestCases": [
         {
-          "input": "7\\n1 2 3 2 4 3 5",
+          "input": "7\n1 2 2 3 4 4 5",
           "output": "1 2 3 4 5",
-          "explanation": "Removed duplicate 2 and 3, keeping first occurrence"
+          "explanation": "Removed duplicates: 2 and 4"
         }
       ],
       "hiddenTestCases": [
         {
-          "input": "5\\n5 5 5 5 5",
+          "input": "5\n5 5 5 5 5",
           "output": "5"
         },
         {
-          "input": "6\\n10 20 30 40 50 60",
-          "output": "10 20 30 40 50 60"
-        },
-        {
-          "input": "8\\n1 1 2 2 3 3 4 4",
-          "output": "1 2 3 4"
-        },
-        {
-          "input": "4\\n7 3 7 3",
-          "output": "7 3"
-        }
-      ],
-      "points": 22,
-      "starterCode": "#include <iostream>\\nusing namespace std;\\n\\nint main() {\\n    int n;\\n    cin >> n;\\n    \\n    int arr[1000];\\n    for(int i = 0; i < n; i++) {\\n        cin >> arr[i];\\n    }\\n    \\n    // Your code here\\n    \\n    return 0;\\n}"
-    },
-    {
-      "title": "Find Missing Number",
-      "difficulty": "medium",
-      "description": "An array contains numbers from 1 to n+1 with one number missing. Find the missing number.",
-      "inputFormat": "First line: n (array size)\\nSecond line: n space-separated integers (1 to n+1 range with one missing)",
-      "outputFormat": "Print the missing number",
-      "constraints": "1 \u2264 n \u2264 1000\\n1 \u2264 array[i] \u2264 n+1",
-      "sampleTestCases": [
-        {
-          "input": "4\\n1 2 4 5",
-          "output": "3",
-          "explanation": "Numbers are 1,2,4,5 so 3 is missing"
-        }
-      ],
-      "hiddenTestCases": [
-        {
-          "input": "5\\n1 2 3 4 5",
-          "output": "6"
-        },
-        {
-          "input": "3\\n2 3 4",
-          "output": "1"
-        },
-        {
-          "input": "6\\n1 2 3 5 6 7",
-          "output": "4"
-        },
-        {
-          "input": "1\\n2",
-          "output": "1"
+          "input": "6\n1 2 3 4 5 6",
+          "output": "1 2 3 4 5 6"
         }
       ],
       "points": 20,
-      "starterCode": "#include <iostream>\\nusing namespace std;\\n\\nint main() {\\n    int n;\\n    cin >> n;\\n    \\n    int arr[1000];\\n    for(int i = 0; i < n; i++) {\\n        cin >> arr[i];\\n    }\\n    \\n    // Your code here\\n    \\n    return 0;\\n}"
+      "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int arr[100];\n    for(int i = 0; i < n; i++) {\n        cin >> arr[i];\n    }\n    \n    // Your code here\n    \n    return 0;\n}"
     },
     {
-      "title": "Merge Two Sorted Arrays",
+      "title": "Merge Two Arrays",
       "difficulty": "medium",
-      "description": "Merge two sorted arrays into a single sorted array.",
-      "inputFormat": "First line: n m (sizes of two arrays)\\nSecond line: n space-separated integers (sorted)\\nThird line: m space-separated integers (sorted)",
-      "outputFormat": "Print merged sorted array space-separated",
-      "constraints": "1 \u2264 n, m \u2264 500\\n-10^6 \u2264 array[i] \u2264 10^6",
+      "description": "Merge two sorted arrays into one sorted array.",
+      "inputFormat": "First line: n (first array size)\nSecond line: n space-separated integers (sorted)\nThird line: m (second array size)\nFourth line: m space-separated integers (sorted)",
+      "outputFormat": "Print merged sorted array, space-separated",
+      "constraints": "1 ≤ n, m ≤ 50",
       "sampleTestCases": [
         {
-          "input": "3 3\\n1 3 5\\n2 4 6",
+          "input": "3\n1 3 5\n3\n2 4 6",
           "output": "1 2 3 4 5 6",
-          "explanation": "Merging [1,3,5] and [2,4,6] gives [1,2,3,4,5,6]"
+          "explanation": "Merged [1,3,5] and [2,4,6]"
         }
       ],
       "hiddenTestCases": [
         {
-          "input": "4 2\\n1 2 3 4\\n5 6",
-          "output": "1 2 3 4 5 6"
+          "input": "2\n10 20\n2\n15 25",
+          "output": "10 15 20 25"
         },
         {
-          "input": "2 4\\n10 20\\n5 15 25 35",
-          "output": "5 10 15 20 25 35"
-        },
-        {
-          "input": "1 1\\n7\\n3",
-          "output": "3 7"
-        },
-        {
-          "input": "5 5\\n-5 -3 -1 0 2\\n-4 -2 1 3 4",
-          "output": "-5 -4 -3 -2 -1 0 1 2 3 4"
+          "input": "3\n1 2 3\n2\n4 5",
+          "output": "1 2 3 4 5"
         }
       ],
-      "points": 23,
-      "starterCode": "#include <iostream>\\nusing namespace std;\\n\\nint main() {\\n    int n, m;\\n    cin >> n >> m;\\n    \\n    int arr1[500], arr2[500];\\n    for(int i = 0; i < n; i++) {\\n        cin >> arr1[i];\\n    }\\n    for(int i = 0; i < m; i++) {\\n        cin >> arr2[i];\\n    }\\n    \\n    // Your code here\\n    \\n    return 0;\\n}"
+      "points": 20,
+      "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int arr1[50];\n    for(int i = 0; i < n; i++) {\n        cin >> arr1[i];\n    }\n    \n    int m;\n    cin >> m;\n    \n    int arr2[50];\n    for(int i = 0; i < m; i++) {\n        cin >> arr2[i];\n    }\n    \n    // Your code here\n    \n    return 0;\n}"
     },
     {
       "title": "Frequency Counter",
       "difficulty": "medium",
-      "description": "Count the frequency of each element and print element-frequency pairs for elements that appear more than once.",
-      "inputFormat": "First line: n (array size)\\nSecond line: n space-separated integers",
-      "outputFormat": "Print each element and its frequency (>1) on separate lines as 'element frequency'",
-      "constraints": "1 \u2264 n \u2264 1000\\n1 \u2264 array[i] \u2264 1000",
+      "description": "Count frequency of each element in the array.",
+      "inputFormat": "First line: n (array size)\nSecond line: n space-separated integers",
+      "outputFormat": "Print each unique element and its frequency, one per line",
+      "constraints": "1 ≤ n ≤ 100\n1 ≤ array[i] ≤ 100",
       "sampleTestCases": [
         {
-          "input": "8\\n1 2 2 3 3 3 4 5",
-          "output": "2 2\\n3 3",
-          "explanation": "2 appears 2 times, 3 appears 3 times"
+          "input": "7\n1 2 2 3 3 3 4",
+          "output": "1 1\n2 2\n3 3\n4 1",
+          "explanation": "1 appears 1 time, 2 appears 2 times, etc."
         }
       ],
       "hiddenTestCases": [
         {
-          "input": "5\\n5 5 5 5 5",
+          "input": "5\n5 5 5 5 5",
           "output": "5 5"
         },
         {
-          "input": "6\\n1 2 3 4 5 6",
-          "output": ""
-        },
-        {
-          "input": "7\\n10 10 20 20 30 30 40",
-          "output": "10 2\\n20 2\\n30 2"
-        },
-        {
-          "input": "4\\n7 7 7 3",
-          "output": "7 3"
-        }
-      ],
-      "points": 22,
-      "starterCode": "#include <iostream>\\nusing namespace std;\\n\\nint main() {\\n    int n;\\n    cin >> n;\\n    \\n    int arr[1000];\\n    for(int i = 0; i < n; i++) {\\n        cin >> arr[i];\\n    }\\n    \\n    // Your code here\\n    \\n    return 0;\\n}"
-    },
-    {
-      "title": "Partition Odd-Even",
-      "difficulty": "medium",
-      "description": "Rearrange the array such that all odd numbers come before all even numbers. Order within odd/even doesn't matter.",
-      "inputFormat": "First line: n (array size)\\nSecond line: n space-separated integers",
-      "outputFormat": "Print rearranged array with odds first, then evens",
-      "constraints": "1 \u2264 n \u2264 1000\\n-10^6 \u2264 array[i] \u2264 10^6",
-      "sampleTestCases": [
-        {
-          "input": "6\\n1 2 3 4 5 6",
-          "output": "1 3 5 2 4 6",
-          "explanation": "Odd numbers [1,3,5] come before even numbers [2,4,6]"
-        }
-      ],
-      "hiddenTestCases": [
-        {
-          "input": "5\\n2 4 6 8 10",
-          "output": "2 4 6 8 10"
-        },
-        {
-          "input": "4\\n1 3 5 7",
-          "output": "1 3 5 7"
-        },
-        {
-          "input": "7\\n10 15 20 25 30 35 40",
-          "output": "15 25 35 10 20 30 40"
-        },
-        {
-          "input": "3\\n-1 -2 -3",
-          "output": "-1 -3 -2"
+          "input": "4\n1 2 3 4",
+          "output": "1 1\n2 1\n3 1\n4 1"
         }
       ],
       "points": 20,
-      "starterCode": "#include <iostream>\\nusing namespace std;\\n\\nint main() {\\n    int n;\\n    cin >> n;\\n    \\n    int arr[1000];\\n    for(int i = 0; i < n; i++) {\\n        cin >> arr[i];\\n    }\\n    \\n    // Your code here\\n    \\n    return 0;\\n}"
-    },
-    {
-      "title": "Pair Sum Finder",
-      "difficulty": "medium",
-      "description": "Find if there exists a pair of elements in the array that sums to a given target. Print 'YES' or 'NO'.",
-      "inputFormat": "First line: n (array size)\\nSecond line: n space-separated integers\\nThird line: target sum",
-      "outputFormat": "Print 'YES' if pair exists, 'NO' otherwise",
-      "constraints": "1 \u2264 n \u2264 1000\\n-10^6 \u2264 array[i], target \u2264 10^6",
-      "sampleTestCases": [
-        {
-          "input": "5\\n2 7 11 15 3\\n9",
-          "output": "YES",
-          "explanation": "2 + 7 = 9, so pair exists"
-        }
-      ],
-      "hiddenTestCases": [
-        {
-          "input": "4\\n1 2 3 4\\n10",
-          "output": "NO"
-        },
-        {
-          "input": "6\\n-1 0 1 2 3 4\\n3",
-          "output": "YES"
-        },
-        {
-          "input": "3\\n5 5 5\\n10",
-          "output": "YES"
-        },
-        {
-          "input": "1\\n7\\n14",
-          "output": "NO"
-        }
-      ],
-      "points": 22,
-      "starterCode": "#include <iostream>\\nusing namespace std;\\n\\nint main() {\\n    int n;\\n    cin >> n;\\n    \\n    int arr[1000];\\n    for(int i = 0; i < n; i++) {\\n        cin >> arr[i];\\n    }\\n    \\n    int target;\\n    cin >> target;\\n    \\n    // Your code here\\n    \\n    return 0;\\n}"
-    },
-    {
-      "title": "Leaders in Array",
-      "difficulty": "medium",
-      "description": "Find all leader elements in an array. An element is a leader if it is greater than all elements to its right.",
-      "inputFormat": "First line: n (array size)\\nSecond line: n space-separated integers",
-      "outputFormat": "Print all leader elements space-separated in order of appearance",
-      "constraints": "1 \u2264 n \u2264 1000\\n-10^6 \u2264 array[i] \u2264 10^6",
-      "sampleTestCases": [
-        {
-          "input": "6\\n16 17 4 3 5 2",
-          "output": "17 5 2",
-          "explanation": "17 is greater than all to its right, 5>2, and 2 is the last element"
-        }
-      ],
-      "hiddenTestCases": [
-        {
-          "input": "5\\n1 2 3 4 5",
-          "output": "5"
-        },
-        {
-          "input": "5\\n5 4 3 2 1",
-          "output": "5 4 3 2 1"
-        },
-        {
-          "input": "7\\n7 10 4 10 6 5 2",
-          "output": "10 10 6 5 2"
-        },
-        {
-          "input": "1\\n42",
-          "output": "42"
-        }
-      ],
-      "points": 23,
-      "starterCode": "#include <iostream>\\nusing namespace std;\\n\\nint main() {\\n    int n;\\n    cin >> n;\\n    \\n    int arr[1000];\\n    for(int i = 0; i < n; i++) {\\n        cin >> arr[i];\\n    }\\n    \\n    // Your code here\\n    \\n    return 0;\\n}"
-    },
-    {
-      "title": "Move Zeros to End",
-      "difficulty": "medium",
-      "description": "Move all zeros to the end of the array while maintaining the relative order of non-zero elements.",
-      "inputFormat": "First line: n (array size)\\nSecond line: n space-separated integers",
-      "outputFormat": "Print the modified array space-separated",
-      "constraints": "1 \u2264 n \u2264 1000\\n-10^6 \u2264 array[i] \u2264 10^6",
-      "sampleTestCases": [
-        {
-          "input": "5\\n0 1 0 3 12",
-          "output": "1 3 12 0 0",
-          "explanation": "Non-zero elements [1,3,12] maintain order, zeros moved to end"
-        }
-      ],
-      "hiddenTestCases": [
-        {
-          "input": "6\\n1 2 3 4 5 6",
-          "output": "1 2 3 4 5 6"
-        },
-        {
-          "input": "4\\n0 0 0 0",
-          "output": "0 0 0 0"
-        },
-        {
-          "input": "7\\n0 0 1 0 2 0 3",
-          "output": "1 2 3 0 0 0 0"
-        },
-        {
-          "input": "3\\n5 0 7",
-          "output": "5 7 0"
-        }
-      ],
-      "points": 20,
-      "starterCode": "#include <iostream>\\nusing namespace std;\\n\\nint main() {\\n    int n;\\n    cin >> n;\\n    \\n    int arr[1000];\\n    for(int i = 0; i < n; i++) {\\n        cin >> arr[i];\\n    }\\n    \\n    // Your code here\\n    \\n    return 0;\\n}"
-    },
-    {
-      "title": "Prefix Sum Query",
-      "difficulty": "medium",
-      "description": "Calculate prefix sums and answer q queries. Each query gives index i, output sum of elements from 0 to i.",
-      "inputFormat": "First line: n q (array size and number of queries)\\nSecond line: n space-separated integers\\nNext q lines: one integer i per line (query index)",
-      "outputFormat": "Print q lines, each with the prefix sum up to given index",
-      "constraints": "1 \u2264 n, q \u2264 1000\\n0 \u2264 i < n\\n-10^6 \u2264 array[i] \u2264 10^6",
-      "sampleTestCases": [
-        {
-          "input": "5 3\\n1 2 3 4 5\\n2\\n4\\n0",
-          "output": "6\\n15\\n1",
-          "explanation": "Prefix sum at index 2 is 1+2+3=6, at 4 is 15, at 0 is 1"
-        }
-      ],
-      "hiddenTestCases": [
-        {
-          "input": "4 2\\n10 20 30 40\\n1\\n3",
-          "output": "30\\n100"
-        },
-        {
-          "input": "6 4\\n-1 2 -3 4 -5 6\\n0\\n2\\n4\\n5",
-          "output": "-1\\n-2\\n-4\\n2"
-        },
-        {
-          "input": "1 1\\n7\\n0",
-          "output": "7"
-        },
-        {
-          "input": "5 5\\n5 5 5 5 5\\n0\\n1\\n2\\n3\\n4",
-          "output": "5\\n10\\n15\\n20\\n25"
-        }
-      ],
-      "points": 24,
-      "starterCode": "#include <iostream>\\nusing namespace std;\\n\\nint main() {\\n    int n, q;\\n    cin >> n >> q;\\n    \\n    int arr[1000];\\n    for(int i = 0; i < n; i++) {\\n        cin >> arr[i];\\n    }\\n    \\n    // Your code here\\n    \\n    return 0;\\n}"
-    },
-    {
-      "title": "Longest Increasing Subsequence Length",
-      "difficulty": "medium",
-      "description": "Find the length of the longest strictly increasing contiguous subarray.",
-      "inputFormat": "First line: n (array size)\\nSecond line: n space-separated integers",
-      "outputFormat": "Print the length of longest increasing subarray",
-      "constraints": "1 \u2264 n \u2264 1000\\n-10^6 \u2264 array[i] \u2264 10^6",
-      "sampleTestCases": [
-        {
-          "input": "7\\n1 2 3 4 2 3 4",
-          "output": "4",
-          "explanation": "Longest increasing subarray is [1,2,3,4] with length 4"
-        }
-      ],
-      "hiddenTestCases": [
-        {
-          "input": "5\\n5 4 3 2 1",
-          "output": "1"
-        },
-        {
-          "input": "6\\n1 3 5 7 9 11",
-          "output": "6"
-        },
-        {
-          "input": "8\\n1 2 2 3 4 5 6 7",
-          "output": "5"
-        },
-        {
-          "input": "4\\n10 20 10 30",
-          "output": "2"
-        }
-      ],
-      "points": 23,
-      "starterCode": "#include <iostream>\\nusing namespace std;\\n\\nint main() {\\n    int n;\\n    cin >> n;\\n    \\n    int arr[1000];\\n    for(int i = 0; i < n; i++) {\\n        cin >> arr[i];\\n    }\\n    \\n    // Your code here\\n    \\n    return 0;\\n}"
-    },
-    {
-      "title": "Equilibrium Index",
-      "difficulty": "medium",
-      "description": "Find an equilibrium index where sum of elements on left equals sum on right. Print first such index or -1.",
-      "inputFormat": "First line: n (array size)\\nSecond line: n space-separated integers",
-      "outputFormat": "Print equilibrium index (0-indexed) or -1",
-      "constraints": "1 \u2264 n \u2264 1000\\n-10^6 \u2264 array[i] \u2264 10^6",
-      "sampleTestCases": [
-        {
-          "input": "7\\n-7 1 5 2 -4 3 0",
-          "output": "3",
-          "explanation": "At index 3: left sum = -7+1+5 = -1, right sum = -4+3+0 = -1"
-        }
-      ],
-      "hiddenTestCases": [
-        {
-          "input": "3\\n1 2 3",
-          "output": "-1"
-        },
-        {
-          "input": "1\\n5",
-          "output": "0"
-        },
-        {
-          "input": "5\\n1 1 1 1 1",
-          "output": "2"
-        },
-        {
-          "input": "4\\n2 4 6 10",
-          "output": "-1"
-        }
-      ],
-      "points": 25,
-      "starterCode": "#include <iostream>\\nusing namespace std;\\n\\nint main() {\\n    int n;\\n    cin >> n;\\n    \\n    int arr[1000];\\n    for(int i = 0; i < n; i++) {\\n        cin >> arr[i];\\n    }\\n    \\n    // Your code here\\n    \\n    return 0;\\n}"
-    },
-    {
-      "title": "Sort Array 0-1-2",
-      "difficulty": "medium",
-      "description": "Sort an array containing only 0s, 1s, and 2s in linear time without using sorting algorithms.",
-      "inputFormat": "First line: n (array size)\\nSecond line: n space-separated integers (only 0, 1, or 2)",
-      "outputFormat": "Print sorted array space-separated",
-      "constraints": "1 \u2264 n \u2264 1000\\narray[i] \u2208 {0, 1, 2}",
-      "sampleTestCases": [
-        {
-          "input": "8\\n2 0 2 1 1 0 2 1",
-          "output": "0 0 1 1 1 2 2 2",
-          "explanation": "Array sorted with all 0s first, then 1s, then 2s"
-        }
-      ],
-      "hiddenTestCases": [
-        {
-          "input": "5\\n0 0 0 0 0",
-          "output": "0 0 0 0 0"
-        },
-        {
-          "input": "6\\n2 2 2 1 1 1",
-          "output": "1 1 1 2 2 2"
-        },
-        {
-          "input": "9\\n1 2 0 1 2 0 1 2 0",
-          "output": "0 0 0 1 1 1 2 2 2"
-        },
-        {
-          "input": "3\\n1 0 2",
-          "output": "0 1 2"
-        }
-      ],
-      "points": 22,
-      "starterCode": "#include <iostream>\\nusing namespace std;\\n\\nint main() {\\n    int n;\\n    cin >> n;\\n    \\n    int arr[1000];\\n    for(int i = 0; i < n; i++) {\\n        cin >> arr[i];\\n    }\\n    \\n    // Your code here\\n    \\n    return 0;\\n}"
-    },
-    {
-      "title": "Maximum Subarray Sum",
-      "difficulty": "medium",
-      "description": "Find the maximum sum of any contiguous subarray using Kadane's algorithm.",
-      "inputFormat": "First line: n (array size)\\nSecond line: n space-separated integers",
-      "outputFormat": "Print the maximum subarray sum",
-      "constraints": "1 \u2264 n \u2264 1000\\n-10^6 \u2264 array[i] \u2264 10^6",
-      "sampleTestCases": [
-        {
-          "input": "8\\n-2 1 -3 4 -1 2 1 -5",
-          "output": "6",
-          "explanation": "Subarray [4,-1,2,1] has maximum sum = 6"
-        }
-      ],
-      "hiddenTestCases": [
-        {
-          "input": "5\\n-1 -2 -3 -4 -5",
-          "output": "-1"
-        },
-        {
-          "input": "6\\n5 -3 5 -1 2 -2",
-          "output": "8"
-        },
-        {
-          "input": "4\\n1 2 3 4",
-          "output": "10"
-        },
-        {
-          "input": "7\\n-5 4 6 -3 4 -1 3",
-          "output": "13"
-        }
-      ],
-      "points": 25,
-      "starterCode": "#include <iostream>\\nusing namespace std;\\n\\nint main() {\\n    int n;\\n    cin >> n;\\n    \\n    int arr[1000];\\n    for(int i = 0; i < n; i++) {\\n        cin >> arr[i];\\n    }\\n    \\n    // Your code here\\n    \\n    return 0;\\n}"
-    },
-    {
-      "title": "Stock Buy Sell Problem",
-      "difficulty": "medium",
-      "description": "Find maximum profit from one buy and one sell transaction. Array represents stock prices on consecutive days.",
-      "inputFormat": "First line: n (number of days)\\nSecond line: n space-separated integers (prices)",
-      "outputFormat": "Print maximum profit, or 0 if no profit possible",
-      "constraints": "1 \u2264 n \u2264 1000\\n1 \u2264 prices[i] \u2264 10^6",
-      "sampleTestCases": [
-        {
-          "input": "6\\n7 1 5 3 6 4",
-          "output": "5",
-          "explanation": "Buy on day 2 (price=1), sell on day 5 (price=6), profit=5"
-        }
-      ],
-      "hiddenTestCases": [
-        {
-          "input": "5\\n7 6 4 3 1",
-          "output": "0"
-        },
-        {
-          "input": "4\\n1 2 3 4",
-          "output": "3"
-        },
-        {
-          "input": "7\\n3 5 1 6 4 7 2",
-          "output": "6"
-        },
-        {
-          "input": "1\\n10",
-          "output": "0"
-        }
-      ],
-      "points": 24,
-      "starterCode": "#include <iostream>\\nusing namespace std;\\n\\nint main() {\\n    int n;\\n    cin >> n;\\n    \\n    int prices[1000];\\n    for(int i = 0; i < n; i++) {\\n        cin >> prices[i];\\n    }\\n    \\n    // Your code here\\n    \\n    return 0;\\n}"
-    },
-    {
-      "title": "Sliding Window Maximum",
-      "difficulty": "medium",
-      "description": "Find the maximum element in every window of size k as it slides through the array.",
-      "inputFormat": "First line: n k (array size and window size)\\nSecond line: n space-separated integers",
-      "outputFormat": "Print maximum of each window space-separated",
-      "constraints": "1 \u2264 k \u2264 n \u2264 1000\\n-10^6 \u2264 array[i] \u2264 10^6",
-      "sampleTestCases": [
-        {
-          "input": "8 3\\n1 3 -1 -3 5 3 6 7",
-          "output": "3 3 5 5 6 7",
-          "explanation": "Windows: [1,3,-1]=3, [3,-1,-3]=3, [-1,-3,5]=5, etc."
-        }
-      ],
-      "hiddenTestCases": [
-        {
-          "input": "5 2\\n1 2 3 4 5",
-          "output": "2 3 4 5"
-        },
-        {
-          "input": "4 1\\n5 3 8 2",
-          "output": "5 3 8 2"
-        },
-        {
-          "input": "6 4\\n10 5 2 7 8 7",
-          "output": "10 8 8"
-        },
-        {
-          "input": "3 3\\n1 2 3",
-          "output": "3"
-        }
-      ],
-      "points": 25,
-      "starterCode": "#include <iostream>\\nusing namespace std;\\n\\nint main() {\\n    int n, k;\\n    cin >> n >> k;\\n    \\n    int arr[1000];\\n    for(int i = 0; i < n; i++) {\\n        cin >> arr[i];\\n    }\\n    \\n    // Your code here\\n    \\n    return 0;\\n}"
-    },
-    {
-      "title": "Rearrange Positive Negative",
-      "difficulty": "medium",
-      "description": "Rearrange array so that positive and negative numbers alternate. Start with positive. If one type runs out, place remaining at end.",
-      "inputFormat": "First line: n (array size)\\nSecond line: n space-separated integers",
-      "outputFormat": "Print rearranged array space-separated",
-      "constraints": "1 \u2264 n \u2264 1000\\n-10^6 \u2264 array[i] \u2264 10^6\\narray contains both positive and negative numbers",
-      "sampleTestCases": [
-        {
-          "input": "6\\n1 -2 3 -4 5 -6",
-          "output": "1 -2 3 -4 5 -6",
-          "explanation": "Alternating positive and negative numbers"
-        }
-      ],
-      "hiddenTestCases": [
-        {
-          "input": "5\\n-1 -2 -3 4 5",
-          "output": "4 -1 5 -2 -3"
-        },
-        {
-          "input": "7\\n2 -1 4 -3 6 -5 8",
-          "output": "2 -1 4 -3 6 -5 8"
-        },
-        {
-          "input": "4\\n10 20 -5 -10",
-          "output": "10 -5 20 -10"
-        },
-        {
-          "input": "5\\n-5 10 -3 7 -1",
-          "output": "10 -5 7 -3 -1"
-        }
-      ],
-      "points": 23,
-      "starterCode": "#include <iostream>\\nusing namespace std;\\n\\nint main() {\\n    int n;\\n    cin >> n;\\n    \\n    int arr[1000];\\n    for(int i = 0; i < n; i++) {\\n        cin >> arr[i];\\n    }\\n    \\n    // Your code here\\n    \\n    return 0;\\n}"
-    },
-    {
-      "title": "Triplet Sum Zero",
-      "difficulty": "medium",
-      "description": "Find if there exist three elements in the array that sum to zero. Print 'YES' or 'NO'.",
-      "inputFormat": "First line: n (array size)\\nSecond line: n space-separated integers",
-      "outputFormat": "Print 'YES' if such triplet exists, 'NO' otherwise",
-      "constraints": "3 \u2264 n \u2264 1000\\n-10^6 \u2264 array[i] \u2264 10^6",
-      "sampleTestCases": [
-        {
-          "input": "5\\n-1 0 1 2 -1",
-          "output": "YES",
-          "explanation": "Triplet [-1, 0, 1] or [-1, -1, 2] sums to zero"
-        }
-      ],
-      "hiddenTestCases": [
-        {
-          "input": "6\\n1 2 3 4 5 6",
-          "output": "NO"
-        },
-        {
-          "input": "4\\n-2 0 1 1",
-          "output": "YES"
-        },
-        {
-          "input": "7\\n-5 -3 0 2 4 6 7",
-          "output": "YES"
-        },
-        {
-          "input": "3\\n1 1 1",
-          "output": "NO"
-        }
-      ],
-      "points": 25,
-      "starterCode": "#include <iostream>\\nusing namespace std;\\n\\nint main() {\\n    int n;\\n    cin >> n;\\n    \\n    int arr[1000];\\n    for(int i = 0; i < n; i++) {\\n        cin >> arr[i];\\n    }\\n    \\n    // Your code here\\n    \\n    return 0;\\n}"
-    },
-    {
-      "title": "Smallest Subarray With Sum Greater Than X",
-      "difficulty": "medium",
-      "description": "Find length of smallest contiguous subarray with sum greater than given value x. If no such subarray exists, print -1.",
-      "inputFormat": "First line: n x (array size and target sum)\\nSecond line: n space-separated positive integers",
-      "outputFormat": "Print length of smallest subarray or -1",
-      "constraints": "1 \u2264 n \u2264 1000\\n1 \u2264 x \u2264 10^9\\n1 \u2264 array[i] \u2264 10^6",
-      "sampleTestCases": [
-        {
-          "input": "6 51\\n1 4 45 6 10 19",
-          "output": "3",
-          "explanation": "Subarray [4,45,6] has sum=55>51 with length 3"
-        }
-      ],
-      "hiddenTestCases": [
-        {
-          "input": "5 100\\n1 2 3 4 5",
-          "output": "-1"
-        },
-        {
-          "input": "7 20\\n1 2 3 4 5 6 7",
-          "output": "4"
-        },
-        {
-          "input": "4 30\\n10 15 20 25",
-          "output": "2"
-        },
-        {
-          "input": "3 100\\n50 60 70",
-          "output": "2"
-        }
-      ],
-      "points": 25,
-      "starterCode": "#include <iostream>\\nusing namespace std;\\n\\nint main() {\\n    int n, x;\\n    cin >> n >> x;\\n    \\n    int arr[1000];\\n    for(int i = 0; i < n; i++) {\\n        cin >> arr[i];\\n    }\\n    \\n    // Your code here\\n    \\n    return 0;\\n}"
+      "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int arr[100];\n    for(int i = 0; i < n; i++) {\n        cin >> arr[i];\n    }\n    \n    // Your code here\n    \n    return 0;\n}"
     }
   ]
 }

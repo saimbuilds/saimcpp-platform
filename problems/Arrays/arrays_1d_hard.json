@@ -2,354 +2,139 @@
   "category": "Arrays 1D - Hard",
   "problems": [
     {
-      "title": "Trapping Rain Water",
+      "title": "Longest Increasing Subarray",
       "difficulty": "hard",
-      "description": "Given n non-negative integers representing elevation map where width of each bar is 1, compute how much water can be trapped after raining.",
-      "inputFormat": "First line: n (array size)\\nSecond line: n space-separated non-negative integers (heights)",
-      "outputFormat": "Print total trapped water units",
-      "constraints": "1 \u2264 n \u2264 1000\\n0 \u2264 height[i] \u2264 10^6",
+      "description": "Find the length of the longest increasing subarray.",
+      "inputFormat": "First line: n (array size)\nSecond line: n space-separated integers",
+      "outputFormat": "Print the length of longest increasing subarray",
+      "constraints": "1 ≤ n ≤ 100\n-1000 ≤ array[i] ≤ 1000",
       "sampleTestCases": [
         {
-          "input": "12\\n0 1 0 2 1 0 1 3 2 1 2 1",
-          "output": "6",
-          "explanation": "Water trapped: 0+0+1+0+1+2+1+0+0+1+0+0 = 6 units"
-        }
-      ],
-      "hiddenTestCases": [
-        {
-          "input": "6\\n3 0 2 0 4 0",
-          "output": "7"
-        },
-        {
-          "input": "4\\n4 2 0 3",
-          "output": "3"
-        },
-        {
-          "input": "5\\n1 2 3 4 5",
-          "output": "0"
-        },
-        {
-          "input": "9\\n5 1 4 2 3 4 1 5 3",
-          "output": "13"
-        }
-      ],
-      "points": 35,
-      "starterCode": "#include <iostream>\\nusing namespace std;\\n\\nint main() {\\n    int n;\\n    cin >> n;\\n    \\n    int height[1000];\\n    for(int i = 0; i < n; i++) {\\n        cin >> height[i];\\n    }\\n    \\n    // Your code here\\n    \\n    return 0;\\n}"
-    },
-    {
-      "title": "Longest Consecutive Sequence",
-      "difficulty": "hard",
-      "description": "Find the length of the longest consecutive elements sequence in an unsorted array.",
-      "inputFormat": "First line: n (array size)\\nSecond line: n space-separated integers",
-      "outputFormat": "Print length of longest consecutive sequence",
-      "constraints": "1 \u2264 n \u2264 1000\\n-10^9 \u2264 array[i] \u2264 10^9",
-      "sampleTestCases": [
-        {
-          "input": "6\\n100 4 200 1 3 2",
+          "input": "7\n1 2 3 2 3 4 5",
           "output": "4",
-          "explanation": "Longest consecutive sequence is [1,2,3,4] with length 4"
+          "explanation": "Longest increasing: [2,3,4,5]"
         }
       ],
       "hiddenTestCases": [
         {
-          "input": "9\\n0 3 7 2 5 8 4 6 0",
-          "output": "9"
-        },
-        {
-          "input": "5\\n9 1 -3 2 4",
-          "output": "2"
-        },
-        {
-          "input": "1\\n5",
+          "input": "5\n5 4 3 2 1",
           "output": "1"
         },
         {
-          "input": "7\\n10 5 12 3 55 30 4",
-          "output": "3"
-        }
-      ],
-      "points": 32,
-      "starterCode": "#include <iostream>\\nusing namespace std;\\n\\nint main() {\\n    int n;\\n    cin >> n;\\n    \\n    int arr[1000];\\n    for(int i = 0; i < n; i++) {\\n        cin >> arr[i];\\n    }\\n    \\n    // Your code here\\n    \\n    return 0;\\n}"
-    },
-    {
-      "title": "Maximum Product Subarray",
-      "difficulty": "hard",
-      "description": "Find the contiguous subarray within an array which has the largest product.",
-      "inputFormat": "First line: n (array size)\\nSecond line: n space-separated integers",
-      "outputFormat": "Print maximum product",
-      "constraints": "1 \u2264 n \u2264 1000\\n-10 \u2264 array[i] \u2264 10",
-      "sampleTestCases": [
-        {
-          "input": "4\\n2 3 -2 4",
-          "output": "6",
-          "explanation": "Subarray [2,3] has product = 6"
-        }
-      ],
-      "hiddenTestCases": [
-        {
-          "input": "3\\n-2 0 -1",
-          "output": "0"
-        },
-        {
-          "input": "5\\n-2 3 -4 0 5",
-          "output": "24"
-        },
-        {
-          "input": "6\\n2 -5 -2 -4 3 -1",
-          "output": "240"
-        },
-        {
-          "input": "4\\n-1 -2 -3 -4",
-          "output": "24"
-        }
-      ],
-      "points": 33,
-      "starterCode": "#include <iostream>\\nusing namespace std;\\n\\nint main() {\\n    int n;\\n    cin >> n;\\n    \\n    int arr[1000];\\n    for(int i = 0; i < n; i++) {\\n        cin >> arr[i];\\n    }\\n    \\n    // Your code here\\n    \\n    return 0;\\n}"
-    },
-    {
-      "title": "Next Greater Permutation",
-      "difficulty": "hard",
-      "description": "Rearrange numbers into the lexicographically next greater permutation. If not possible, arrange in ascending order.",
-      "inputFormat": "First line: n (array size)\\nSecond line: n space-separated positive integers",
-      "outputFormat": "Print next permutation space-separated",
-      "constraints": "1 \u2264 n \u2264 1000\\n1 \u2264 array[i] \u2264 9",
-      "sampleTestCases": [
-        {
-          "input": "3\\n1 2 3",
-          "output": "1 3 2",
-          "explanation": "Next permutation of [1,2,3] is [1,3,2]"
-        }
-      ],
-      "hiddenTestCases": [
-        {
-          "input": "3\\n3 2 1",
-          "output": "1 2 3"
-        },
-        {
-          "input": "4\\n1 3 5 4",
-          "output": "1 4 3 5"
-        },
-        {
-          "input": "5\\n1 1 5 1 1",
-          "output": "1 5 1 1 1"
-        },
-        {
-          "input": "2\\n2 1",
-          "output": "1 2"
-        }
-      ],
-      "points": 34,
-      "starterCode": "#include <iostream>\\nusing namespace std;\\n\\nint main() {\\n    int n;\\n    cin >> n;\\n    \\n    int arr[1000];\\n    for(int i = 0; i < n; i++) {\\n        cin >> arr[i];\\n    }\\n    \\n    // Your code here\\n    \\n    return 0;\\n}"
-    },
-    {
-      "title": "Count Inversions",
-      "difficulty": "hard",
-      "description": "Count number of inversions in an array. An inversion is a pair (i,j) where i<j and arr[i]>arr[j].",
-      "inputFormat": "First line: n (array size)\\nSecond line: n space-separated integers",
-      "outputFormat": "Print total number of inversions",
-      "constraints": "1 \u2264 n \u2264 1000\\n1 \u2264 array[i] \u2264 10^6",
-      "sampleTestCases": [
-        {
-          "input": "5\\n2 4 1 3 5",
-          "output": "3",
-          "explanation": "Inversions: (2,1), (4,1), (4,3)"
-        }
-      ],
-      "hiddenTestCases": [
-        {
-          "input": "4\\n1 2 3 4",
-          "output": "0"
-        },
-        {
-          "input": "5\\n5 4 3 2 1",
-          "output": "10"
-        },
-        {
-          "input": "6\\n6 3 9 1 4 7",
-          "output": "8"
-        },
-        {
-          "input": "3\\n1 20 6",
-          "output": "1"
-        }
-      ],
-      "points": 35,
-      "starterCode": "#include <iostream>\\nusing namespace std;\\n\\nint main() {\\n    int n;\\n    cin >> n;\\n    \\n    int arr[1000];\\n    for(int i = 0; i < n; i++) {\\n        cin >> arr[i];\\n    }\\n    \\n    // Your code here\\n    \\n    return 0;\\n}"
-    },
-    {
-      "title": "Median of Two Sorted Arrays",
-      "difficulty": "hard",
-      "description": "Find the median of two sorted arrays. If total elements is even, return average of middle two (integer division).",
-      "inputFormat": "First line: n m (sizes of arrays)\\nSecond line: n space-separated integers (sorted)\\nThird line: m space-separated integers (sorted)",
-      "outputFormat": "Print the median (integer)",
-      "constraints": "1 \u2264 n, m \u2264 500\\n-10^6 \u2264 array[i] \u2264 10^6",
-      "sampleTestCases": [
-        {
-          "input": "2 1\\n1 3\\n2",
-          "output": "2",
-          "explanation": "Merged: [1,2,3], median is 2"
-        }
-      ],
-      "hiddenTestCases": [
-        {
-          "input": "2 2\\n1 2\\n3 4",
-          "output": "2"
-        },
-        {
-          "input": "1 1\\n5\\n6",
-          "output": "5"
-        },
-        {
-          "input": "3 3\\n1 3 5\\n2 4 6",
-          "output": "3"
-        },
-        {
-          "input": "4 5\\n1 2 3 4\\n5 6 7 8 9",
-          "output": "5"
-        }
-      ],
-      "points": 38,
-      "starterCode": "#include <iostream>\\nusing namespace std;\\n\\nint main() {\\n    int n, m;\\n    cin >> n >> m;\\n    \\n    int arr1[500], arr2[500];\\n    for(int i = 0; i < n; i++) {\\n        cin >> arr1[i];\\n    }\\n    for(int i = 0; i < m; i++) {\\n        cin >> arr2[i];\\n    }\\n    \\n    // Your code here\\n    \\n    return 0;\\n}"
-    },
-    {
-      "title": "Subarray with Given Sum",
-      "difficulty": "hard",
-      "description": "Find if there exists a contiguous subarray with sum equal to given value. Print start and end indices (0-indexed), or -1 -1 if not found.",
-      "inputFormat": "First line: n s (array size and target sum)\\nSecond line: n space-separated positive integers",
-      "outputFormat": "Print start and end index space-separated, or '-1 -1'",
-      "constraints": "1 \u2264 n \u2264 1000\\n1 \u2264 s \u2264 10^9\\n1 \u2264 array[i] \u2264 10^6",
-      "sampleTestCases": [
-        {
-          "input": "5 12\\n1 2 3 7 5",
-          "output": "1 3",
-          "explanation": "Subarray [2,3,7] from index 1 to 3 has sum 12"
-        }
-      ],
-      "hiddenTestCases": [
-        {
-          "input": "4 15\\n1 2 3 4",
-          "output": "-1 -1"
-        },
-        {
-          "input": "6 9\\n5 3 1 7 2 8",
-          "output": "1 3"
-        },
-        {
-          "input": "7 20\\n1 4 20 3 10 5 6",
-          "output": "2 2"
-        },
-        {
-          "input": "3 6\\n1 2 3",
-          "output": "0 2"
+          "input": "4\n1 2 3 4",
+          "output": "4"
         }
       ],
       "points": 30,
-      "starterCode": "#include <iostream>\\nusing namespace std;\\n\\nint main() {\\n    int n, s;\\n    cin >> n >> s;\\n    \\n    int arr[1000];\\n    for(int i = 0; i < n; i++) {\\n        cin >> arr[i];\\n    }\\n    \\n    // Your code here\\n    \\n    return 0;\\n}"
+      "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int arr[100];\n    for(int i = 0; i < n; i++) {\n        cin >> arr[i];\n    }\n    \n    // Your code here\n    \n    return 0;\n}"
     },
     {
-      "title": "Longest Subarray With Zero Sum",
+      "title": "Maximum Subarray Sum",
       "difficulty": "hard",
-      "description": "Find the length of the longest subarray with sum equal to zero.",
-      "inputFormat": "First line: n (array size)\\nSecond line: n space-separated integers",
-      "outputFormat": "Print length of longest zero-sum subarray",
-      "constraints": "1 \u2264 n \u2264 1000\\n-10^6 \u2264 array[i] \u2264 10^6",
+      "description": "Find the maximum sum of any contiguous subarray (Kadane's Algorithm).",
+      "inputFormat": "First line: n (array size)\nSecond line: n space-separated integers",
+      "outputFormat": "Print the maximum subarray sum",
+      "constraints": "1 ≤ n ≤ 100\n-1000 ≤ array[i] ≤ 1000",
       "sampleTestCases": [
         {
-          "input": "8\\n15 -2 2 -8 1 7 10 23",
-          "output": "5",
-          "explanation": "Subarray [-2,2,-8,1,7] has sum 0 and length 5"
+          "input": "5\n-2 1 -3 4 -1",
+          "output": "4",
+          "explanation": "Maximum sum subarray: [4]"
         }
       ],
       "hiddenTestCases": [
         {
-          "input": "5\\n1 2 3 4 5",
-          "output": "0"
+          "input": "6\n1 2 3 -2 5 -1",
+          "output": "9"
         },
         {
-          "input": "6\\n1 -1 2 -2 3 -3",
-          "output": "6"
+          "input": "4\n-1 -2 -3 -4",
+          "output": "-1"
+        }
+      ],
+      "points": 30,
+      "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int arr[100];\n    for(int i = 0; i < n; i++) {\n        cin >> arr[i];\n    }\n    \n    // Your code here\n    \n    return 0;\n}"
+    },
+    {
+      "title": "Leaders in Array",
+      "difficulty": "hard",
+      "description": "Find all leaders in the array. An element is a leader if it is greater than all elements to its right.",
+      "inputFormat": "First line: n (array size)\nSecond line: n space-separated integers",
+      "outputFormat": "Print all leaders, space-separated",
+      "constraints": "1 ≤ n ≤ 100\n-1000 ≤ array[i] ≤ 1000",
+      "sampleTestCases": [
+        {
+          "input": "6\n16 17 4 3 5 2",
+          "output": "17 5 2",
+          "explanation": "17 > all right, 5 > 2, 2 is last"
+        }
+      ],
+      "hiddenTestCases": [
+        {
+          "input": "5\n5 4 3 2 1",
+          "output": "5 4 3 2 1"
         },
         {
-          "input": "7\\n5 -5 6 -6 7 8 9",
-          "output": "4"
-        },
-        {
-          "input": "4\\n0 0 0 0",
+          "input": "4\n1 2 3 4",
           "output": "4"
         }
       ],
-      "points": 33,
-      "starterCode": "#include <iostream>\\nusing namespace std;\\n\\nint main() {\\n    int n;\\n    cin >> n;\\n    \\n    int arr[1000];\\n    for(int i = 0; i < n; i++) {\\n        cin >> arr[i];\\n    }\\n    \\n    // Your code here\\n    \\n    return 0;\\n}"
+      "points": 30,
+      "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int arr[100];\n    for(int i = 0; i < n; i++) {\n        cin >> arr[i];\n    }\n    \n    // Your code here\n    \n    return 0;\n}"
     },
     {
-      "title": "Minimum Platforms Required",
+      "title": "Rearrange Positive Negative",
       "difficulty": "hard",
-      "description": "Given arrival and departure times of trains, find minimum number of platforms required so no train waits.",
-      "inputFormat": "First line: n (number of trains)\\nSecond line: n space-separated integers (arrival times in 24hr format)\\nThird line: n space-separated integers (departure times)",
-      "outputFormat": "Print minimum platforms needed",
-      "constraints": "1 \u2264 n \u2264 1000\\n0 \u2264 arrival[i] < departure[i] \u2264 2359",
+      "description": "Rearrange array so all negative numbers come before positive numbers (order doesn't matter).",
+      "inputFormat": "First line: n (array size)\nSecond line: n space-separated integers",
+      "outputFormat": "Print rearranged array, space-separated",
+      "constraints": "1 ≤ n ≤ 100\n-1000 ≤ array[i] ≤ 1000",
       "sampleTestCases": [
         {
-          "input": "6\\n900 940 950 1100 1500 1800\\n910 1200 1120 1130 1900 2000",
+          "input": "6\n-1 2 -3 4 5 -6",
+          "output": "-1 -3 -6 2 4 5",
+          "explanation": "All negatives before positives"
+        }
+      ],
+      "hiddenTestCases": [
+        {
+          "input": "4\n1 2 3 4",
+          "output": "1 2 3 4"
+        },
+        {
+          "input": "4\n-1 -2 -3 -4",
+          "output": "-1 -2 -3 -4"
+        }
+      ],
+      "points": 30,
+      "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int arr[100];\n    for(int i = 0; i < n; i++) {\n        cin >> arr[i];\n    }\n    \n    // Your code here\n    \n    return 0;\n}"
+    },
+    {
+      "title": "Missing Number",
+      "difficulty": "hard",
+      "description": "Find the missing number in an array containing n-1 numbers from 1 to n.",
+      "inputFormat": "First line: n (total count)\nSecond line: n-1 space-separated integers",
+      "outputFormat": "Print the missing number",
+      "constraints": "2 ≤ n ≤ 100",
+      "sampleTestCases": [
+        {
+          "input": "5\n1 2 4 5",
           "output": "3",
-          "explanation": "At 1100, trains at 940, 950, and 1100 all need platforms"
+          "explanation": "Missing number from 1-5 is 3"
         }
       ],
       "hiddenTestCases": [
         {
-          "input": "3\\n100 200 300\\n150 250 350",
+          "input": "10\n1 2 3 4 5 6 7 8 10",
+          "output": "9"
+        },
+        {
+          "input": "3\n2 3",
           "output": "1"
-        },
-        {
-          "input": "4\\n800 900 1000 1100\\n850 950 1050 1150",
-          "output": "4"
-        },
-        {
-          "input": "5\\n900 1000 1100 1200 1300\\n930 1030 1130 1230 1330",
-          "output": "5"
-        },
-        {
-          "input": "2\\n500 600\\n550 700",
-          "output": "2"
         }
       ],
-      "points": 36,
-      "starterCode": "#include <iostream>\\nusing namespace std;\\n\\nint main() {\\n    int n;\\n    cin >> n;\\n    \\n    int arrival[1000], departure[1000];\\n    for(int i = 0; i < n; i++) {\\n        cin >> arrival[i];\\n    }\\n    for(int i = 0; i < n; i++) {\\n        cin >> departure[i];\\n    }\\n    \\n    // Your code here\\n    \\n    return 0;\\n}"
-    },
-    {
-      "title": "Four Sum Problem",
-      "difficulty": "hard",
-      "description": "Find if there exist four elements in array that sum to a given target. Print 'YES' or 'NO'.",
-      "inputFormat": "First line: n target (array size and target sum)\\nSecond line: n space-separated integers",
-      "outputFormat": "Print 'YES' if four elements sum to target, 'NO' otherwise",
-      "constraints": "4 \u2264 n \u2264 1000\\n-10^6 \u2264 array[i], target \u2264 10^6",
-      "sampleTestCases": [
-        {
-          "input": "6 0\\n1 0 -1 0 -2 2",
-          "output": "YES",
-          "explanation": "[-2, -1, 1, 2] or [-2, 0, 0, 2] sum to 0"
-        }
-      ],
-      "hiddenTestCases": [
-        {
-          "input": "5 8\\n2 2 2 2 2",
-          "output": "YES"
-        },
-        {
-          "input": "6 50\\n1 2 3 4 5 6",
-          "output": "NO"
-        },
-        {
-          "input": "7 0\\n-3 -1 0 2 1 3 -2",
-          "output": "YES"
-        },
-        {
-          "input": "4 100\\n25 25 25 25",
-          "output": "YES"
-        }
-      ],
-      "points": 40,
-      "starterCode": "#include <iostream>\\nusing namespace std;\\n\\nint main() {\\n    int n, target;\\n    cin >> n >> target;\\n    \\n    int arr[1000];\\n    for(int i = 0; i < n; i++) {\\n        cin >> arr[i];\\n    }\\n    \\n    // Your code here\\n    \\n    return 0;\\n}"
+      "points": 30,
+      "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int arr[100];\n    for(int i = 0; i < n-1; i++) {\n        cin >> arr[i];\n    }\n    \n    // Your code here\n    \n    return 0;\n}"
     }
   ]
 }
