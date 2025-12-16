@@ -214,8 +214,19 @@ function showDashboard() {
     showScreen('dashboardScreen');
     updateHeader();
     renderProblems();
-    renderLeaderboard();
-    renderProfile();
+
+    // These might fail if no data yet, don't let them break the UI
+    try {
+        renderLeaderboard();
+    } catch (e) {
+        console.error('Leaderboard render failed:', e);
+    }
+
+    try {
+        renderProfile();
+    } catch (e) {
+        console.error('Profile render failed:', e);
+    }
 }
 
 function showScreen(screenId) {
