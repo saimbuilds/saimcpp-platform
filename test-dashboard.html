@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dashboard Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .screen {
+            min-height: 100vh;
+            background: #0d1117;
+            color: #c9d1d9;
+            padding: 2rem;
+        }
+
+        .screen.hidden {
+            display: none;
+        }
+
+        .header {
+            background: #161b22;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .problems-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .problem-card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="dashboardScreen" class="screen">
+        <div class="header">
+            <h1>SaimCPP Dashboard</h1>
+        </div>
+        <div class="problems-grid">
+            <div class="problem-card">
+                <h3>Test Problem 1</h3>
+                <p>This is a test problem</p>
+            </div>
+            <div class="problem-card">
+                <h3>Test Problem 2</h3>
+                <p>This is another test problem</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
