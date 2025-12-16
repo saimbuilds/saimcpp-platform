@@ -1,4 +1,7 @@
+```json
 {
+    "buildCommand": "echo 'No build needed'",
+    "outputDirectory": ".",
     "rewrites": [
         {
             "source": "/(.*)",
@@ -25,3 +28,4 @@
         }
     ]
 }
+```
