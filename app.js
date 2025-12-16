@@ -117,7 +117,8 @@ async function handleLogout() {
     await supabaseClient.auth.signOut();
     currentUser = null;
     userProfile = null;
-    showLoginScreen();
+    // Reload page to clear everything
+    window.location.reload();
 }
 
 // ========================================
@@ -213,10 +214,18 @@ function showDashboard() {
     console.log('showDashboard called');
     showScreen('dashboardScreen');
 
-    // Scroll to top to fix offset issue
-    window.scrollTo(0, 0);
-    document.body.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
+    // Scroll to top multiple times to ensure it works
+    setTimeout(() => {
+        window.scrollTo(0, 0);
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }, 0);
+
+    setTimeout(() => {
+        window.scrollTo(0, 0);
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }, 100);
 
     updateHeader();
     renderProblems();
