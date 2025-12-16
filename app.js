@@ -247,6 +247,14 @@ function showDashboard() {
 function showScreen(screenId) {
     console.log('Switching to screen:', screenId);
 
+    // Hide the app container (login screen container)
+    const appContainer = document.getElementById('app');
+    if (appContainer) {
+        appContainer.style.display = 'none';
+        appContainer.style.height = '0';
+        appContainer.style.overflow = 'hidden';
+    }
+
     // Completely hide all screens
     document.querySelectorAll('.screen').forEach(screen => {
         screen.classList.add('hidden');
@@ -270,12 +278,17 @@ function showScreen(screenId) {
         targetScreen.style.overflow = 'visible';
         targetScreen.style.opacity = '1';
         targetScreen.style.zIndex = '9999';
-        targetScreen.style.position = 'relative';
+        targetScreen.style.position = 'static';
         targetScreen.style.top = '0';
         console.log('Showing screen:', screenId);
     } else {
         console.error('Screen not found:', screenId);
     }
+
+    // Force scroll to top
+    window.scrollTo(0, 0);
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
 }
 
 function switchView(viewName) {
