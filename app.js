@@ -1,37 +1,30 @@
 // ========================================
-// CodeGrind Arena - Main Application
+// CodeGrind Arena - Full Stack with Supabase
 // ========================================
 
-// Sample Problems Database
-const PROBLEMS = [
+import supabaseClient from './lib/supabase.js';
+
+// Sample Problems (will be replaced with Supabase data)
+const SAMPLE_PROBLEMS = [
     {
         id: 1,
         title: "Hello World",
         difficulty: "easy",
-        topic: "basics",
+        category: "Basics",
         description: "Write a program that prints 'Hello, World!' to the console.",
         inputFormat: "No input required.",
         outputFormat: "Print 'Hello, World!' exactly as shown.",
         sampleInput: "",
         sampleOutput: "Hello, World!",
-        testCases: [
-            { input: "", expectedOutput: "Hello, World!" }
-        ],
+        testCases: [{ input: "", expectedOutput: "Hello, World!" }],
         points: 10,
-        starterCode: `#include <iostream>
-using namespace std;
-
-int main() {
-    // Write your code here
-    
-    return 0;
-}`
+        starterCode: `#include <iostream>\nusing namespace std;\n\nint main() {\n    // Write your code here\n    \n    return 0;\n}`
     },
     {
         id: 2,
         title: "Sum of Two Numbers",
         difficulty: "easy",
-        topic: "basics",
+        category: "Basics",
         description: "Given two integers, calculate and print their sum.",
         inputFormat: "Two space-separated integers a and b.",
         outputFormat: "Print the sum of a and b.",
@@ -39,142 +32,53 @@ int main() {
         sampleOutput: "8",
         testCases: [
             { input: "5 3", expectedOutput: "8" },
-            { input: "10 20", expectedOutput: "30" },
-            { input: "-5 10", expectedOutput: "5" }
+            { input: "10 20", expectedOutput: "30" }
         ],
         points: 10,
-        starterCode: `#include <iostream>
-using namespace std;
-
-int main() {
-    int a, b;
-    cin >> a >> b;
-    
-    // Calculate and print sum here
-    
-    return 0;
-}`
-    },
-    {
-        id: 3,
-        title: "Even or Odd",
-        difficulty: "easy",
-        topic: "conditionals",
-        description: "Given an integer n, print 'Even' if it's even, otherwise print 'Odd'.",
-        inputFormat: "A single integer n.",
-        outputFormat: "Print 'Even' or 'Odd'.",
-        sampleInput: "4",
-        sampleOutput: "Even",
-        testCases: [
-            { input: "4", expectedOutput: "Even" },
-            { input: "7", expectedOutput: "Odd" },
-            { input: "0", expectedOutput: "Even" }
-        ],
-        points: 10,
-        starterCode: `#include <iostream>
-using namespace std;
-
-int main() {
-    int n;
-    cin >> n;
-    
-    // Check if even or odd
-    
-    return 0;
-}`
-    },
-    {
-        id: 4,
-        title: "Print Pattern",
-        difficulty: "medium",
-        topic: "loops",
-        description: "Given an integer n, print a pattern of stars in a right triangle shape with n rows.",
-        inputFormat: "A single integer n (1 ≤ n ≤ 10).",
-        outputFormat: "Print n lines, where line i has i stars.",
-        sampleInput: "3",
-        sampleOutput: "*\n**\n***",
-        testCases: [
-            { input: "3", expectedOutput: "*\n**\n***" },
-            { input: "5", expectedOutput: "*\n**\n***\n****\n*****" }
-        ],
-        points: 20,
-        starterCode: `#include <iostream>
-using namespace std;
-
-int main() {
-    int n;
-    cin >> n;
-    
-    // Print the pattern
-    
-    return 0;
-}`
-    },
-    {
-        id: 5,
-        title: "Array Sum",
-        difficulty: "medium",
-        topic: "arrays",
-        description: "Given n integers in an array, calculate and print the sum of all elements.",
-        inputFormat: "First line: integer n (number of elements). Second line: n space-separated integers.",
-        outputFormat: "Print the sum of all array elements.",
-        sampleInput: "5\n1 2 3 4 5",
-        sampleOutput: "15",
-        testCases: [
-            { input: "5\n1 2 3 4 5", expectedOutput: "15" },
-            { input: "3\n10 20 30", expectedOutput: "60" }
-        ],
-        points: 20,
-        starterCode: `#include <iostream>
-using namespace std;
-
-int main() {
-    int n;
-    cin >> n;
-    
-    int arr[100];
-    for(int i = 0; i < n; i++) {
-        cin >> arr[i];
-    }
-    
-    // Calculate sum
-    
-    return 0;
-}`
+        starterCode: `#include <iostream>\nusing namespace std;\n\nint main() {\n    int a, b;\n    cin >> a >> b;\n    \n    return 0;\n}`
     }
 ];
 
 // Application State
 let currentUser = null;
+let userProfile = null;
 let monacoEditor = null;
 let currentProblem = null;
-
-// LocalStorage Keys
-const STORAGE_KEYS = {
-    USERS: 'codegrind_users',
-    CURRENT_USER: 'codegrind_current_user',
-    SUBMISSIONS: 'codegrind_submissions'
-};
 
 // ========================================
 // INITIALIZATION
 // ========================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    initApp();
+    checkAuth();
+    setupEventListeners();
 });
 
-function initApp() {
-    // Check for existing user session
-    const savedUser = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
-    if (savedUser) {
-        currentUser = JSON.parse(savedUser);
-        showDashboard();
+async function checkAuth() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+
+    if (session) {
+        currentUser = session.user;
+        await loadUserProfile();
     } else {
         showLoginScreen();
     }
+}
 
-    setupEventListeners();
+async function loadUserProfile() {
+    const { data, error } = await supabaseClient
+        .from('profiles')
+        .select('*')
+        .eq('id', currentUser.id)
+        .single();
+
+    if (error || !data) {
+        // First time user - show profile completion
+        showProfileCompletion();
+    } else {
+        userProfile = data;
+        showDashboard();
+    }
 }
 
 // ========================================
@@ -182,11 +86,11 @@ function initApp() {
 // ========================================
 
 function setupEventListeners() {
-    // Login form
-    document.getElementById('loginForm').addEventListener('submit', handleLogin);
+    // Google Sign In
+    document.getElementById('googleSignInBtn')?.addEventListener('click', signInWithGoogle);
 
     // Logout
-    document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+    document.getElementById('logoutBtn')?.addEventListener('click', handleLogout);
 
     // Navigation
     document.querySelectorAll('.nav-btn').forEach(btn => {
@@ -196,62 +100,121 @@ function setupEventListeners() {
         });
     });
 
-    // Difficulty filter
-    document.getElementById('difficultyFilter').addEventListener('change', renderProblems);
-
     // Back to problems
-    document.getElementById('backToProblems').addEventListener('click', () => {
+    document.getElementById('backToProblems')?.addEventListener('click', () => {
         showScreen('dashboardScreen');
         switchView('problems');
     });
 
     // Code editor actions
-    document.getElementById('runCodeBtn').addEventListener('click', runCode);
-    document.getElementById('submitCodeBtn').addEventListener('click', submitCode);
-    document.getElementById('clearOutput').addEventListener('click', clearOutput);
+    document.getElementById('runCodeBtn')?.addEventListener('click', runCode);
+    document.getElementById('submitCodeBtn')?.addEventListener('click', submitCode);
+    document.getElementById('clearOutput')?.addEventListener('click', clearOutput);
 }
 
 // ========================================
 // AUTHENTICATION
 // ========================================
 
-function handleLogin(e) {
-    e.preventDefault();
-    const username = document.getElementById('username').value.trim();
+async function signInWithGoogle() {
+    const { data, error } = await supabaseClient.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+            redirectTo: window.location.origin
+        }
+    });
 
-    if (!username) {
-        alert('Please enter a username');
-        return;
+    if (error) {
+        alert('Sign in failed: ' + error.message);
     }
-
-    // Create or load user
-    let users = getUsers();
-    let user = users.find(u => u.username === username);
-
-    if (!user) {
-        // Create new user
-        user = {
-            username,
-            score: 0,
-            solved: 0,
-            streak: 0,
-            joinedAt: Date.now(),
-            submissions: []
-        };
-        users.push(user);
-        saveUsers(users);
-    }
-
-    currentUser = user;
-    localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(user));
-
-    showDashboard();
 }
 
-function handleLogout() {
-    localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
+async function handleLogout() {
+    await supabaseClient.auth.signOut();
     currentUser = null;
+    userProfile = null;
     showLoginScreen();
+}
+
+// ========================================
+// PROFILE COMPLETION
+// ========================================
+
+function showProfileCompletion() {
+    const html = `
+    <div class="modal-overlay active">
+      <div class="modal">
+        <div class="modal-header">
+          <h2>Complete Your Profile</h2>
+        </div>
+        <div class="modal-body">
+          <p style="margin-bottom: 2rem; color: var(--text-secondary);">
+            Welcome to CodeGrind Arena! Please tell us about yourself:
+          </p>
+          
+          <div class="input-group">
+            <label class="input-label">Batch</label>
+            <select id="batchSelect" class="select-field">
+              <option value="">Select your batch</option>
+              <option value="2024">2024</option>
+              <option value="2025">2025</option>
+              <option value="2026">2026</option>
+              <option value="2027">2027</option>
+            </select>
+          </div>
+          
+          <div class="input-group">
+            <label class="input-label">Department</label>
+            <select id="departmentSelect" class="select-field">
+              <option value="">Select your department</option>
+              <option value="CS">Computer Science (CS)</option>
+              <option value="DS">Data Science (DS)</option>
+              <option value="AI">Artificial Intelligence (AI)</option>
+              <option value="CY">Cyber Security (CY)</option>
+              <option value="SE">Software Engineering (SE)</option>
+            </select>
+          </div>
+          
+          <button class="btn-primary btn-large" id="completeProfileBtn" style="margin-top: 2rem;">
+            Complete Profile
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+
+    document.body.insertAdjacentHTML('beforeend', html);
+
+    document.getElementById('completeProfileBtn').addEventListener('click', async () => {
+        const batch = document.getElementById('batchSelect').value;
+        const department = document.getElementById('departmentSelect').value;
+
+        if (!batch || !department) {
+            alert('Please select both batch and department');
+            return;
+        }
+
+        const { data, error } = await supabaseClient
+            .from('profiles')
+            .insert({
+                id: currentUser.id,
+                email: currentUser.email,
+                full_name: currentUser.user_metadata.full_name || 'User',
+                avatar_url: currentUser.user_metadata.avatar_url,
+                batch,
+                department
+            })
+            .select()
+            .single();
+
+        if (error) {
+            alert('Error creating profile: ' + error.message);
+        } else {
+            userProfile = data;
+            document.querySelector('.modal-overlay').remove();
+            showDashboard();
+        }
+    });
 }
 
 // ========================================
@@ -260,7 +223,6 @@ function handleLogout() {
 
 function showLoginScreen() {
     showScreen('loginScreen');
-    updateLoginStats();
 }
 
 function showDashboard() {
@@ -296,18 +258,10 @@ function switchView(viewName) {
 // UI UPDATES
 // ========================================
 
-function updateLoginStats() {
-    const users = getUsers();
-    const submissions = getAllSubmissions();
-
-    document.getElementById('totalUsers').textContent = users.length;
-    document.getElementById('totalSolved').textContent = submissions.filter(s => s.status === 'accepted').length;
-}
-
 function updateHeader() {
-    document.getElementById('usernameDisplay').textContent = currentUser.username;
-    document.getElementById('streakDisplay').textContent = currentUser.streak;
-    document.getElementById('scoreDisplay').textContent = currentUser.score;
+    document.getElementById('usernameDisplay').textContent = userProfile.full_name || 'User';
+    document.getElementById('streakDisplay').textContent = userProfile.current_streak || 0;
+    document.getElementById('scoreDisplay').textContent = userProfile.total_score || 0;
 }
 
 // ========================================
@@ -316,18 +270,8 @@ function updateHeader() {
 
 function renderProblems() {
     const container = document.getElementById('problemsGrid');
-    const filter = document.getElementById('difficultyFilter').value;
 
-    let filtered = PROBLEMS;
-    if (filter !== 'all') {
-        filtered = PROBLEMS.filter(p => p.difficulty === filter);
-    }
-
-    container.innerHTML = filtered.map(problem => {
-        const status = getProblemStatus(problem.id);
-        const statusClass = status === 'solved' ? 'solved' : status === 'attempted' ? 'attempted' : '';
-        const statusText = status === 'solved' ? '✓ Solved' : status === 'attempted' ? '○ Attempted' : '';
-
+    container.innerHTML = SAMPLE_PROBLEMS.map(problem => {
         return `
       <div class="problem-card" onclick="openProblem(${problem.id})">
         <div class="problem-card-header">
@@ -337,24 +281,11 @@ function renderProblems() {
         <p>${problem.description}</p>
         <div class="problem-meta">
           <span>💎 ${problem.points} pts</span>
-          <span>📚 ${problem.topic}</span>
+          <span>📚 ${problem.category}</span>
         </div>
-        ${statusText ? `<div class="problem-status ${statusClass}">${statusText}</div>` : ''}
       </div>
     `;
     }).join('');
-}
-
-function getProblemStatus(problemId) {
-    const submissions = currentUser.submissions || [];
-    const problemSubs = submissions.filter(s => s.problemId === problemId);
-
-    if (problemSubs.some(s => s.status === 'accepted')) {
-        return 'solved';
-    } else if (problemSubs.length > 0) {
-        return 'attempted';
-    }
-    return 'unsolved';
 }
 
 // ========================================
@@ -362,10 +293,9 @@ function getProblemStatus(problemId) {
 // ========================================
 
 function openProblem(problemId) {
-    currentProblem = PROBLEMS.find(p => p.id === problemId);
+    currentProblem = SAMPLE_PROBLEMS.find(p => p.id === problemId);
     if (!currentProblem) return;
 
-    // Update problem panel
     document.getElementById('problemTitle').textContent = currentProblem.title;
     document.getElementById('problemDifficulty').textContent = currentProblem.difficulty;
     document.getElementById('problemDifficulty').className = `difficulty-badge ${currentProblem.difficulty}`;
@@ -375,7 +305,6 @@ function openProblem(problemId) {
     document.getElementById('sampleInput').textContent = currentProblem.sampleInput;
     document.getElementById('sampleOutput').textContent = currentProblem.sampleOutput;
 
-    // Initialize Monaco Editor if not already
     if (!monacoEditor) {
         initMonacoEditor();
     } else {
@@ -396,9 +325,7 @@ function initMonacoEditor() {
             theme: 'vs-dark',
             fontSize: 14,
             minimap: { enabled: false },
-            automaticLayout: true,
-            scrollBeyondLastLine: false,
-            wordWrap: 'on'
+            automaticLayout: true
         });
     });
 }
@@ -409,7 +336,7 @@ function initMonacoEditor() {
 
 async function runCode() {
     const code = monacoEditor.getValue();
-    const testCase = currentProblem.testCases[0]; // Run first test case
+    const testCase = currentProblem.testCases[0];
 
     displayOutput('Running...');
 
@@ -428,147 +355,120 @@ async function runCode() {
             }
         }
     } catch (error) {
-        displayOutput(`❌ Execution Error:\n${error.message}`, 'error');
+        displayOutput(`❌ Error:\n${error.message}`, 'error');
     }
 }
 
 async function submitCode() {
     const code = monacoEditor.getValue();
-
     displayOutput('Running all test cases...');
 
     let passed = 0;
     let failed = 0;
-    let outputs = [];
 
-    for (let i = 0; i < currentProblem.testCases.length; i++) {
-        const testCase = currentProblem.testCases[i];
-
+    for (let testCase of currentProblem.testCases) {
         try {
             const result = await executeCode(code, testCase.input);
-
-            if (result.error) {
-                failed++;
-                outputs.push(`Test ${i + 1}: ❌ Error - ${result.error}`);
+            if (!result.error && result.output.trim() === testCase.expectedOutput.trim()) {
+                passed++;
             } else {
-                const output = result.output.trim();
-                const expected = testCase.expectedOutput.trim();
-
-                if (output === expected) {
-                    passed++;
-                    outputs.push(`Test ${i + 1}: ✅ Passed`);
-                } else {
-                    failed++;
-                    outputs.push(`Test ${i + 1}: ❌ Wrong Answer`);
-                }
+                failed++;
             }
-        } catch (error) {
+        } catch {
             failed++;
-            outputs.push(`Test ${i + 1}: ❌ Error - ${error.message}`);
         }
     }
 
     const total = currentProblem.testCases.length;
     const status = failed === 0 ? 'accepted' : 'wrong';
 
-    // Save submission
-    saveSubmission({
-        problemId: currentProblem.id,
-        code,
-        status,
-        passedTests: passed,
-        totalTests: total,
-        timestamp: Date.now()
-    });
+    // Save to Supabase
+    await saveSubmission(code, status, passed, total);
 
-    // Display results
-    const resultMessage = `
-    ${failed === 0 ? '🎉 All Tests Passed!' : '❌ Some Tests Failed'}
-    
-    Passed: ${passed}/${total}
-    Failed: ${failed}/${total}
-    
-    ${outputs.join('\n')}
-  `;
-
+    const resultMessage = `${failed === 0 ? '🎉 All Tests Passed!' : '❌ Some Failed'}\n\nPassed: ${passed}/${total}`;
     displayOutput(resultMessage, failed === 0 ? 'success' : 'error');
 
-    // Update user stats if accepted
-    if (status === 'accepted' && getProblemStatus(currentProblem.id) !== 'solved') {
-        currentUser.solved++;
-        currentUser.score += currentProblem.points;
-        saveCurrentUser();
-        updateHeader();
-
-        setTimeout(() => {
-            alert(`🎉 Problem Solved! +${currentProblem.points} points`);
-        }, 500);
+    if (status === 'accepted') {
+        await updateUserScore(currentProblem.points);
+        setTimeout(() => alert(`🎉 +${currentProblem.points} points!`), 500);
     }
 }
 
 async function executeCode(code, input) {
     const response = await fetch('https://emkc.org/api/v2/piston/execute', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             language: 'c++',
             version: '10.2.0',
-            files: [{
-                name: 'main.cpp',
-                content: code
-            }],
-            stdin: input,
-            args: [],
-            compile_timeout: 10000,
-            run_timeout: 3000
+            files: [{ name: 'main.cpp', content: code }],
+            stdin: input
         })
     });
 
     const data = await response.json();
 
-    if (data.compile && data.compile.code !== 0) {
+    if (data.compile?.code !== 0) {
         return { error: data.compile.output };
     }
 
-    if (data.run.code !== 0 && data.run.stderr) {
-        return { error: data.run.stderr };
-    }
+    return { output: data.run.output || '' };
+}
 
-    return { output: data.run.output || data.run.stdout || '' };
+async function saveSubmission(code, status, passed, total) {
+    await supabaseClient.from('submissions').insert({
+        user_id: userProfile.id,
+        problem_id: currentProblem.id,
+        code,
+        status,
+        test_cases_passed: passed,
+        test_cases_total: total,
+        points_earned: status === 'accepted' ? currentProblem.points : 0
+    });
+}
+
+async function updateUserScore(points) {
+    const newScore = userProfile.total_score + points;
+    await supabaseClient
+        .from('profiles')
+        .update({ total_score: newScore, problems_solved: userProfile.problems_solved + 1 })
+        .eq('id', userProfile.id);
+
+    userProfile.total_score = newScore;
+    userProfile.problems_solved++;
+    updateHeader();
 }
 
 function displayOutput(text, type = '') {
-    const output = document.getElementById('output');
-    output.innerHTML = `<pre class="output-${type}">${text}</pre>`;
+    document.getElementById('output').innerHTML = `<pre class="output-${type}">${text}</pre>`;
 }
 
 function clearOutput() {
-    const output = document.getElementById('output');
-    output.innerHTML = '<p class="output-placeholder">Run your code to see output here...</p>';
+    document.getElementById('output').innerHTML = '<p class="output-placeholder">Run your code to see output here...</p>';
 }
 
 // ========================================
 // LEADERBOARD
 // ========================================
 
-function renderLeaderboard() {
-    const users = getUsers().sort((a, b) => b.score - a.score);
-    const tbody = document.getElementById('leaderboardBody');
+async function renderLeaderboard() {
+    const { data: users } = await supabaseClient
+        .from('profiles')
+        .select('*')
+        .order('total_score', { ascending: false })
+        .limit(10);
 
-    tbody.innerHTML = users.slice(0, 10).map((user, index) => {
+    const tbody = document.getElementById('leaderboardBody');
+    tbody.innerHTML = users.map((user, index) => {
         const rank = index + 1;
         const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : rank;
-        const isCurrentUser = currentUser && user.username === currentUser.username;
-
         return `
-      <tr style="${isCurrentUser ? 'background: var(--bg-hover); font-weight: 600;' : ''}">
+      <tr style="${user.id === userProfile.id ? 'background: var(--bg-hover); font-weight: 600;' : ''}">
         <td class="rank-cell">${typeof medal === 'string' ? `<span class="rank-medal">${medal}</span>` : medal}</td>
-        <td>${user.username}${isCurrentUser ? ' (You)' : ''}</td>
-        <td>${user.score}</td>
-        <td>${user.solved}</td>
-        <td>${user.streak > 0 ? '🔥 ' + user.streak : '0'}</td>
+        <td>${user.full_name}${user.id === userProfile.id ? ' (You)' : ''}</td>
+        <td>${user.total_score}</td>
+        <td>${user.problems_solved}</td>
+        <td>${user.current_streak || 0}</td>
       </tr>
     `;
     }).join('');
@@ -579,73 +479,10 @@ function renderLeaderboard() {
 // ========================================
 
 function renderProfile() {
-    document.getElementById('profileUsername').textContent = currentUser.username;
-    document.getElementById('profileSolved').textContent = currentUser.solved;
-    document.getElementById('profileScore').textContent = currentUser.score;
-    document.getElementById('profileStreak').textContent = currentUser.streak;
-
-    const users = getUsers().sort((a, b) => b.score - a.score);
-    const rank = users.findIndex(u => u.username === currentUser.username) + 1;
-    document.getElementById('profileRank').textContent = rank > 0 ? `#${rank}` : '-';
-
-    // Render submissions
-    const submissions = (currentUser.submissions || []).slice(-5).reverse();
-    const container = document.getElementById('submissionsHistory');
-
-    if (submissions.length === 0) {
-        container.innerHTML = '<p style="color: var(--text-muted);">No submissions yet. Start solving!</p>';
-    } else {
-        container.innerHTML = submissions.map(sub => {
-            const problem = PROBLEMS.find(p => p.id === sub.problemId);
-            return `
-        <div class="submission-item">
-          <span class="submission-problem">${problem ? problem.title : 'Unknown'}</span>
-          <span class="submission-status ${sub.status}">${sub.status === 'accepted' ? 'Accepted' : 'Wrong Answer'}</span>
-          <span style="color: var(--text-secondary); font-size: 0.875rem;">${sub.passedTests}/${sub.totalTests}</span>
-        </div>
-      `;
-        }).join('');
-    }
+    document.getElementById('profileUsername').textContent = userProfile.full_name;
+    document.getElementById('profileSolved').textContent = userProfile.problems_solved || 0;
+    document.getElementById('profileScore').textContent = userProfile.total_score || 0;
+    document.getElementById('profileStreak').textContent = userProfile.current_streak || 0;
 }
 
-
-// ========================================
-// DATA MANAGEMENT
-// ========================================
-
-function getUsers() {
-    const users = localStorage.getItem(STORAGE_KEYS.USERS);
-    return users ? JSON.parse(users) : [];
-}
-
-function saveUsers(users) {
-    localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
-}
-
-function saveCurrentUser() {
-    let users = getUsers();
-    const index = users.findIndex(u => u.username === currentUser.username);
-    if (index !== -1) {
-        users[index] = currentUser;
-    } else {
-        users.push(currentUser);
-    }
-    saveUsers(users);
-    localStorage.setItem(STORAGE_KEYS.CURRENT_USER, JSON.stringify(currentUser));
-}
-
-function saveSubmission(submission) {
-    if (!currentUser.submissions) {
-        currentUser.submissions = [];
-    }
-    currentUser.submissions.push(submission);
-    saveCurrentUser();
-}
-
-function getAllSubmissions() {
-    const users = getUsers();
-    return users.flatMap(u => u.submissions || []);
-}
-
-// Make openProblem globally accessible
 window.openProblem = openProblem;
