@@ -346,8 +346,8 @@ function openProblem(problemId) {
     if (!monacoEditor) {
         initMonacoEditor();
     } else {
-        // Ensure code is set with proper newlines
-        const cleanCode = currentProblem.starterCode || '';
+        // Convert literal \n to actual newlines for Monaco
+        const cleanCode = (currentProblem.starterCode || '').replace(/\\n/g, '\n');
         monacoEditor.setValue(cleanCode);
     }
 
@@ -359,8 +359,8 @@ function initMonacoEditor() {
     require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' } });
 
     require(['vs/editor/editor.main'], function () {
-        // Ensure newlines are properly formatted
-        const code = currentProblem.starterCode || '';
+        // Convert literal \n to actual newlines
+        const code = (currentProblem.starterCode || '').replace(/\\n/g, '\n');
 
         monacoEditor = monaco.editor.create(document.getElementById('codeEditor'), {
             value: code,
