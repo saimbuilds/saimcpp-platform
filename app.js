@@ -212,6 +212,12 @@ function showLoginScreen() {
 function showDashboard() {
     console.log('showDashboard called');
     showScreen('dashboardScreen');
+
+    // Scroll to top to fix offset issue
+    window.scrollTo(0, 0);
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+
     updateHeader();
     renderProblems();
 
