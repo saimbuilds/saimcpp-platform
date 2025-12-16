@@ -279,6 +279,8 @@ function renderProblems() {
 
     let filtered = filter === 'all' ? allProblems : allProblems.filter(p => p.difficulty === filter);
 
+    console.log(`Rendering ${filtered.length} problems`);
+
     container.innerHTML = filtered.map(problem => {
         return `
       <div class="problem-card" onclick="openProblem(${problem.id})">
@@ -294,6 +296,8 @@ function renderProblems() {
       </div>
     `;
     }).join('');
+
+    console.log('Problems rendered to container:', container);
 }
 
 // ========================================
