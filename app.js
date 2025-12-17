@@ -332,6 +332,11 @@ function switchView(viewName) {
             btn.classList.add('active');
         }
     });
+
+    // Handle dry run view
+    if (viewName === 'dryrun') {
+        renderDryRunProblems();
+    }
 }
 
 // ========================================
@@ -844,15 +849,6 @@ function displayDryRunOutput(text, type = '') {
 
 function clearDryRunOutput() {
     document.getElementById('dryrunOutput').innerHTML = '<p class="output-placeholder">Submit your answer to see the result...</p>';
-}
-
-// Update switchView to handle dry run
-const originalSwitchView = switchView;
-function switchView(viewName) {
-    originalSwitchView(viewName);
-    if (viewName === 'dryrun') {
-        renderDryRunProblems();
-    }
 }
 
 window.openDryRunProblem = openDryRunProblem;
