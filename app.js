@@ -764,7 +764,30 @@ function openDryRunProblem(problemId) {
     document.getElementById('dryrunDifficulty').textContent = currentDryRun.difficulty;
     document.getElementById('dryrunDifficulty').className = `difficulty-badge ${currentDryRun.difficulty}`;
     document.getElementById('dryrunDescription').textContent = currentDryRun.description;
-    document.getElementById('dryrunCode').textContent = currentDryRun.code;
+
+    // Create Monaco editor for code display (read-only)
+    const codeEditorContainer = document.getElementById('dryrunCodeEditor');
+    codeEditorContainer.innerHTML = ''; // Clear previous editor
+
+    require(['vs/editor/editor.main'], function () {
+        monaco.editor.create(codeEditorContainer, {
+            value: currentDryRun.code,
+            language: 'cpp',
+            theme: 'vs-dark',
+            readOnly: true,
+            fontSize: 14,
+            minimap: { enabled: false },
+            automaticLayout: true,
+            scrollBeyondLastLine: false,
+            lineNumbers: 'on',
+            renderLineHighlight: 'all',
+            contextmenu: false,
+            scrollbar: {
+                vertical: 'auto',
+                horizontal: 'auto'
+            }
+        });
+    });
 
     // Clear previous answer and output
     document.getElementById('dryrunAnswer').value = '';
