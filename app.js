@@ -292,12 +292,20 @@ function showDashboard() {
 function showScreen(screenId) {
     console.log('Switching to screen:', screenId);
 
-    // Hide the app container (login screen container)
+    // Show/hide the app container based on screen
     const appContainer = document.getElementById('app');
     if (appContainer) {
-        appContainer.style.display = 'none';
-        appContainer.style.height = '0';
-        appContainer.style.overflow = 'hidden';
+        if (screenId === 'loginScreen') {
+            // Show app container for login screen
+            appContainer.style.display = 'block';
+            appContainer.style.height = 'auto';
+            appContainer.style.overflow = 'visible';
+        } else {
+            // Hide app container for other screens
+            appContainer.style.display = 'none';
+            appContainer.style.height = '0';
+            appContainer.style.overflow = 'hidden';
+        }
     }
 
     // Completely hide all screens
