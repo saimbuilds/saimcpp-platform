@@ -593,6 +593,17 @@ async function submitCode() {
     const total = allTestCases.length;
     const status = failed === 0 ? 'accepted' : 'wrong';
 
+    // Check if user already solved this problem before
+    const { data: previousSubmissions } = await supabaseClient
+        .from('submissions')
+        .select('status')
+        .eq('user_id', userProfile.id)
+        .eq('problem_id', currentProblem.id)
+        .eq('status', 'accepted')
+        .limit(1);
+
+    const alreadySolved = previousSubmissions && previousSubmissions.length > 0;
+
     // Save to Supabase
     await saveSubmission(code, status, passed, total);
 
@@ -600,8 +611,14 @@ async function submitCode() {
     displayOutput(resultMessage, failed === 0 ? 'success' : 'error');
 
     if (status === 'accepted') {
-        await updateUserScore(currentProblem.points);
-        setTimeout(() => alert(`+${currentProblem.points} points!`), 500);
+        if (alreadySolved) {
+            // Already solved - no points
+            setTimeout(() => alert(`✅ Correct! (Already solved - no points awarded)`), 500);
+        } else {
+            // First time solving - award points
+            await updateUserScore(currentProblem.points);
+            setTimeout(() => alert(`🎉 +${currentProblem.points} points!`), 500);
+        }
     }
 }
 
@@ -869,11 +886,28 @@ async function submitDryRunAnswer() {
     // Exact match validation
     const isCorrect = userAnswer === expectedOutput;
 
+    // Check if user already solved this dry run before
+    const { data: previousSubmissions } = await supabaseClient
+        .from('submissions')
+        .select('status')
+        .eq('user_id', userProfile.id)
+        .eq('problem_id', currentDryRun.id)
+        .eq('status', 'correct')
+        .limit(1);
+
+    const alreadySolved = previousSubmissions && previousSubmissions.length > 0;
+
     if (isCorrect && !hasViewedExplanation) {
-        // Correct answer + didn't view explanation = full points
-        displayDryRunOutput(`✅ Correct!\\n\\nYou earned ${currentDryRun.points} points!`, 'success');
-        await updateUserScore(currentDryRun.points);
-        await saveDryRunSubmission(userAnswer, 'correct', currentDryRun.points);
+        if (alreadySolved) {
+            // Already solved - no points
+            displayDryRunOutput(`✅ Correct!\\n\\n(Already solved - no points awarded)`, 'success');
+            await saveDryRunSubmission(userAnswer, 'correct', 0);
+        } else {
+            // First time solving - full points
+            displayDryRunOutput(`✅ Correct!\\n\\nYou earned ${currentDryRun.points} points!`, 'success');
+            await updateUserScore(currentDryRun.points);
+            await saveDryRunSubmission(userAnswer, 'correct', currentDryRun.points);
+        }
     } else if (isCorrect && hasViewedExplanation) {
         // Correct answer but viewed explanation = 0 points
         displayDryRunOutput(
