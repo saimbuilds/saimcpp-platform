@@ -42,11 +42,9 @@ let currentDryRunStatusFilter = 'all';
 document.addEventListener('DOMContentLoaded', async () => {
     // Load problems first
     allProblems = await problemLoader.loadAll();
-    console.log(`Loaded ${allProblems.length} problems`);
 
     // Load dry run problems
     await loadDryRunProblems();
-    console.log(`Loaded ${allDryRunProblems.length} dry run problems`);
 
     checkAuth();
     setupEventListeners();
@@ -64,7 +62,6 @@ async function checkAuth() {
 }
 
 async function loadUserProfile() {
-    console.log('Loading profile for user:', currentUser.id);
 
     const { data, error } = await supabaseClient
         .from('profiles')
@@ -72,18 +69,14 @@ async function loadUserProfile() {
         .eq('id', currentUser.id)
         .maybeSingle();
 
-    console.log('Profile query result:', { data, error });
 
     if (error) {
-        console.error('Error loading profile:', error);
         showProfileCompletion();
     } else if (!data) {
         // First time user - show profile completion
-        console.log('No profile found, showing completion form');
         showProfileCompletion();
     } else {
         userProfile = data;
-        console.log('Profile loaded:', userProfile);
         showDashboard();
     }
 }
@@ -172,23 +165,18 @@ function setupEventListeners() {
     const viewBtn = document.getElementById('viewExplanationBtn');
     const clearBtn = document.getElementById('clearDryRunOutput');
 
-    console.log('Dry Run buttons:', { backBtn, submitBtn, viewBtn, clearBtn });
 
     backBtn?.addEventListener('click', () => {
-        console.log('Back to Dry Run clicked');
         showScreen('dashboardScreen');
         switchView('dryrun');
     });
     submitBtn?.addEventListener('click', () => {
-        console.log('Submit Dry Run clicked');
         submitDryRunAnswer();
     });
     viewBtn?.addEventListener('click', () => {
-        console.log('View Explanation clicked');
         viewDryRunExplanation();
     });
     clearBtn?.addEventListener('click', () => {
-        console.log('Clear Output clicked');
         clearDryRunOutput();
     });
 }
@@ -351,18 +339,15 @@ function showDashboard() {
     try {
         renderLeaderboard();
     } catch (e) {
-        console.error('Leaderboard render failed:', e);
     }
 
     try {
         renderProfile();
     } catch (e) {
-        console.error('Profile render failed:', e);
     }
 }
 
 function showScreen(screenId) {
-    console.log('Switching to screen:', screenId);
 
     // Show/hide the app container based on screen
     const appContainer = document.getElementById('app');
@@ -389,12 +374,10 @@ function showScreen(screenId) {
         screen.style.overflow = 'hidden';
         screen.style.position = 'absolute';
         screen.style.top = '-99999px';
-        console.log('Hiding screen:', screen.id);
     });
 
     // Show target screen
     const targetScreen = document.getElementById(screenId);
-    console.log('Target screen:', targetScreen);
     if (targetScreen) {
         targetScreen.classList.remove('hidden');
         targetScreen.style.display = 'block';
@@ -405,9 +388,7 @@ function showScreen(screenId) {
         targetScreen.style.zIndex = '9999';
         targetScreen.style.position = 'static';
         targetScreen.style.top = '0';
-        console.log('Showing screen:', screenId);
     } else {
-        console.error('Screen not found:', screenId);
     }
 
     // Force scroll to top
@@ -559,7 +540,6 @@ async function openProblem(problemId) {
 }
 
 async function checkIfProblemSolved(problemId) {
-    console.log('Checking if problem', problemId, 'is solved');
 
     // Load solved problems from localStorage
     const solved = JSON.parse(localStorage.getItem('solvedProblems') || '[]');
@@ -568,14 +548,12 @@ async function checkIfProblemSolved(problemId) {
     const submitBtn = document.getElementById('submitCodeBtn');
     if (solvedProblems.has(problemId)) {
         // Already solved - hide submit button
-        console.log('Problem already solved (from cache) - hiding submit button');
         if (submitBtn) {
             submitBtn.style.display = 'none';
         }
         return true;
     } else {
         // Not solved - show submit button
-        console.log('Problem not solved - showing submit button');
         if (submitBtn) {
             submitBtn.style.display = 'inline-block';
         }
@@ -584,7 +562,6 @@ async function checkIfProblemSolved(problemId) {
 }
 
 function markProblemAsSolved(problemId) {
-    console.log('Marking problem', problemId, 'as solved');
     solvedProblems.add(problemId);
     localStorage.setItem('solvedProblems', JSON.stringify([...solvedProblems]));
 
@@ -625,7 +602,6 @@ function copyCode() {
                 btn.textContent = originalText;
             }, 2000);
         }).catch(err => {
-            console.error('Failed to copy:', err);
             alert('Failed to copy code to clipboard');
         });
     }
@@ -827,7 +803,6 @@ async function updateUserScore(points, incrementProblemsSolved = true) {
         .eq('id', userProfile.id);
 
     if (error) {
-        console.error('Error updating score:', error);
         return;
     }
 
@@ -976,7 +951,6 @@ async function loadDryRunProblems() {
                 });
             });
         } catch (error) {
-            console.error(`Error loading dry run ${difficulty}:`, error);
         }
     }
 }
@@ -1057,7 +1031,6 @@ async function openDryRunProblem(problemId) {
         try {
             Prism.highlightAllUnder(codeEditorContainer);
         } catch (error) {
-            console.warn('Prism highlighting failed:', error);
         }
     }
 
@@ -1073,7 +1046,6 @@ async function openDryRunProblem(problemId) {
 }
 
 async function checkIfDryRunSolved(dryRunId) {
-    console.log('Checking if dry run', dryRunId, 'is solved');
 
     // Check Supabase for solved status
     const { data: submission } = await supabaseClient
@@ -1087,14 +1059,12 @@ async function checkIfDryRunSolved(dryRunId) {
     const submitBtn = document.getElementById('submitDryRunBtn');
     if (submission) {
         // Already solved - hide submit button
-        console.log('Dry run already solved - hiding submit button');
         if (submitBtn) {
             submitBtn.style.display = 'none';
         }
         return true;
     } else {
         // Not solved - show submit button
-        console.log('Dry run not solved - showing submit button');
         if (submitBtn) {
             submitBtn.style.display = 'inline-block';
         }
@@ -1103,7 +1073,6 @@ async function checkIfDryRunSolved(dryRunId) {
 }
 
 function markDryRunAsSolved(dryRunId) {
-    console.log('Marking dry run', dryRunId, 'as solved');
     solvedDryRuns.add(dryRunId);
     localStorage.setItem('solvedDryRuns', JSON.stringify([...solvedDryRuns]));
 
