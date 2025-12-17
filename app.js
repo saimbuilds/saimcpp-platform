@@ -478,6 +478,24 @@ function initMonacoEditor(initialCode) {
 // CODE EXECUTION
 // ========================================
 
+function copyCode() {
+    if (monacoEditor) {
+        const code = monacoEditor.getValue();
+        navigator.clipboard.writeText(code).then(() => {
+            // Show brief success message
+            const btn = document.getElementById('copyCodeBtn');
+            const originalText = btn.textContent;
+            btn.textContent = '✓ Copied!';
+            setTimeout(() => {
+                btn.textContent = originalText;
+            }, 2000);
+        }).catch(err => {
+            console.error('Failed to copy:', err);
+            alert('Failed to copy code to clipboard');
+        });
+    }
+}
+
 async function runCode() {
     const code = monacoEditor.getValue();
 
@@ -782,66 +800,9 @@ function openDryRunProblem(problemId) {
     document.getElementById('dryrunDifficulty').className = `difficulty-badge ${currentDryRun.difficulty}`;
     document.getElementById('dryrunDescription').textContent = currentDryRun.description;
 
-    // Create Monaco editor for code display (read-only)
+    // Display code with syntax highlighting using pre tag
     const codeEditorContainer = document.getElementById('dryrunCodeEditor');
-    codeEditorContainer.innerHTML = ''; // Clear previous editor
-
-    // Check if Monaco is available
-    if (typeof monaco !== 'undefined' && monaco.editor) {
-        try {
-            monaco.editor.create(codeEditorContainer, {
-                value: currentDryRun.code,
-                language: 'cpp',
-                theme: 'vs-dark',
-                readOnly: true,
-                fontSize: 14,
-                minimap: { enabled: false },
-                automaticLayout: true,
-                scrollBeyondLastLine: false,
-                lineNumbers: 'on',
-                renderLineHighlight: 'all',
-                contextmenu: false,
-                scrollbar: {
-                    vertical: 'auto',
-                    horizontal: 'auto'
-                }
-            });
-        } catch (error) {
-            console.error('Monaco editor error:', error);
-            // Fallback to pre tag
-            codeEditorContainer.innerHTML = `<pre style="background: #161b22; padding: 1rem; border-radius: 8px; overflow-x: auto; font-family: 'Courier New', monospace; line-height: 1.6; margin: 0; color: #c9d1d9;">${currentDryRun.code}</pre>`;
-        }
-    } else if (typeof require !== 'undefined') {
-        require(['vs/editor/editor.main'], function () {
-            try {
-                monaco.editor.create(codeEditorContainer, {
-                    value: currentDryRun.code,
-                    language: 'cpp',
-                    theme: 'vs-dark',
-                    readOnly: true,
-                    fontSize: 14,
-                    minimap: { enabled: false },
-                    automaticLayout: true,
-                    scrollBeyondLastLine: false,
-                    lineNumbers: 'on',
-                    renderLineHighlight: 'all',
-                    contextmenu: false,
-                    scrollbar: {
-                        vertical: 'auto',
-                        horizontal: 'auto'
-                    }
-                });
-            } catch (error) {
-                console.error('Monaco editor error:', error);
-                // Fallback to pre tag
-                codeEditorContainer.innerHTML = `<pre style="background: #161b22; padding: 1rem; border-radius: 8px; overflow-x: auto; font-family: 'Courier New', monospace; line-height: 1.6; margin: 0; color: #c9d1d9;">${currentDryRun.code}</pre>`;
-            }
-        });
-    } else {
-        // Fallback if Monaco is not available
-        console.warn('Monaco editor not available, using fallback');
-        codeEditorContainer.innerHTML = `<pre style="background: #161b22; padding: 1rem; border-radius: 8px; overflow-x: auto; font-family: 'Courier New', monospace; line-height: 1.6; margin: 0; color: #c9d1d9;">${currentDryRun.code}</pre>`;
-    }
+    codeEditorContainer.innerHTML = `<pre style="background: #0d1117; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; line-height: 1.6; margin: 0; color: #c9d1d9; font-size: 14px; border: 1px solid #30363d;">${escapeHtml(currentDryRun.code)}</pre>`;
 
     // Clear previous answer and output
     document.getElementById('dryrunAnswer').value = '';
@@ -849,6 +810,13 @@ function openDryRunProblem(problemId) {
     clearDryRunOutput();
 
     showScreen('dryrunScreen');
+}
+
+// Helper function to escape HTML
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
 
 function viewDryRunExplanation() {
