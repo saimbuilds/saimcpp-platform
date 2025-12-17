@@ -483,8 +483,30 @@ function openProblem(problemId) {
         });
     }
 
+    // Show submit button by default
+    const submitBtn = document.getElementById('submitCodeBtn');
+    submitBtn.style.display = 'inline-block';
+
+    // Check if problem is already solved and hide submit button if so
+    checkIfProblemSolved(problemId);
+
     showScreen('editorScreen');
     clearOutput();
+}
+
+async function checkIfProblemSolved(problemId) {
+    const { data: previousSubmissions } = await supabaseClient
+        .from('submissions')
+        .select('status')
+        .eq('user_id', userProfile.id)
+        .eq('problem_id', problemId)
+        .eq('status', 'accepted')
+        .limit(1);
+
+    if (previousSubmissions && previousSubmissions.length > 0) {
+        // Already solved - hide submit button
+        document.getElementById('submitCodeBtn').style.display = 'none';
+    }
 }
 
 function initMonacoEditor(initialCode) {
@@ -577,6 +599,17 @@ async function submitCode() {
 
     displayOutput('Running all test cases...');
 
+    // Check if user already solved this problem FIRST
+    const { data: previousSubmissions } = await supabaseClient
+        .from('submissions')
+        .select('status')
+        .eq('user_id', userProfile.id)
+        .eq('problem_id', currentProblem.id)
+        .eq('status', 'accepted')
+        .limit(1);
+
+    const alreadySolved = previousSubmissions && previousSubmissions.length > 0;
+
     let passed = 0;
     let failed = 0;
 
@@ -614,35 +647,26 @@ async function submitCode() {
     const total = allTestCases.length;
     const status = failed === 0 ? 'accepted' : 'wrong';
 
-    // Check if user already solved this problem before
-    const { data: previousSubmissions } = await supabaseClient
-        .from('submissions')
-        .select('status')
-        .eq('user_id', userProfile.id)
-        .eq('problem_id', currentProblem.id)
-        .eq('status', 'accepted')
-        .limit(1);
-
-    const alreadySolved = previousSubmissions && previousSubmissions.length > 0;
-
     // Save to Supabase
     await saveSubmission(code, status, passed, total);
 
-    const resultMessage = `${failed === 0 ? 'All Tests Passed!' : 'Some Failed'}\\n\\nPassed: ${passed}/${total}`;
+    const resultMessage = `${failed === 0 ? 'All Tests Passed!' : 'Some Failed'}\n\nPassed: ${passed}/${total}`;
     displayOutput(resultMessage, failed === 0 ? 'success' : 'error');
 
     if (status === 'accepted') {
         if (alreadySolved) {
-            // Already solved - no points
+            // Already solved - no points, hide submit button
             setTimeout(() => alert(`✅ Correct! (Already solved - no points awarded)`), 500);
+            submitBtn.style.display = 'none';
         } else {
-            // First time solving - award points
+            // First time solving - award points and hide submit button
             await updateUserScore(currentProblem.points);
             setTimeout(() => alert(`🎉 +${currentProblem.points} points!`), 500);
+            submitBtn.style.display = 'none';
         }
     }
 
-    // Re-enable button and unlock
+    // Re-enable button and unlock (only if still visible)
     submitBtn.disabled = false;
     submitBtn.textContent = 'Submit Code';
     isSubmitting = false;
@@ -926,10 +950,7 @@ async function submitDryRunAnswer() {
     submitBtn.disabled = true;
     submitBtn.textContent = 'Submitting...';
 
-    // Exact match validation
-    const isCorrect = userAnswer === expectedOutput;
-
-    // Check if user already solved this dry run before
+    // Check if user already solved this dry run FIRST
     const { data: previousSubmissions } = await supabaseClient
         .from('submissions')
         .select('status')
@@ -939,6 +960,9 @@ async function submitDryRunAnswer() {
         .limit(1);
 
     const alreadySolved = previousSubmissions && previousSubmissions.length > 0;
+
+    // Exact match validation
+    const isCorrect = userAnswer === expectedOutput;
 
     if (isCorrect && !hasViewedExplanation) {
         if (alreadySolved) {
