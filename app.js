@@ -558,7 +558,13 @@ async function runCode() {
 }
 
 async function submitCode() {
+    const submitBtn = document.getElementById('submitCodeBtn');
     const code = monacoEditor.getValue();
+
+    // Disable button to prevent multiple clicks
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting...';
+
     displayOutput('Running all test cases...');
 
     let passed = 0;
@@ -572,6 +578,8 @@ async function submitCode() {
 
     if (allTestCases.length === 0) {
         displayOutput('No test cases available', 'error');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Code';
         return;
     }
 
@@ -609,7 +617,7 @@ async function submitCode() {
     // Save to Supabase
     await saveSubmission(code, status, passed, total);
 
-    const resultMessage = `${failed === 0 ? 'All Tests Passed!' : 'Some Failed'}\n\nPassed: ${passed}/${total}`;
+    const resultMessage = `${failed === 0 ? 'All Tests Passed!' : 'Some Failed'}\\n\\nPassed: ${passed}/${total}`;
     displayOutput(resultMessage, failed === 0 ? 'success' : 'error');
 
     if (status === 'accepted') {
@@ -622,6 +630,10 @@ async function submitCode() {
             setTimeout(() => alert(`🎉 +${currentProblem.points} points!`), 500);
         }
     }
+
+    // Re-enable button
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Submit Code';
 }
 
 async function executeCode(code, input) {
@@ -888,8 +900,13 @@ function viewDryRunExplanation() {
 }
 
 async function submitDryRunAnswer() {
+    const submitBtn = document.getElementById('submitDryRunBtn');
     const userAnswer = document.getElementById('dryrunAnswer').value;
     const expectedOutput = currentDryRun.expectedOutput;
+
+    // Disable button to prevent multiple clicks
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting...';
 
     // Exact match validation
     const isCorrect = userAnswer === expectedOutput;
@@ -940,6 +957,10 @@ async function submitDryRunAnswer() {
         const warningDiv = document.querySelector('#explanationSection > div:last-child');
         if (warningDiv) warningDiv.style.display = 'none';
     }
+
+    // Re-enable button
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Submit Answer';
 }
 
 async function saveDryRunSubmission(userAnswer, status, points) {
