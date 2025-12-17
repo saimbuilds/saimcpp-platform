@@ -128,7 +128,12 @@
             <div id="problemsView" class="view active">
                 <div class="view-header">
                     <h2>Problem Bank</h2>
-                    <div class="filters">
+                    <p class="subtitle">Practice C++ programming with curated problems</p>
+                </div>
+
+                <div class="filters">
+                    <div class="filter-group">
+                        <label>Category:</label>
                         <select id="categoryFilter" class="filter-select">
                             <option value="all">All Categories</option>
                             <option value="Arrays">Arrays</option>
@@ -139,12 +144,21 @@
                             <option value="Recursion">Recursion</option>
                             <option value="Dry Run">Dry Run</option>
                         </select>
-                        <select id="difficultyFilter" class="filter-select">
-                            <option value="all">All Difficulties</option>
-                            <option value="easy">Easy</option>
-                            <option value="medium">Medium</option>
-                            <option value="hard">Hard</option>
-                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Difficulty:</label>
+                        <button class="filter-btn difficulty-filter active" data-difficulty="all">All</button>
+                        <button class="filter-btn difficulty-filter" data-difficulty="easy">Easy</button>
+                        <button class="filter-btn difficulty-filter" data-difficulty="medium">Medium</button>
+                        <button class="filter-btn difficulty-filter" data-difficulty="hard">Hard</button>
+                    </div>
+                    <div class="filter-group">
+                        <label>Status:</label>
+                        <button class="filter-btn status-filter active" data-status="all">All</button>
+                        <button class="filter-btn status-filter" data-status="unsolved">Unsolved</button>
+                        <button class="filter-btn status-filter" data-status="solved">Solved</button>
+                    </div>
+                    <div class="filter-group">
                         <label class="favorites-toggle">
                             <input type="checkbox" id="favoritesOnly">
                             <span>⭐ Favorites Only</span>
@@ -210,18 +224,27 @@
                 </div>
             </div>
 
-            <div class="submissions-section">
-                <h3>Recent Submissions</h3>
-                <div id="submissionsHistory" class="submissions-list">
-                    <!-- Populated by JS -->
-                </div>
-            </div>
-
             <!-- Dry Run View -->
             <div id="dryrunView" class="view">
                 <div class="view-header">
                     <h2>Dry Run - Code Tracing</h2>
                     <p class="subtitle">Trace the code and predict the output</p>
+                </div>
+
+                <div class="filters">
+                    <div class="filter-group">
+                        <label>Difficulty:</label>
+                        <button class="filter-btn dryrun-difficulty-filter active" data-difficulty="all">All</button>
+                        <button class="filter-btn dryrun-difficulty-filter" data-difficulty="easy">Easy</button>
+                        <button class="filter-btn dryrun-difficulty-filter" data-difficulty="medium">Medium</button>
+                        <button class="filter-btn dryrun-difficulty-filter" data-difficulty="hard">Hard</button>
+                    </div>
+                    <div class="filter-group">
+                        <label>Status:</label>
+                        <button class="filter-btn dryrun-status-filter active" data-status="all">All</button>
+                        <button class="filter-btn dryrun-status-filter" data-status="unsolved">Unsolved</button>
+                        <button class="filter-btn dryrun-status-filter" data-status="solved">Solved</button>
+                    </div>
                 </div>
 
                 <div class="problems-grid" id="dryrunGrid">

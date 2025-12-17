@@ -471,33 +471,9 @@ body {
 
 .filters {
     display: flex;
-    gap: 1rem;
+    gap: 2rem;
     align-items: center;
-    margin-top: 1rem;
     flex-wrap: wrap;
-}
-
-.filter-select {
-    padding: 0.5rem 1rem;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border-default);
-    border-radius: 6px;
-    color: var(--text-primary);
-    font-size: 0.875rem;
-    cursor: pointer;
-}
-
-.favorites-toggle {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-    padding: 0.5rem 1rem;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border-default);
-    border-radius: 6px;
-    font-size: 0.875rem;
-    transition: all 0.2s;
 }
 
 .favorites-toggle:hover {
@@ -1169,6 +1145,7 @@ code[class*="language-"] {
     font-size: 18px !important;
     line-height: 1.6 !important;
 }
+
 /* === LAYOUT OVERRIDES === */
 /* Problem editor: 40% problem, 60% code */
 .problem-editor-container {
@@ -1178,4 +1155,183 @@ code[class*="language-"] {
 /* Dry run: 65% problem/code, 35% answer */
 .dryrun-editor-container {
     grid-template-columns: 65% 35% !important;
+}
+
+/* === FILTER STYLING === */
+.filters {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    border: 1px solid var(--border-default);
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.filter-group label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    min-width: 80px;
+}
+
+.filter-btn {
+    padding: 0.5rem 1rem;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-default);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.filter-btn:hover {
+    background: var(--bg-primary);
+    border-color: var(--accent-blue);
+    transform: translateY(-1px);
+}
+
+.filter-btn.active {
+    background: var(--accent-blue);
+    border-color: var(--accent-blue);
+    color: white;
+    box-shadow: 0 4px 12px rgba(63, 131, 248, 0.3);
+}
+
+.filter-select {
+    padding: 0.5rem 1rem;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-default);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    cursor: pointer;
+    min-width: 180px;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+}
+
+.favorites-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-default);
+    border-radius: 8px;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+}
+
+.favorites-toggle:hover {
+    background: var(--bg-primary);
+    border-color: var(--accent-blue);
+}
+
+/* === TOP 3 LEADERBOARD SPECIAL EFFECTS === */
+/* 1st Place - Gold */
+.leaderboard-table tbody tr:nth-child(1) {
+    border-left: 3px solid #FFD700;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+    animation: goldGlow 2s ease-in-out infinite;
+}
+
+.leaderboard-table tbody tr:nth-child(1) td:first-child {
+    color: #FFD700;
+    font-weight: 700;
+}
+
+.leaderboard-table tbody tr:nth-child(1) td:nth-child(2) {
+    color: #FFD700;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+/* 2nd Place - Silver */
+.leaderboard-table tbody tr:nth-child(2) {
+    border-left: 3px solid #C0C0C0;
+    box-shadow: 0 0 12px rgba(192, 192, 192, 0.3);
+    animation: silverGlow 2s ease-in-out infinite;
+}
+
+.leaderboard-table tbody tr:nth-child(2) td:first-child {
+    color: #C0C0C0;
+    font-weight: 700;
+}
+
+.leaderboard-table tbody tr:nth-child(2) td:nth-child(2) {
+    color: #C0C0C0;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(192, 192, 192, 0.5);
+}
+
+/* 3rd Place - Bronze */
+.leaderboard-table tbody tr:nth-child(3) {
+    border-left: 3px solid #CD7F32;
+    box-shadow: 0 0 12px rgba(205, 127, 50, 0.3);
+    animation: bronzeGlow 2s ease-in-out infinite;
+}
+
+.leaderboard-table tbody tr:nth-child(3) td:first-child {
+    color: #CD7F32;
+    font-weight: 700;
+}
+
+.leaderboard-table tbody tr:nth-child(3) td:nth-child(2) {
+    color: #CD7F32;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(205, 127, 50, 0.5);
+}
+
+/* Glow animations */
+@keyframes goldGlow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
+    }
+}
+
+@keyframes silverGlow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 12px rgba(192, 192, 192, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgba(192, 192, 192, 0.5);
+    }
+}
+
+@keyframes bronzeGlow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 12px rgba(205, 127, 50, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgba(205, 127, 50, 0.5);
+    }
 }

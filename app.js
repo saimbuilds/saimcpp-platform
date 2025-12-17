@@ -29,6 +29,12 @@ let isDryRunSubmitting = false;
 let solvedProblems = new Set();
 let solvedDryRuns = new Set();
 
+// Filter state
+let currentDifficultyFilter = 'all';
+let currentStatusFilter = 'all';
+let currentDryRunDifficultyFilter = 'all';
+let currentDryRunStatusFilter = 'all';
+
 // ========================================
 // INITIALIZATION
 // ========================================
@@ -116,12 +122,51 @@ function setupEventListeners() {
     document.getElementById('copyCodeBtn')?.addEventListener('click', copyCode);
     document.getElementById('clearOutput')?.addEventListener('click', clearOutput);
 
-    // Filters
+    // Problem filters
     document.getElementById('categoryFilter')?.addEventListener('change', renderProblems);
-    document.getElementById('difficultyFilter')?.addEventListener('change', renderProblems);
     document.getElementById('favoritesOnly')?.addEventListener('change', renderProblems);
 
-    // Dry Run actions
+    // Difficulty filter buttons for Problems
+    document.querySelectorAll('.difficulty-filter').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            document.querySelectorAll('.difficulty-filter').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            currentDifficultyFilter = e.target.dataset.difficulty;
+            renderProblems();
+        });
+    });
+
+    // Status filter buttons for Problems
+    document.querySelectorAll('.status-filter').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            document.querySelectorAll('.status-filter').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            currentStatusFilter = e.target.dataset.status;
+            renderProblems();
+        });
+    });
+
+    // Difficulty filter buttons for Dry Runs
+    document.querySelectorAll('.dryrun-difficulty-filter').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            document.querySelectorAll('.dryrun-difficulty-filter').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            currentDryRunDifficultyFilter = e.target.dataset.difficulty;
+            renderDryRunProblems();
+        });
+    });
+
+    // Status filter buttons for Dry Runs
+    document.querySelectorAll('.dryrun-status-filter').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            document.querySelectorAll('.dryrun-status-filter').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            currentDryRunStatusFilter = e.target.dataset.status;
+            renderDryRunProblems();
+        });
+    });
+
+    // Dry Run event listeners
     const backBtn = document.getElementById('backToDryRun');
     const submitBtn = document.getElementById('submitDryRunBtn');
     const viewBtn = document.getElementById('viewExplanationBtn');
@@ -407,7 +452,6 @@ function updateHeader() {
 async function renderProblems() {
     const container = document.getElementById('problemsGrid');
     const categoryFilter = document.getElementById('categoryFilter')?.value || 'all';
-    const difficultyFilter = document.getElementById('difficultyFilter')?.value || 'all';
     const favoritesOnly = document.getElementById('favoritesOnly')?.checked || false;
 
     let filtered = allProblems;
@@ -417,9 +461,9 @@ async function renderProblems() {
         filtered = filtered.filter(p => p.category.includes(categoryFilter));
     }
 
-    // Filter by difficulty
-    if (difficultyFilter !== 'all') {
-        filtered = filtered.filter(p => p.difficulty === difficultyFilter);
+    // Filter by difficulty (using state variable)
+    if (currentDifficultyFilter !== 'all') {
+        filtered = filtered.filter(p => p.difficulty === currentDifficultyFilter);
     }
 
     // Filter by favorites
@@ -427,14 +471,21 @@ async function renderProblems() {
         filtered = filtered.filter(p => userFavorites.includes(p.id));
     }
 
-    // Get solved problems
-    const { data: solvedProblems } = await supabaseClient
+    // Get solved problems - convert problem_id to integer for comparison with local problem IDs
+    const { data: solvedProblemsData } = await supabaseClient
         .from('submissions')
         .select('problem_id')
         .eq('user_id', userProfile.id)
         .eq('status', 'accepted');
 
-    const solvedIds = new Set(solvedProblems?.map(s => s.problem_id) || []);
+    const solvedIds = new Set(solvedProblemsData?.map(s => parseInt(s.problem_id)) || []);
+
+    // Filter by solved/unsolved status
+    if (currentStatusFilter === 'solved') {
+        filtered = filtered.filter(p => solvedIds.has(p.id));
+    } else if (currentStatusFilter === 'unsolved') {
+        filtered = filtered.filter(p => !solvedIds.has(p.id));
+    }
 
     container.innerHTML = filtered.map(problem => {
         const isFavorite = userFavorites.includes(problem.id);
@@ -536,6 +587,9 @@ function markProblemAsSolved(problemId) {
     console.log('Marking problem', problemId, 'as solved');
     solvedProblems.add(problemId);
     localStorage.setItem('solvedProblems', JSON.stringify([...solvedProblems]));
+
+    // Refresh the problem list to update UI
+    renderProblems();
 }
 
 function initMonacoEditor(initialCode) {
@@ -725,7 +779,7 @@ async function executeCode(code, input) {
 async function saveSubmission(code, status, passed, total) {
     await supabaseClient.from('submissions').insert({
         user_id: userProfile.id,
-        problem_id: currentProblem.id,
+        problem_id: String(currentProblem.id), // Convert to string to match database text type
         code,
         status,
         test_cases_passed: passed,
@@ -735,23 +789,58 @@ async function saveSubmission(code, status, passed, total) {
 }
 
 async function updateUserScore(points, incrementProblemsSolved = true) {
-    const newScore = userProfile.total_score + points;
-    const updates = { total_score: newScore };
+    if (!userProfile) return;
 
-    if (incrementProblemsSolved) {
-        updates.problems_solved = userProfile.problems_solved + 1;
-        userProfile.problems_solved++;
+    const newScore = userProfile.total_score + points;
+    const newProblemsSolved = incrementProblemsSolved ? userProfile.problems_solved + 1 : userProfile.problems_solved;
+
+    // Calculate streak
+    const today = new Date().toDateString();
+    const lastSolvedDate = userProfile.last_solved_date ? new Date(userProfile.last_solved_date).toDateString() : null;
+    const yesterday = new Date(Date.now() - 86400000).toDateString(); // 24 hours ago
+
+    let newStreak = userProfile.current_streak || 0;
+
+    if (lastSolvedDate === today) {
+        // Already solved today, keep streak
+        newStreak = userProfile.current_streak || 1;
+    } else if (lastSolvedDate === yesterday) {
+        // Solved yesterday, increment streak
+        newStreak = (userProfile.current_streak || 0) + 1;
+    } else if (!lastSolvedDate) {
+        // First time solving
+        newStreak = 1;
+    } else {
+        // Streak broken, reset to 1
+        newStreak = 1;
     }
 
-    await supabaseClient
+    // Update in Supabase
+    const { error } = await supabaseClient
         .from('profiles')
-        .update(updates)
+        .update({
+            total_score: newScore,
+            problems_solved: newProblemsSolved,
+            current_streak: newStreak,
+            last_solved_date: new Date().toISOString()
+        })
         .eq('id', userProfile.id);
 
-    userProfile.total_score = newScore;
-    updateHeader();
-}
+    if (error) {
+        console.error('Error updating score:', error);
+        return;
+    }
 
+    // Update local state
+    userProfile.total_score = newScore;
+    userProfile.problems_solved = newProblemsSolved;
+    userProfile.current_streak = newStreak;
+    userProfile.last_solved_date = new Date().toISOString();
+
+    // Update UI
+    document.getElementById('scoreDisplay').textContent = newScore;
+    document.getElementById('streakDisplay').textContent = newStreak;
+}
 function displayOutput(text, type = '') {
     document.getElementById('output').innerHTML = `<pre class="output-${type}">${text}</pre>`;
 }
@@ -892,15 +981,45 @@ async function loadDryRunProblems() {
     }
 }
 
-function renderDryRunProblems() {
+async function renderDryRunProblems() {
     const container = document.getElementById('dryrunGrid');
     if (!container) return;
 
-    container.innerHTML = allDryRunProblems.map(problem => `
-        <div class="problem-card" onclick="openDryRunProblem(${problem.id})">
+    let filtered = allDryRunProblems;
+
+    // Filter by difficulty
+    if (currentDryRunDifficultyFilter !== 'all') {
+        filtered = filtered.filter(p => p.difficulty === currentDryRunDifficultyFilter);
+    }
+
+    // Get solved dry runs from Supabase - parse IDs as integers
+    const { data: solvedDryRunsData } = await supabaseClient
+        .from('submissions')
+        .select('problem_id')
+        .eq('user_id', userProfile.id)
+        .eq('status', 'accepted')
+        .like('problem_id', 'dryrun_%');
+
+    const solvedDryRunIds = new Set(solvedDryRunsData?.map(s => {
+        // Extract number from 'dryrun_1' format
+        const match = s.problem_id.match(/dryrun_(\d+)/);
+        return match ? parseInt(match[1]) : null;
+    }).filter(id => id !== null) || []);
+
+    // Filter by solved/unsolved status
+    if (currentDryRunStatusFilter === 'solved') {
+        filtered = filtered.filter(p => solvedDryRunIds.has(p.id));
+    } else if (currentDryRunStatusFilter === 'unsolved') {
+        filtered = filtered.filter(p => !solvedDryRunIds.has(p.id));
+    }
+
+    container.innerHTML = filtered.map(problem => {
+        const isSolved = solvedDryRunIds.has(problem.id);
+        return `
+        <div class="problem-card ${isSolved ? 'solved' : ''}" onclick="openDryRunProblem(${problem.id})">
             <div class="problem-card-header">
                 <div class="problem-card-title">
-                    <h3>${problem.title}</h3>
+                    <h3>${isSolved ? '✅ ' : ''}${problem.title}</h3>
                     <span class="difficulty-badge ${problem.difficulty}">${problem.difficulty}</span>
                 </div>
             </div>
@@ -908,9 +1027,11 @@ function renderDryRunProblems() {
             <div class="problem-meta">
                 <span>${problem.points} pts</span>
                 <span>${problem.category}</span>
+                ${isSolved ? '<span style="color: var(--easy); font-weight: 600;">● Solved</span>' : '<span style="color: var(--text-muted);">○ Unsolved</span>'}
             </div>
         </div>
-    `).join('');
+    `;
+    }).join('');
 }
 
 async function openDryRunProblem(problemId) {
@@ -947,17 +1068,22 @@ async function openDryRunProblem(problemId) {
     showScreen('dryrunScreen');
 }
 
-function checkIfDryRunSolved(dryRunId) {
+async function checkIfDryRunSolved(dryRunId) {
     console.log('Checking if dry run', dryRunId, 'is solved');
 
-    // Load solved dry runs from localStorage
-    const solved = JSON.parse(localStorage.getItem('solvedDryRuns') || '[]');
-    solvedDryRuns = new Set(solved);
+    // Check Supabase for solved status
+    const { data: submission } = await supabaseClient
+        .from('submissions')
+        .select('id')
+        .eq('user_id', userProfile.id)
+        .eq('problem_id', `dryrun_${dryRunId}`) // Use dryrun_ prefix
+        .eq('status', 'accepted')
+        .single();
 
     const submitBtn = document.getElementById('submitDryRunBtn');
-    if (solvedDryRuns.has(dryRunId)) {
+    if (submission) {
         // Already solved - hide submit button
-        console.log('Dry run already solved (from cache) - hiding submit button');
+        console.log('Dry run already solved - hiding submit button');
         if (submitBtn) {
             submitBtn.style.display = 'none';
         }
@@ -976,6 +1102,9 @@ function markDryRunAsSolved(dryRunId) {
     console.log('Marking dry run', dryRunId, 'as solved');
     solvedDryRuns.add(dryRunId);
     localStorage.setItem('solvedDryRuns', JSON.stringify([...solvedDryRuns]));
+
+    // Refresh the dry run list to update UI
+    renderDryRunProblems();
 }
 
 // Success Modal Functions
@@ -1067,21 +1196,21 @@ async function submitDryRunAnswer() {
         .from('submissions')
         .select('status')
         .eq('user_id', userProfile.id)
-        .eq('problem_id', currentDryRun.id)
-        .eq('status', 'correct')
+        .eq('problem_id', `dryrun_${currentDryRun.id}`) // Use dryrun_ prefix
+        .eq('status', 'accepted') // Use 'accepted' instead of 'correct'
         .limit(1);
 
     const alreadySolved = previousSubmissions && previousSubmissions.length > 0;
 
-    // Exact match validation
-    const isCorrect = userAnswer === expectedOutput;
+    // Trim whitespace from both strings for fair comparison
+    const isCorrect = userAnswer.trim() === expectedOutput.trim();
 
     if (isCorrect && !hasViewedExplanation) {
         if (alreadySolved) {
             // Already solved - no points
             displayDryRunOutput(`✅ Correct!
 
-(Already solved - no points awarded)`, 'success');
+    (Already solved - no points awarded)`, 'success');
             await saveDryRunSubmission(userAnswer, 'correct', 0);
         } else {
             // First time solving - full points, mark as solved
@@ -1095,7 +1224,7 @@ async function submitDryRunAnswer() {
         displayDryRunOutput(
             `✅ Your answer is correct!
 
-However, you viewed the explanation before submitting.
+    However, you viewed the explanation before submitting.
 
 Points earned: 0`,
             'success'
@@ -1134,19 +1263,22 @@ Points earned: 0`,
 }
 
 async function saveDryRunSubmission(userAnswer, status, points) {
+    // Convert status 'correct' to 'accepted' to match regular problems
+    const normalizedStatus = status === 'correct' ? 'accepted' : status;
+
     await supabaseClient.from('submissions').insert({
         user_id: userProfile.id,
-        problem_id: currentDryRun.id,
-        code: `DRY RUN ANSWER:\\n${userAnswer}`,
-        status: status,
-        test_cases_passed: status === 'correct' ? 1 : 0,
+        problem_id: `dryrun_${currentDryRun.id}`, // Prefix with 'dryrun_' to distinguish from regular problems
+        code: `DRY RUN ANSWER:\n${userAnswer}`,
+        status: normalizedStatus,
+        test_cases_passed: normalizedStatus === 'accepted' ? 1 : 0,
         test_cases_total: 1,
         points_earned: points
     });
 }
 
 function displayDryRunOutput(text, type = '') {
-    document.getElementById('dryrunOutput').innerHTML = `<pre class="output-${type}">${text}</pre>`;
+    document.getElementById('dryrunOutput').innerHTML = `< pre class="output-${type}" > ${text}</pre > `;
 }
 
 function clearDryRunOutput() {
