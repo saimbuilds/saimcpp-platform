@@ -19,10 +19,15 @@ let allUsers = [];
 let allDryRunProblems = [];
 let currentDryRun = null;
 let hasViewedExplanation = false;
+let dryRunMonacoEditor = null; // Monaco editor for dry run code display
 
 // Submission locks to prevent race conditions
 let isSubmitting = false;
 let isDryRunSubmitting = false;
+
+// Track solved problems (cached in localStorage)
+let solvedProblems = new Set();
+let solvedDryRuns = new Set();
 
 // ========================================
 // INITIALIZATION
@@ -108,6 +113,7 @@ function setupEventListeners() {
     // Code editor actions
     document.getElementById('runCodeBtn')?.addEventListener('click', runCode);
     document.getElementById('submitCodeBtn')?.addEventListener('click', submitCode);
+    document.getElementById('copyCodeBtn')?.addEventListener('click', copyCode);
     document.getElementById('clearOutput')?.addEventListener('click', clearOutput);
 
     // Filters
@@ -398,7 +404,7 @@ function updateHeader() {
 // PROBLEMS VIEW
 // ========================================
 
-function renderProblems() {
+async function renderProblems() {
     const container = document.getElementById('problemsGrid');
     const categoryFilter = document.getElementById('categoryFilter')?.value || 'all';
     const difficultyFilter = document.getElementById('difficultyFilter')?.value || 'all';
@@ -421,13 +427,23 @@ function renderProblems() {
         filtered = filtered.filter(p => userFavorites.includes(p.id));
     }
 
+    // Get solved problems
+    const { data: solvedProblems } = await supabaseClient
+        .from('submissions')
+        .select('problem_id')
+        .eq('user_id', userProfile.id)
+        .eq('status', 'accepted');
+
+    const solvedIds = new Set(solvedProblems?.map(s => s.problem_id) || []);
+
     container.innerHTML = filtered.map(problem => {
         const isFavorite = userFavorites.includes(problem.id);
+        const isSolved = solvedIds.has(problem.id);
         return `
-      <div class="problem-card" onclick="openProblem(${problem.id})">
+      <div class="problem-card ${isSolved ? 'solved' : ''}" onclick="openProblem(${problem.id})">
         <div class="problem-card-header">
           <div class="problem-card-title">
-            <h3>${problem.title}</h3>
+            <h3>${isSolved ? '✅ ' : ''}${problem.title}</h3>
             <span class="difficulty-badge ${problem.difficulty}">${problem.difficulty}</span>
           </div>
           <button class="favorite-btn ${isFavorite ? 'active' : ''}" onclick="event.stopPropagation(); toggleFavorite(${problem.id})">
@@ -438,6 +454,7 @@ function renderProblems() {
         <div class="problem-meta">
           <span>${problem.points} pts</span>
           <span>${problem.category}</span>
+          ${isSolved ? '<span style="color: var(--easy); font-weight: 600;">● Solved</span>' : '<span style="color: var(--text-muted);">○ Unsolved</span>'}
         </div>
       </div>
     `;
@@ -448,7 +465,7 @@ function renderProblems() {
 // CODE EDITOR
 // ========================================
 
-function openProblem(problemId) {
+async function openProblem(problemId) {
     currentProblem = allProblems.find(p => p.id === problemId);
     if (!currentProblem) return;
 
@@ -483,30 +500,42 @@ function openProblem(problemId) {
         });
     }
 
-    // Show submit button by default
-    const submitBtn = document.getElementById('submitCodeBtn');
-    submitBtn.style.display = 'inline-block';
-
-    // Check if problem is already solved and hide submit button if so
-    checkIfProblemSolved(problemId);
+    // Check if problem is already solved and show/hide submit button accordingly
+    await checkIfProblemSolved(problemId);
 
     showScreen('editorScreen');
     clearOutput();
 }
 
 async function checkIfProblemSolved(problemId) {
-    const { data: previousSubmissions } = await supabaseClient
-        .from('submissions')
-        .select('status')
-        .eq('user_id', userProfile.id)
-        .eq('problem_id', problemId)
-        .eq('status', 'accepted')
-        .limit(1);
+    console.log('Checking if problem', problemId, 'is solved');
 
-    if (previousSubmissions && previousSubmissions.length > 0) {
+    // Load solved problems from localStorage
+    const solved = JSON.parse(localStorage.getItem('solvedProblems') || '[]');
+    solvedProblems = new Set(solved);
+
+    const submitBtn = document.getElementById('submitCodeBtn');
+    if (solvedProblems.has(problemId)) {
         // Already solved - hide submit button
-        document.getElementById('submitCodeBtn').style.display = 'none';
+        console.log('Problem already solved (from cache) - hiding submit button');
+        if (submitBtn) {
+            submitBtn.style.display = 'none';
+        }
+        return true;
+    } else {
+        // Not solved - show submit button
+        console.log('Problem not solved - showing submit button');
+        if (submitBtn) {
+            submitBtn.style.display = 'inline-block';
+        }
+        return false;
     }
+}
+
+function markProblemAsSolved(problemId) {
+    console.log('Marking problem', problemId, 'as solved');
+    solvedProblems.add(problemId);
+    localStorage.setItem('solvedProblems', JSON.stringify([...solvedProblems]));
 }
 
 function initMonacoEditor(initialCode) {
@@ -517,7 +546,7 @@ function initMonacoEditor(initialCode) {
             value: initialCode,
             language: 'cpp',
             theme: 'vs-dark',
-            fontSize: 14,
+            fontSize: 18, // Increased for better readability
             minimap: { enabled: false },
             automaticLayout: true,
             wordWrap: 'on',
@@ -656,12 +685,12 @@ async function submitCode() {
     if (status === 'accepted') {
         if (alreadySolved) {
             // Already solved - no points, hide submit button
-            setTimeout(() => alert(`✅ Correct! (Already solved - no points awarded)`), 500);
             submitBtn.style.display = 'none';
         } else {
-            // First time solving - award points and hide submit button
+            // First time solving - award points, mark as solved, and hide submit button
             await updateUserScore(currentProblem.points);
-            setTimeout(() => alert(`🎉 +${currentProblem.points} points!`), 500);
+            markProblemAsSolved(currentProblem.id); // Cache in localStorage
+            showSuccessModal(currentProblem.points, false); // Show motivational popup
             submitBtn.style.display = 'none';
         }
     }
@@ -884,7 +913,7 @@ function renderDryRunProblems() {
     `).join('');
 }
 
-function openDryRunProblem(problemId) {
+async function openDryRunProblem(problemId) {
     currentDryRun = allDryRunProblems.find(p => p.id === problemId);
     if (!currentDryRun) return;
 
@@ -897,16 +926,99 @@ function openDryRunProblem(problemId) {
     document.getElementById('dryrunDifficulty').className = `difficulty-badge ${currentDryRun.difficulty}`;
     document.getElementById('dryrunDescription').textContent = currentDryRun.description;
 
-    // Display code with syntax highlighting using pre tag
+    // Display code with syntax highlighting using Prism.js
     const codeEditorContainer = document.getElementById('dryrunCodeEditor');
-    codeEditorContainer.innerHTML = `<pre style="background: #0d1117; padding: 1.5rem; border-radius: 8px; overflow-x: auto; font-family: 'Consolas', 'Monaco', 'Courier New', monospace; line-height: 1.6; margin: 0; color: #c9d1d9; font-size: 14px; border: 1px solid #30363d;">${escapeHtml(currentDryRun.code)}</pre>`;
+    const escapedCode = escapeHtml(currentDryRun.code);
+    codeEditorContainer.innerHTML = `<pre style="margin: 0; border-radius: 8px; font-size: 18px; line-height: 1.6;"><code class="language-cpp">${escapedCode}</code></pre>`;
+
+    // Apply Prism syntax highlighting
+    if (typeof Prism !== 'undefined') {
+        Prism.highlightAllUnder(codeEditorContainer);
+    }
 
     // Clear previous answer and output
     document.getElementById('dryrunAnswer').value = '';
     document.getElementById('explanationSection').style.display = 'none';
     clearDryRunOutput();
 
+    // Check if dry run is already solved and show/hide submit button
+    await checkIfDryRunSolved(problemId);
+
     showScreen('dryrunScreen');
+}
+
+function checkIfDryRunSolved(dryRunId) {
+    console.log('Checking if dry run', dryRunId, 'is solved');
+
+    // Load solved dry runs from localStorage
+    const solved = JSON.parse(localStorage.getItem('solvedDryRuns') || '[]');
+    solvedDryRuns = new Set(solved);
+
+    const submitBtn = document.getElementById('submitDryRunBtn');
+    if (solvedDryRuns.has(dryRunId)) {
+        // Already solved - hide submit button
+        console.log('Dry run already solved (from cache) - hiding submit button');
+        if (submitBtn) {
+            submitBtn.style.display = 'none';
+        }
+        return true;
+    } else {
+        // Not solved - show submit button
+        console.log('Dry run not solved - showing submit button');
+        if (submitBtn) {
+            submitBtn.style.display = 'inline-block';
+        }
+        return false;
+    }
+}
+
+function markDryRunAsSolved(dryRunId) {
+    console.log('Marking dry run', dryRunId, 'as solved');
+    solvedDryRuns.add(dryRunId);
+    localStorage.setItem('solvedDryRuns', JSON.stringify([...solvedDryRuns]));
+}
+
+// Success Modal Functions
+const motivationalMessages = [
+    "You're crushing it! PF finals don't stand a chance! 🔥",
+    "That's the spirit! One problem down, finals conquered! 💪",
+    "Brilliant work! You're becoming a C++ master! ⚡",
+    "Keep this momentum going! Finals are getting easier! 🚀",
+    "Absolutely nailed it! Your hard work is paying off! 🎯",
+    "You're on fire! This is exactly how you ace finals! 🌟",
+    "Fantastic! You're building serious problem-solving skills! 💡",
+    "Impressive! You're ready to dominate those finals! 👑",
+    "Outstanding! Every problem makes you stronger! 💪",
+    "Excellent work! Finals preparation level: EXPERT! 🏆"
+];
+
+function showSuccessModal(points, isDryRun = false) {
+    const modal = document.getElementById('successModal');
+    const title = document.getElementById('successTitle');
+    const message = document.getElementById('successMessage');
+    const pointsEl = document.getElementById('successPoints');
+
+    // Random motivational message
+    const randomMessage = motivationalMessages[Math.floor(Math.random() * motivationalMessages.length)];
+
+    title.textContent = isDryRun ? "Dry Run Mastered!" : "Problem Solved!";
+    message.textContent = randomMessage;
+    pointsEl.textContent = `+${points} points`;
+
+    // Show modal
+    modal.style.display = 'flex';
+
+    // Close button handler
+    document.getElementById('closeSuccessModal').onclick = () => {
+        modal.style.display = 'none';
+    };
+
+    // Close on background click
+    modal.onclick = (e) => {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+        }
+    };
 }
 
 // Helper function to escape HTML
@@ -967,25 +1079,40 @@ async function submitDryRunAnswer() {
     if (isCorrect && !hasViewedExplanation) {
         if (alreadySolved) {
             // Already solved - no points
-            displayDryRunOutput(`✅ Correct!\\n\\n(Already solved - no points awarded)`, 'success');
+            displayDryRunOutput(`✅ Correct!
+
+(Already solved - no points awarded)`, 'success');
             await saveDryRunSubmission(userAnswer, 'correct', 0);
         } else {
-            // First time solving - full points
-            displayDryRunOutput(`✅ Correct!\\n\\nYou earned ${currentDryRun.points} points!`, 'success');
+            // First time solving - full points, mark as solved
             await updateUserScore(currentDryRun.points);
+            markDryRunAsSolved(currentDryRun.id); // Cache in localStorage
+            showSuccessModal(currentDryRun.points, true); // Show motivational popup
             await saveDryRunSubmission(userAnswer, 'correct', currentDryRun.points);
         }
     } else if (isCorrect && hasViewedExplanation) {
         // Correct answer but viewed explanation = 0 points
         displayDryRunOutput(
-            `✅ Your answer is correct!\\n\\nHowever, you viewed the explanation before submitting.\\nPoints earned: 0`,
-            'warning'
+            `✅ Your answer is correct!
+
+However, you viewed the explanation before submitting.
+
+Points earned: 0`,
+            'success'
         );
         await saveDryRunSubmission(userAnswer, 'viewed_explanation', 0);
     } else {
         // Wrong answer = 0 points
         displayDryRunOutput(
-            `❌ Incorrect Answer\\n\\nYour Output:\\n${userAnswer}\\n\\nExpected Output:\\n${expectedOutput}\\n\\nPoints earned: 0`,
+            `❌ Incorrect Answer
+
+Your Output:
+${userAnswer}
+
+Expected Output:
+${expectedOutput}
+
+Points earned: 0`,
             'error'
         );
         await saveDryRunSubmission(userAnswer, 'wrong', 0);

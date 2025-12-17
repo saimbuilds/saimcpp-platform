@@ -57,6 +57,8 @@ body {
     color: var(--text-primary);
     line-height: 1.6;
     overflow-x: hidden;
+    font-size: 18px;
+    /* Increased base font size for better readability */
 }
 
 /* === MOBILE BLOCKER === */
@@ -522,6 +524,11 @@ body {
     transition: var(--transition);
 }
 
+.problem-card.solved {
+    border-left: 3px solid var(--easy);
+    background: linear-gradient(90deg, rgba(63, 185, 80, 0.05) 0%, var(--bg-secondary) 10%);
+}
+
 .problem-card:hover {
     border-color: var(--accent-blue);
     transform: translateY(-2px);
@@ -792,6 +799,8 @@ body {
     border-right: 1px solid var(--border-default);
     padding: 1.5rem;
     overflow-y: auto;
+    flex: 1.85;
+    /* 65% width - more space for code */
 }
 
 .back-btn {
@@ -851,6 +860,10 @@ body {
     display: flex;
     flex-direction: column;
     background: var(--bg-primary);
+    flex: 1;
+    /* 35% width */
+    padding: 1.5rem;
+    overflow-y: auto;
 }
 
 .editor-header {
@@ -1031,4 +1044,127 @@ body {
 
 .social-link svg {
     flex-shrink: 0;
+}
+
+/* === SUCCESS MODAL === */
+.success-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.success-modal-content {
+    background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+    border: 2px solid var(--accent-green);
+    border-radius: 20px;
+    padding: 3rem 2.5rem;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(63, 185, 80, 0.2);
+    animation: slideUp 0.4s ease;
+}
+
+.success-icon {
+    font-size: 5rem;
+    margin-bottom: 1rem;
+    animation: bounce 0.6s ease;
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+.success-title {
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+}
+
+.success-message {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.success-points {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--accent-green);
+    margin-bottom: 2rem;
+    text-shadow: 0 0 20px rgba(63, 185, 80, 0.5);
+}
+
+.success-btn {
+    background: var(--accent-green);
+    color: #000;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(63, 185, 80, 0.3);
+}
+
+.success-btn:hover {
+    background: #4aca5e;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(63, 185, 80, 0.4);
+}
+
+/* === PRISM.JS CUSTOMIZATION === */
+pre[class*="language-"] {
+    background: #0d1117 !important;
+    padding: 1.5rem !important;
+    border: 1px solid #30363d !important;
+}
+
+code[class*="language-"] {
+    font-size: 18px !important;
+    line-height: 1.6 !important;
 }
