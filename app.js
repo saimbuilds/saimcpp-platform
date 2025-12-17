@@ -1052,9 +1052,13 @@ async function openDryRunProblem(problemId) {
     const escapedCode = escapeHtml(currentDryRun.code);
     codeEditorContainer.innerHTML = `<pre style="margin: 0; border-radius: 8px; font-size: 18px; line-height: 1.6;"><code class="language-cpp">${escapedCode}</code></pre>`;
 
-    // Apply Prism syntax highlighting
-    if (typeof Prism !== 'undefined') {
-        Prism.highlightAllUnder(codeEditorContainer);
+    // Apply Prism syntax highlighting with safety check
+    if (typeof Prism !== 'undefined' && Prism.highlightAllUnder) {
+        try {
+            Prism.highlightAllUnder(codeEditorContainer);
+        } catch (error) {
+            console.warn('Prism highlighting failed:', error);
+        }
     }
 
     // Clear previous answer and output
