@@ -786,25 +786,62 @@ function openDryRunProblem(problemId) {
     const codeEditorContainer = document.getElementById('dryrunCodeEditor');
     codeEditorContainer.innerHTML = ''; // Clear previous editor
 
-    require(['vs/editor/editor.main'], function () {
-        monaco.editor.create(codeEditorContainer, {
-            value: currentDryRun.code,
-            language: 'cpp',
-            theme: 'vs-dark',
-            readOnly: true,
-            fontSize: 14,
-            minimap: { enabled: false },
-            automaticLayout: true,
-            scrollBeyondLastLine: false,
-            lineNumbers: 'on',
-            renderLineHighlight: 'all',
-            contextmenu: false,
-            scrollbar: {
-                vertical: 'auto',
-                horizontal: 'auto'
+    // Check if Monaco is available
+    if (typeof monaco !== 'undefined' && monaco.editor) {
+        try {
+            monaco.editor.create(codeEditorContainer, {
+                value: currentDryRun.code,
+                language: 'cpp',
+                theme: 'vs-dark',
+                readOnly: true,
+                fontSize: 14,
+                minimap: { enabled: false },
+                automaticLayout: true,
+                scrollBeyondLastLine: false,
+                lineNumbers: 'on',
+                renderLineHighlight: 'all',
+                contextmenu: false,
+                scrollbar: {
+                    vertical: 'auto',
+                    horizontal: 'auto'
+                }
+            });
+        } catch (error) {
+            console.error('Monaco editor error:', error);
+            // Fallback to pre tag
+            codeEditorContainer.innerHTML = `<pre style="background: #161b22; padding: 1rem; border-radius: 8px; overflow-x: auto; font-family: 'Courier New', monospace; line-height: 1.6; margin: 0; color: #c9d1d9;">${currentDryRun.code}</pre>`;
+        }
+    } else if (typeof require !== 'undefined') {
+        require(['vs/editor/editor.main'], function () {
+            try {
+                monaco.editor.create(codeEditorContainer, {
+                    value: currentDryRun.code,
+                    language: 'cpp',
+                    theme: 'vs-dark',
+                    readOnly: true,
+                    fontSize: 14,
+                    minimap: { enabled: false },
+                    automaticLayout: true,
+                    scrollBeyondLastLine: false,
+                    lineNumbers: 'on',
+                    renderLineHighlight: 'all',
+                    contextmenu: false,
+                    scrollbar: {
+                        vertical: 'auto',
+                        horizontal: 'auto'
+                    }
+                });
+            } catch (error) {
+                console.error('Monaco editor error:', error);
+                // Fallback to pre tag
+                codeEditorContainer.innerHTML = `<pre style="background: #161b22; padding: 1rem; border-radius: 8px; overflow-x: auto; font-family: 'Courier New', monospace; line-height: 1.6; margin: 0; color: #c9d1d9;">${currentDryRun.code}</pre>`;
             }
         });
-    });
+    } else {
+        // Fallback if Monaco is not available
+        console.warn('Monaco editor not available, using fallback');
+        codeEditorContainer.innerHTML = `<pre style="background: #161b22; padding: 1rem; border-radius: 8px; overflow-x: auto; font-family: 'Courier New', monospace; line-height: 1.6; margin: 0; color: #c9d1d9;">${currentDryRun.code}</pre>`;
+    }
 
     // Clear previous answer and output
     document.getElementById('dryrunAnswer').value = '';
