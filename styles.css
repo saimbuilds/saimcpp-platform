@@ -790,7 +790,8 @@ body {
 /* === CODE EDITOR SCREEN === */
 .editor-container {
     display: grid;
-    grid-template-columns: 400px 1fr;
+    grid-template-columns: 65% 35%;
+    /* Left panel 65%, right panel 35% */
     height: 100vh;
 }
 
@@ -1167,4 +1168,14 @@ pre[class*="language-"] {
 code[class*="language-"] {
     font-size: 18px !important;
     line-height: 1.6 !important;
+}
+/* === LAYOUT OVERRIDES === */
+/* Problem editor: 40% problem, 60% code */
+.problem-editor-container {
+    grid-template-columns: 40% 60% !important;
+}
+
+/* Dry run: 65% problem/code, 35% answer */
+.dryrun-editor-container {
+    grid-template-columns: 65% 35% !important;
 }

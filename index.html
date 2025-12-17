@@ -234,7 +234,7 @@
 
     <!-- Dry Run Problem Screen -->
     <div id="dryrunScreen" class="screen hidden">
-        <div class="editor-container">
+        <div class="editor-container dryrun-editor-container">
             <!-- Left Panel - Code Display -->
             <div class="problem-panel">
                 <button class="back-btn" id="backToDryRun">← Back to Dry Run</button>
@@ -306,7 +306,7 @@
 
     <!-- Code Editor Screen -->
     <div id="editorScreen" class="screen hidden">
-        <div class="editor-container">
+        <div class="editor-container problem-editor-container">
             <!-- Left Panel - Problem Description -->
             <div class="problem-panel">
                 <button class="back-btn" id="backToProblems">← Back to Problems</button>
@@ -423,12 +423,9 @@
         </div>
     </div>
 
-    </div>
-
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js"></script>
     <script src="app.js" type="module"></script>
 </body>
 
 </html>
-```
