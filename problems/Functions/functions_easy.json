@@ -1,0 +1,226 @@
+{
+    "category": "Functions - Easy",
+    "problems": [
+        {
+            "title": "Add Two Numbers",
+            "difficulty": "easy",
+            "description": "Create a function that takes two integers and returns their sum.",
+            "inputFormat": "Two space-separated integers a and b",
+            "outputFormat": "Print the sum of a and b",
+            "constraints": "-1000 ≤ a, b ≤ 1000",
+            "sampleTestCases": [
+                {
+                    "input": "5 3",
+                    "output": "8",
+                    "explanation": "5 + 3 = 8"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "-10 15",
+                    "output": "5"
+                },
+                {
+                    "input": "0 0",
+                    "output": "0"
+                }
+            ],
+            "points": 10,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\n// Write your function here\n\nint main() {\n    int a, b;\n    cin >> a >> b;\n    \n    // Call your function and print result\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Check Even or Odd",
+            "difficulty": "easy",
+            "description": "Create a function that checks if a number is even or odd using bitwise AND.",
+            "inputFormat": "Single integer n",
+            "outputFormat": "Print 'Even' or 'Odd'",
+            "constraints": "0 ≤ n ≤ 1000",
+            "sampleTestCases": [
+                {
+                    "input": "4",
+                    "output": "Even",
+                    "explanation": "4 & 1 = 0, so it's even"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "7",
+                    "output": "Odd"
+                },
+                {
+                    "input": "0",
+                    "output": "Even"
+                }
+            ],
+            "points": 10,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\n// Write your function here\n\nint main() {\n    int n;\n    cin >> n;\n    \n    // Call your function and print result\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Function Overloading - Area",
+            "difficulty": "easy",
+            "description": "Create overloaded functions to calculate area of square (1 parameter) and rectangle (2 parameters).",
+            "inputFormat": "First line: type (1 for square, 2 for rectangle)\nSecond line: side (for square) or length and width (for rectangle)",
+            "outputFormat": "Print the area",
+            "constraints": "1 ≤ dimensions ≤ 100",
+            "sampleTestCases": [
+                {
+                    "input": "1\n5",
+                    "output": "25",
+                    "explanation": "Square with side 5 has area 25"
+                },
+                {
+                    "input": "2\n4 6",
+                    "output": "24",
+                    "explanation": "Rectangle 4x6 has area 24"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "1\n10",
+                    "output": "100"
+                },
+                {
+                    "input": "2\n3 7",
+                    "output": "21"
+                }
+            ],
+            "points": 10,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\n// Write your overloaded functions here\n\nint main() {\n    int type;\n    cin >> type;\n    \n    if(type == 1) {\n        int side;\n        cin >> side;\n        // Call function for square\n    } else {\n        int length, width;\n        cin >> length >> width;\n        // Call function for rectangle\n    }\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Count Set Bits",
+            "difficulty": "easy",
+            "description": "Write a function to count the number of 1s in binary representation of a number.",
+            "inputFormat": "Single integer n",
+            "outputFormat": "Print count of set bits",
+            "constraints": "0 ≤ n ≤ 1000",
+            "sampleTestCases": [
+                {
+                    "input": "7",
+                    "output": "3",
+                    "explanation": "7 in binary is 111, which has 3 ones"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "15",
+                    "output": "4"
+                },
+                {
+                    "input": "8",
+                    "output": "1"
+                }
+            ],
+            "points": 10,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\n// Write your function here\n\nint main() {\n    int n;\n    cin >> n;\n    \n    // Call your function and print result\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Array Sum Function",
+            "difficulty": "easy",
+            "description": "Write a function that takes an array and its size, returns the sum of all elements.",
+            "inputFormat": "First line: n (array size)\nSecond line: n space-separated integers",
+            "outputFormat": "Print the sum",
+            "constraints": "1 ≤ n ≤ 100\n-1000 ≤ array[i] ≤ 1000",
+            "sampleTestCases": [
+                {
+                    "input": "5\n1 2 3 4 5",
+                    "output": "15",
+                    "explanation": "1 + 2 + 3 + 4 + 5 = 15"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "3\n10 20 30",
+                    "output": "60"
+                },
+                {
+                    "input": "4\n-5 5 -3 3",
+                    "output": "0"
+                }
+            ],
+            "points": 10,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\n// Write your function here\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int arr[100];\n    for(int i = 0; i < n; i++) {\n        cin >> arr[i];\n    }\n    \n    // Call your function and print result\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Swap Using Pointers",
+            "difficulty": "easy",
+            "description": "Write a function to swap two numbers using pointers.",
+            "inputFormat": "Two space-separated integers a and b",
+            "outputFormat": "Print swapped values: a b",
+            "constraints": "-1000 ≤ a, b ≤ 1000",
+            "sampleTestCases": [
+                {
+                    "input": "5 10",
+                    "output": "10 5",
+                    "explanation": "After swap: a=10, b=5"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "100 200",
+                    "output": "200 100"
+                },
+                {
+                    "input": "-5 15",
+                    "output": "15 -5"
+                }
+            ],
+            "points": 10,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\n// Write your swap function here\n\nint main() {\n    int a, b;\n    cin >> a >> b;\n    \n    // Call your function\n    \n    cout << a << \" \" << b;\n    return 0;\n}"
+        },
+        {
+            "title": "Power of Two Check",
+            "difficulty": "easy",
+            "description": "Write a function using bitwise operations to check if a number is a power of 2.",
+            "inputFormat": "Single integer n",
+            "outputFormat": "Print 'Yes' if power of 2, else 'No'",
+            "constraints": "1 ≤ n ≤ 1000",
+            "sampleTestCases": [
+                {
+                    "input": "8",
+                    "output": "Yes",
+                    "explanation": "8 = 2^3"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "7",
+                    "output": "No"
+                },
+                {
+                    "input": "16",
+                    "output": "Yes"
+                }
+            ],
+            "points": 10,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\n// Write your function here\n\nint main() {\n    int n;\n    cin >> n;\n    \n    // Call your function and print result\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Find Maximum in Array",
+            "difficulty": "easy",
+            "description": "Write a function that finds the maximum element in an array using pointers.",
+            "inputFormat": "First line: n (array size)\nSecond line: n space-separated integers",
+            "outputFormat": "Print the maximum element",
+            "constraints": "1 ≤ n ≤ 100\n-1000 ≤ array[i] ≤ 1000",
+            "sampleTestCases": [
+                {
+                    "input": "5\n3 7 2 9 1",
+                    "output": "9",
+                    "explanation": "Maximum element is 9"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "4\n-5 -2 -8 -1",
+                    "output": "-1"
+                },
+                {
+                    "input": "3\n100 50 75",
+                    "output": "100"
+                }
+            ],
+            "points": 10,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\n// Write your function here\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int arr[100];\n    for(int i = 0; i < n; i++) {\n        cin >> arr[i];\n    }\n    \n    // Call your function and print result\n    \n    return 0;\n}"
+        }
+    ]
+}

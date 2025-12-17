@@ -1,0 +1,275 @@
+{
+    "category": "Pointers - Easy",
+    "problems": [
+        {
+            "title": "Swap Two Numbers",
+            "difficulty": "easy",
+            "description": "Swap two numbers using pointers.",
+            "inputFormat": "Two space-separated integers a and b",
+            "outputFormat": "Print swapped values: a b",
+            "constraints": "-1000 ≤ a, b ≤ 1000",
+            "sampleTestCases": [
+                {
+                    "input": "5 10",
+                    "output": "10 5",
+                    "explanation": "After swap using pointers: a=10, b=5"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "100 200",
+                    "output": "200 100"
+                },
+                {
+                    "input": "-5 15",
+                    "output": "15 -5"
+                }
+            ],
+            "points": 10,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nvoid swap(int* a, int* b) {\n    // Write your code here\n}\n\nint main() {\n    int a, b;\n    cin >> a >> b;\n    \n    swap(&a, &b);\n    \n    cout << a << \" \" << b;\n    return 0;\n}"
+        },
+        {
+            "title": "Find Maximum Using Pointers",
+            "difficulty": "easy",
+            "description": "Find the maximum element in an array using pointer arithmetic.",
+            "inputFormat": "First line: n (array size)\nSecond line: n space-separated integers",
+            "outputFormat": "Print the maximum element",
+            "constraints": "1 ≤ n ≤ 100\n-1000 ≤ array[i] ≤ 1000",
+            "sampleTestCases": [
+                {
+                    "input": "5\n3 7 2 9 1",
+                    "output": "9",
+                    "explanation": "Maximum element is 9"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "4\n-5 -2 -8 -1",
+                    "output": "-1"
+                },
+                {
+                    "input": "3\n100 50 75",
+                    "output": "100"
+                }
+            ],
+            "points": 10,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int arr[100];\n    for(int i = 0; i < n; i++) {\n        cin >> arr[i];\n    }\n    \n    // Use pointer arithmetic to find max\n    int* ptr = arr;\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Reverse Array Using Pointers",
+            "difficulty": "easy",
+            "description": "Reverse an array in-place using two pointers (start and end).",
+            "inputFormat": "First line: n (array size)\nSecond line: n space-separated integers",
+            "outputFormat": "Print reversed array, space-separated",
+            "constraints": "1 ≤ n ≤ 100",
+            "sampleTestCases": [
+                {
+                    "input": "5\n1 2 3 4 5",
+                    "output": "5 4 3 2 1",
+                    "explanation": "Array reversed in-place"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "4\n10 20 30 40",
+                    "output": "40 30 20 10"
+                },
+                {
+                    "input": "3\n7 8 9",
+                    "output": "9 8 7"
+                }
+            ],
+            "points": 10,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int arr[100];\n    for(int i = 0; i < n; i++) {\n        cin >> arr[i];\n    }\n    \n    // Use two pointers to reverse\n    int* start = arr;\n    int* end = arr + n - 1;\n    \n    for(int i = 0; i < n; i++) {\n        cout << arr[i];\n        if(i < n-1) cout << \" \";\n    }\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Sum of Array Elements",
+            "difficulty": "easy",
+            "description": "Calculate sum of array elements using pointer arithmetic.",
+            "inputFormat": "First line: n (array size)\nSecond line: n space-separated integers",
+            "outputFormat": "Print the sum",
+            "constraints": "1 ≤ n ≤ 100\n-1000 ≤ array[i] ≤ 1000",
+            "sampleTestCases": [
+                {
+                    "input": "5\n1 2 3 4 5",
+                    "output": "15",
+                    "explanation": "Sum = 1+2+3+4+5 = 15"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "3\n10 20 30",
+                    "output": "60"
+                },
+                {
+                    "input": "4\n-5 5 -3 3",
+                    "output": "0"
+                }
+            ],
+            "points": 10,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int arr[100];\n    for(int i = 0; i < n; i++) {\n        cin >> arr[i];\n    }\n    \n    // Use pointer to calculate sum\n    int* ptr = arr;\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Copy Array Using Pointers",
+            "difficulty": "easy",
+            "description": "Copy elements from one array to another using pointers.",
+            "inputFormat": "First line: n (array size)\nSecond line: n space-separated integers",
+            "outputFormat": "Print copied array, space-separated",
+            "constraints": "1 ≤ n ≤ 100",
+            "sampleTestCases": [
+                {
+                    "input": "5\n1 2 3 4 5",
+                    "output": "1 2 3 4 5",
+                    "explanation": "Array copied successfully"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "3\n10 20 30",
+                    "output": "10 20 30"
+                },
+                {
+                    "input": "4\n7 8 9 10",
+                    "output": "7 8 9 10"
+                }
+            ],
+            "points": 10,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int arr1[100], arr2[100];\n    for(int i = 0; i < n; i++) {\n        cin >> arr1[i];\n    }\n    \n    // Copy using pointers\n    int* src = arr1;\n    int* dest = arr2;\n    \n    for(int i = 0; i < n; i++) {\n        cout << arr2[i];\n        if(i < n-1) cout << \" \";\n    }\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Count Even Numbers",
+            "difficulty": "easy",
+            "description": "Count even numbers in an array using pointers.",
+            "inputFormat": "First line: n (array size)\nSecond line: n space-separated integers",
+            "outputFormat": "Print count of even numbers",
+            "constraints": "1 ≤ n ≤ 100\n-1000 ≤ array[i] ≤ 1000",
+            "sampleTestCases": [
+                {
+                    "input": "5\n1 2 3 4 5",
+                    "output": "2",
+                    "explanation": "2 and 4 are even"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "4\n10 15 20 25",
+                    "output": "2"
+                },
+                {
+                    "input": "3\n1 3 5",
+                    "output": "0"
+                }
+            ],
+            "points": 10,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int arr[100];\n    for(int i = 0; i < n; i++) {\n        cin >> arr[i];\n    }\n    \n    // Count even numbers using pointer\n    int* ptr = arr;\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Find Element Using Pointer",
+            "difficulty": "easy",
+            "description": "Search for an element in array using pointers and return its index.",
+            "inputFormat": "First line: n (array size)\nSecond line: n space-separated integers\nThird line: target element",
+            "outputFormat": "Print index if found, else -1",
+            "constraints": "1 ≤ n ≤ 100\n-1000 ≤ array[i] ≤ 1000",
+            "sampleTestCases": [
+                {
+                    "input": "5\n10 20 30 40 50\n30",
+                    "output": "2",
+                    "explanation": "30 is at index 2"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "4\n5 10 15 20\n25",
+                    "output": "-1"
+                },
+                {
+                    "input": "3\n7 8 9\n7",
+                    "output": "0"
+                }
+            ],
+            "points": 10,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int arr[100];\n    for(int i = 0; i < n; i++) {\n        cin >> arr[i];\n    }\n    \n    int target;\n    cin >> target;\n    \n    // Search using pointer\n    int* ptr = arr;\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Pointer Arithmetic Basics",
+            "difficulty": "easy",
+            "description": "Given an array and index k, print the element at index k using pointer arithmetic.",
+            "inputFormat": "First line: n (array size)\nSecond line: n space-separated integers\nThird line: k (index)",
+            "outputFormat": "Print element at index k",
+            "constraints": "1 ≤ n ≤ 100\n0 ≤ k < n",
+            "sampleTestCases": [
+                {
+                    "input": "5\n10 20 30 40 50\n2",
+                    "output": "30",
+                    "explanation": "Element at index 2 is 30"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "4\n5 10 15 20\n0",
+                    "output": "5"
+                },
+                {
+                    "input": "3\n7 8 9\n2",
+                    "output": "9"
+                }
+            ],
+            "points": 10,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int arr[100];\n    for(int i = 0; i < n; i++) {\n        cin >> arr[i];\n    }\n    \n    int k;\n    cin >> k;\n    \n    // Use pointer arithmetic: *(arr + k)\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Compare Two Arrays",
+            "difficulty": "easy",
+            "description": "Compare two arrays using pointers and check if they are identical.",
+            "inputFormat": "First line: n (array size)\nSecond line: n space-separated integers (array 1)\nThird line: n space-separated integers (array 2)",
+            "outputFormat": "Print 'Same' if identical, else 'Different'",
+            "constraints": "1 ≤ n ≤ 100",
+            "sampleTestCases": [
+                {
+                    "input": "5\n1 2 3 4 5\n1 2 3 4 5",
+                    "output": "Same",
+                    "explanation": "Both arrays are identical"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "3\n10 20 30\n10 20 31",
+                    "output": "Different"
+                },
+                {
+                    "input": "4\n5 5 5 5\n5 5 5 5",
+                    "output": "Same"
+                }
+            ],
+            "points": 10,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int arr1[100], arr2[100];\n    for(int i = 0; i < n; i++) {\n        cin >> arr1[i];\n    }\n    for(int i = 0; i < n; i++) {\n        cin >> arr2[i];\n    }\n    \n    // Compare using pointers\n    int* ptr1 = arr1;\n    int* ptr2 = arr2;\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Increment All Elements",
+            "difficulty": "easy",
+            "description": "Increment all array elements by 1 using pointers.",
+            "inputFormat": "First line: n (array size)\nSecond line: n space-separated integers",
+            "outputFormat": "Print modified array, space-separated",
+            "constraints": "1 ≤ n ≤ 100\n-1000 ≤ array[i] ≤ 1000",
+            "sampleTestCases": [
+                {
+                    "input": "5\n1 2 3 4 5",
+                    "output": "2 3 4 5 6",
+                    "explanation": "Each element incremented by 1"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "3\n10 20 30",
+                    "output": "11 21 31"
+                },
+                {
+                    "input": "4\n-5 0 5 10",
+                    "output": "-4 1 6 11"
+                }
+            ],
+            "points": 10,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int arr[100];\n    for(int i = 0; i < n; i++) {\n        cin >> arr[i];\n    }\n    \n    // Increment using pointer\n    int* ptr = arr;\n    \n    for(int i = 0; i < n; i++) {\n        cout << arr[i];\n        if(i < n-1) cout << \" \";\n    }\n    \n    return 0;\n}"
+        }
+    ]
+}
