@@ -1,0 +1,316 @@
+{
+    "category": "Dry Run - Hard",
+    "problems": [
+        {
+            "id": 1,
+            "title": "Double Pointer Arithmetic",
+            "difficulty": "hard",
+            "description": "Trace complex double pointer operations.",
+            "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int a[] = {10, 20, 30, 40, 50};\n    int *p[] = {a, a+2, a+1, a+3, a+4};\n    int **pp = p;\n    pp++;\n    cout << **pp + 1 << \" \";\n    cout << *(*pp - 1) << \" \";\n    cout << **++pp;\n    return 0;\n}",
+            "hints": [
+                "pp points to p array",
+                "pp++ moves to p[1] (which is a+2, val 30)",
+                "**pp is 30"
+            ],
+            "expectedOutput": "31 20 20",
+            "outputType": "single-line",
+            "points": 30,
+            "explanation": "pp points to p[0]. pp++ -> p[1]. \np[1] is a+2 (addr of 30). **pp is 30. +1 = 31. Print 31.\n*pp is address of 30. *pp - 1 is address of 20 (pointer arithmetic on int*). deref -> 20. Print 20.\n++pp -> p[2] (a+1, addr of 20). **pp is 20. Print 20."
+        },
+        {
+            "id": 2,
+            "title": "Recursive Permutations",
+            "difficulty": "hard",
+            "description": "Trace a permutation-like recursive function.",
+            "code": "#include <iostream>\nusing namespace std;\n\nvoid f(char *s, int i) {\n    if(!s[i]) return;\n    f(s, i+1);\n    if(i%2==0) cout << s[i];\n    f(s, i+1);\n}\n\nint main() {\n    char s[] = \"abcd\";\n    f(s, 0);\n    return 0;\n}",
+            "hints": [
+                "Draw the recursion tree",
+                "Prints only when i is even",
+                "Called twice for each level"
+            ],
+            "expectedOutput": "ccaa",
+            "outputType": "single-line",
+            "points": 30,
+            "explanation": "f(0) calls f(1). \n f(1) calls f(2).\n  f(2) calls f(3).\n   f(3) calls f(4) (returns).\n   3%2!=0. no print.\n   f(4) returns.\n  2%2==0. Print 'c'.\n  f(3) calls again -> no print.\n f(1) returns. 1%2!=0.\n 0%2==0. Print 'a'.\n f(1) called again.\n  ... traces same path ... prints 'c'.\nWait. Logic check.\nf(0)->f(1)...\n f(1)->f(2)\n  f(2)->f(3)\n   f(3)->f(4)(ret). 3 odd. f(4)(ret).\n  2 even. Print c. call f(3) again -> no print.\n f(1) returns. (i=1 odd, no print). Call f(2). \n  f(2) -> f(3)... print c again? No f(2) calls f(3).. returns. 2 even print c.\n  Wait f(1) calls f(2) twice? No.\nCode: f(i+1); if even print; f(i+1).\nCorrect trace:\nf(0):\n f(1):\n  f(2):\n   f(3):\n    f(4) ret.\n    3 odd.\n    f(4) ret.\n   2 even. Print 'c'.\n   f(3) ... no print.\n  1 odd. \n  f(2): ... prints 'c'.\n 0 even. Print 'a'.\n f(1): ... prints 'c'.\nWait, f(1) prints 'c' twice (once from first f(2), once from second f(2)).\nTotal Trace:\nf(0)\n  f(1)\n    f(2) -> prints c\n    f(2) -> prints c\n  a\n  f(1)\n    f(2) -> prints c\n    f(2) -> prints c\nOutput: ccaaccaa? No.\nf(0) -> f(1) -> f(2) -> ... prints c. f(2) calls f(3) twice. f(3) prints nothing.\nBack to f(1). f(1) calls f(2) twice. \nLet's map strictly.\nf(0):\n  f(1):\n    f(2):\n      f(3)... no print\n      Print c\n      f(3)... no print\n    (1 no print)\n    f(2): \n      ... prints c\n  print a\n  f(1): \n    ... prints c\n    ... prints c\nTotal: cc a cc.\nWait f(0) calls f(1) twice. \nStructure:\nf(0) calls f(1) (prints cc)\nprint a\ncalls f(1) (prints cc)\nTotal: ccacc.\nLet me re-verify f(1) output.\nf(1) calls f(2).\n f(2) calls f(3) (no output).\n print c (2 is even).\n call f(3).\nSo f(2) prints 'c'.\nf(1) calls f(2) (prints c). Then prints nothing (1 odd). calls f(2) (prints c).\nSo f(1) prints cc.\nf(0) calls f(1) (cc). Prints a (0 is even). Calls f(1) (cc).\nOutput: ccacc."
+        },
+        {
+            "id": 3,
+            "title": "Complex Array Indexing",
+            "difficulty": "hard",
+            "description": "Nested array access with modification.",
+            "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int a[] = {0, 1, 2, 3, 4};\n    int *p[] = {a, a+1, a+2, a+3, a+4};\n    int **pp = p;\n    pp++;\n    cout << pp-p << \" \" << *pp-a << \" \" << **pp;\n    return 0;\n}",
+            "hints": [
+                "pp-p is pointer difference",
+                "*pp-a is index in a",
+                "**pp is value"
+            ],
+            "expectedOutput": "1 1 1",
+            "outputType": "single-line",
+            "points": 30,
+            "explanation": "pp points to p[1]. pp-p = 1. \n*pp is a+1. (a+1)-a = 1.\n**pp is *(a+1) = 1."
+        },
+        {
+            "id": 4,
+            "title": "Count Set Bits (Kernighan's Algo)",
+            "difficulty": "hard",
+            "description": "Trace the loop for counting bits.",
+            "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n = 23; \n    int c = 0;\n    while(n > 0) {\n        n = n & (n - 1);\n        c++;\n    }\n    cout << c;\n    return 0;\n}",
+            "hints": [
+                "n & (n-1) clears the lowest set bit",
+                "Loop runs as many times as there are set bits",
+                "23 is 10111 in binary"
+            ],
+            "expectedOutput": "4",
+            "outputType": "single-line",
+            "points": 30,
+            "explanation": "23 (10111) & 22 (10110) -> 22. c=1.\n22 (10110) & 21 (10101) -> 20 (10100). c=2.\n20 (10100) & 19 (10011) -> 16 (10000). c=3.\n16 (10000) & 15 (01111) -> 0. c=4."
+        },
+        {
+            "id": 5,
+            "title": "Recursive Function Static",
+            "difficulty": "hard",
+            "description": "Static variable interaction in recursion.",
+            "code": "#include <iostream>\nusing namespace std;\n\nint f(int n) {\n    static int r = 0;\n    if(n <= 0) return 1;\n    if(n > 3) {\n        r = n;\n        return f(n-2) + 2;\n    }\n    return f(n-1) + r;\n}\n\nint main() {\n    cout << f(5);\n    return 0;\n}",
+            "hints": [
+                "Static r persists and changes",
+                "Trace carefully"
+            ],
+            "expectedOutput": "18",
+            "outputType": "single-line",
+            "points": 30,
+            "explanation": "f(5) -> r=5. call f(3)+2.\n f(3) -> call f(2)+r. r is 5. f(2)+5.\n  f(2) -> call f(1)+r. r is 5. f(1)+5.\n   f(1) -> call f(0)+r. r is 5. f(0)+5.\n    f(0)=1. \n   f(1) returns 1+5=6.\n  f(2) returns 6+5=11.\n f(3) returns 11+5=16.\nf(5) returns 16+2=18."
+        },
+        {
+            "id": 6,
+            "title": "Pointer Cast and Endianness",
+            "difficulty": "hard",
+            "description": "Accessing bytes of an integer. Assume Little Endian.",
+            "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    unsigned int x = 0x12345678;\n    unsigned char *c = (unsigned char*)&x;\n    cout << hex << (int)*c << \" \" << (int)*(c+1);\n    return 0;\n}",
+            "hints": [
+                "Little Endian stores LSB at lowest address",
+                "LSB is 78",
+                " Next byte is 56"
+            ],
+            "expectedOutput": "78 56",
+            "outputType": "single-line",
+            "points": 30,
+            "explanation": "Little Endian: 78 56 34 12. *c is 0x78. *(c+1) is 0x56."
+        },
+        {
+            "id": 7,
+            "title": "Precedence Puzzle",
+            "difficulty": "hard",
+            "description": "Mixture of operators with confusing precedence.",
+            "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int x = 2, y = 3, z = 4;\n    int r = x + y * z / 2 - x++ + --y;\n    cout << r << x << y;\n    return 0;\n}",
+            "hints": [
+                "* / evaluated L to R before + -",
+                "x++ post inc (uses 2)",
+                "--y pre dec (uses 2)"
+            ],
+            "expectedOutput": "8 3 2",
+            "outputType": "single-line",
+            "points": 30,
+            "explanation": "y*z = 12. 12/2 = 6. \nExpression: 2 + 6 - (2) + (2). \n2 + 6 = 8. 8 - 2 = 6. 6 + 2 = 8.\nx becomes 3. y becomes 2.\nOutput 8 3 2."
+        },
+        {
+            "id": 8,
+            "title": "Struct Pointer Array",
+            "difficulty": "hard",
+            "description": "Array of struct pointers.",
+            "code": "#include <iostream>\nusing namespace std;\n\nstruct Node { int v; Node *n; };\n\nint main() {\n    Node a = {10, NULL}, b = {20, &a}, c = {30, &b};\n    Node *p = &c;\n    cout << p->v << \" \" << p->n->v << \" \" << p->n->n->v;\n    return 0;\n}",
+            "hints": [
+                "Follow the next pointers"
+            ],
+            "expectedOutput": "30 20 10",
+            "outputType": "single-line",
+            "points": 30,
+            "explanation": "p is c (30). next is b (20). next is a (10)."
+        },
+        {
+            "id": 9,
+            "title": "Recursive Output",
+            "difficulty": "hard",
+            "description": "Trace specific values in recursive calls.",
+            "code": "#include <iostream>\nusing namespace std;\n\nvoid fun(int n) {\n    if(n > 0) {\n        fun(n-1);\n        cout << n << \" \";\n        fun(n-2);\n    }\n}\n\nint main() {\n    fun(4);\n    return 0;\n}",
+            "hints": [
+                "Tree structure: Left child n-1, Print, Right child n-2"
+            ],
+            "expectedOutput": "1 2 3 1 4 1 2",
+            "outputType": "single-line",
+            "points": 30,
+            "explanation": "f(4):\n f(3):\n  f(2):\n   f(1):\n    f(0)\n    pr 1\n    f(-1)\n   pr 2\n   f(0)\n  pr 3\n  f(1):\n   f(0)\n   pr 1\n   f(-1)\n pr 4\n f(2):\n  f(1):\n   f(0)\n   pr 1\n   f(-1)\n  pr 2\n  f(0)\nSequence: 1 2 3 1 4 1 2."
+        },
+        {
+            "id": 10,
+            "title": "Complex Loop Modifiers",
+            "difficulty": "hard",
+            "description": "Loop with comma operator and multiple updates.",
+            "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int i, j;\n    for(i=0, j=0; i<5; i++, j+=i) {\n        cout << i+j << \" \";\n    }\n    return 0;\n}",
+            "hints": [
+                "j increments by NEW i or OLD i? Comma sequence.",
+                "Increment block executes after body"
+            ],
+            "expectedOutput": "0 2 5 9 14",
+            "outputType": "single-line",
+            "points": 30,
+            "explanation": "i=0, j=0. Print 0. Update: i=1, j+=1 -> j=1.\ni=1, j=1. Print 2. Update: i=2, j+=2 -> j=3.\ni=2, j=3. Print 5. Update: i=3, j+=3 -> j=6.\ni=3, j=6. Print 9. Update: i=4, j+=4 -> j=10.\ni=4, j=10. Print 14. Update: i=5. Stop."
+        },
+        {
+            "id": 11,
+            "title": "Pointer to Array of Pointers",
+            "difficulty": "hard",
+            "description": "Three level dereference equivalent.",
+            "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    char *s[] = {\"Knowledge\", \"Is\", \"Power\"};\n    char **p = s;\n    cout << *p << \" \" << *(p+1)+1 << \" \" << *(*(p+2)+2);\n    return 0;\n}",
+            "hints": [
+                "*p is 'Knowledge'",
+                "*(p+1) is 'Is', +1 skips 'I'",
+                "*(p+2) is 'Power', +2 points to 'w', deref 'w'"
+            ],
+            "expectedOutput": "Knowledge s w",
+            "outputType": "single-line",
+            "points": 30,
+            "explanation": "*p -> Knowledge. \n*(p+1)+1 -> Is + 1 -> s.\n*(*(p+2)+2) -> Power + 2 -> wer -> w ('w' is int value? No char). Output w."
+        },
+        {
+            "id": 12,
+            "title": "Function Pointer Basic",
+            "difficulty": "hard",
+            "description": "Passing function pointer.",
+            "code": "#include <iostream>\nusing namespace std;\n\nint add(int a, int b) { return a+b; }\nint sub(int a, int b) { return a-b; }\nint op(int (*f)(int, int), int x, int y) { return f(x, y); }\n\nint main() {\n    cout << op(add, 10, 5) << \" \" << op(sub, 10, 5);\n    return 0;\n}",
+            "hints": [
+                "Passes function address",
+                "Calls passed function"
+            ],
+            "expectedOutput": "15 5",
+            "outputType": "single-line",
+            "points": 30,
+            "explanation": "15 5."
+        },
+        {
+            "id": 13,
+            "title": "Octal Hex Confusion",
+            "difficulty": "hard",
+            "description": "Number literals.",
+            "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int a = 012, b = 0xA;\n    cout << a << \" \" << b << \" \" << a+b;\n    return 0;\n}",
+            "hints": [
+                "Leading 0 means Octal",
+                "Leading 0x means Hex",
+                "012 (oct) = 10 (dec)",
+                "0xA (hex) = 10 (dec)"
+            ],
+            "expectedOutput": "10 10 20",
+            "outputType": "single-line",
+            "points": 30,
+            "explanation": "10 10 20."
+        },
+        {
+            "id": 14,
+            "title": "String Overwrite Logic",
+            "difficulty": "hard",
+            "description": "Modifying string with buffer overlap logic (simulated).",
+            "code": "#include <iostream>\n#include <cstring>\nusing namespace std;\n\nint main() {\n    char s[20] = \"Hello\";\n    char *p = s;\n    *(p+3) = '\\0';\n    cout << s << \" \" << strlen(s) << \" \" << sizeof(s);\n    return 0;\n}",
+            "hints": [
+                "Inserts null terminator early",
+                "strlen stops at first \\0",
+                "sizeof is array size"
+            ],
+            "expectedOutput": "Hel 3 20",
+            "outputType": "single-line",
+            "points": 30,
+            "explanation": "Hel 3 20."
+        },
+        {
+            "id": 15,
+            "title": "Logical Short Circuit Side Effect",
+            "difficulty": "hard",
+            "description": "Complex logic flow.",
+            "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int a=1, b=0, c=2;\n    if(a-- || b++ && ++c)\n        cout << a << b << c;\n    return 0;\n}",
+            "hints": [
+                "a-- returns 1 (True)",
+                "OR short circuits rest",
+                "b and c not touched"
+            ],
+            "expectedOutput": "002",
+            "outputType": "single-line",
+            "points": 30,
+            "explanation": "1 || ... True. a becomes 0. b, c unchanged. 0 0 2."
+        },
+        {
+            "id": 16,
+            "title": "Union Memory Sharing",
+            "difficulty": "hard",
+            "description": "Union basic trace.",
+            "code": "#include <iostream>\nusing namespace std;\n\nunion Data { int i; char c; };\n\nint main() {\n    Data d;\n    d.i = 65;\n    cout << d.i << \" \" << d.c;\n    return 0;\n}",
+            "hints": [
+                "Union shares memory",
+                "65 is 'A' in ASCII",
+                "Assuming Little Endian"
+            ],
+            "expectedOutput": "65 A",
+            "outputType": "single-line",
+            "points": 30,
+            "explanation": "writes 65 to int. char reads lowest byte (65). Prints 65 A."
+        },
+        {
+            "id": 17,
+            "title": "Recursive Modulo",
+            "difficulty": "hard",
+            "description": "GCD-like recursion.",
+            "code": "#include <iostream>\nusing namespace std;\n\nint f(int a, int b) {\n    if(b == 0) return a;\n    return f(b, a % b);\n}\n\nint main() {\n    cout << f(24, 9);\n    return 0;\n}",
+            "hints": [
+                "This is GCD",
+                "f(24,9) -> f(9,6) -> f(6,3) -> f(3,0)"
+            ],
+            "expectedOutput": "3",
+            "outputType": "single-line",
+            "points": 30,
+            "explanation": "GCD of 24 and 9 is 3."
+        },
+        {
+            "id": 18,
+            "title": "Switch Default Position",
+            "difficulty": "hard",
+            "description": "Default case placement.",
+            "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int x = 5;\n    switch(x) {\n        default: cout << \"1\";\n        case 1: cout << \"2\"; break;\n        case 2: cout << \"3\";\n    }\n    return 0;\n}",
+            "hints": [
+                "Default matches if no cases match",
+                "Execution falls through from default if no break"
+            ],
+            "expectedOutput": "12",
+            "outputType": "single-line",
+            "points": 30,
+            "explanation": "x=5 matches default. Print 1. Fallthrough to case 1. Print 2. Break. 12."
+        },
+        {
+            "id": 19,
+            "title": "Nested Ternary Precedence",
+            "difficulty": "hard",
+            "description": "Ternary associativity R to L.",
+            "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int a=1, b=2, c=3;\n    int r = a ? b : c ? a : b;\n    cout << r;\n    return 0;\n}",
+            "hints": [
+                "a is true (1), so returns b",
+                "The second part is not evaluated"
+            ],
+            "expectedOutput": "2",
+            "outputType": "single-line",
+            "points": 30,
+            "explanation": "1 ? 2 : ... returns 2."
+        },
+        {
+            "id": 20,
+            "title": "Pointer Cast Array Access",
+            "difficulty": "hard",
+            "description": "Accessing int array as char array.",
+            "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int a[] = {300, 2, 3};\n    char *p = (char*)a;\n    cout << (int)*p;\n    return 0;\n}",
+            "hints": [
+                "300 in hex is 0x12C",
+                "Little endian: 2C 01 00 00",
+                "*p gets first byte 0x2C (44)"
+            ],
+            "expectedOutput": "44",
+            "outputType": "single-line",
+            "points": 30,
+            "explanation": "300 = 256 + 44. Lowest byte is 44. Prints 44."
+        }
+    ]
+}

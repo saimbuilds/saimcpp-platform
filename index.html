@@ -102,6 +102,7 @@
             </div>
             <nav class="nav">
                 <button class="nav-btn active" data-view="problems">Problems</button>
+                <button class="nav-btn" data-view="dryrun">Dry Run</button>
                 <button class="nav-btn" data-view="leaderboard">Leaderboard</button>
                 <button class="nav-btn" data-view="profile">Profile</button>
             </nav>
@@ -131,6 +132,7 @@
                             <option value="Bitwise">Bitwise Operations</option>
                             <option value="Dynamic">Dynamic Memory</option>
                             <option value="Recursion">Recursion</option>
+                            <option value="Dry Run">Dry Run</option>
                         </select>
                         <select id="difficultyFilter" class="filter-select">
                             <option value="all">All Difficulties</option>
@@ -209,9 +211,92 @@
                     <!-- Populated by JS -->
                 </div>
             </div>
+
+            <!-- Dry Run View -->
+            <div id="dryrunView" class="view">
+                <div class="view-header">
+                    <h2>Dry Run - Code Tracing</h2>
+                    <p class="subtitle">Trace the code and predict the output</p>
+                </div>
+
+                <div class="problems-grid" id="dryrunGrid">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+        </main>
     </div>
 
-    </main>
+    <!-- Dry Run Problem Screen -->
+    <div id="dryrunScreen" class="screen hidden">
+        <div class="editor-container">
+            <!-- Left Panel - Code Display -->
+            <div class="problem-panel">
+                <button class="back-btn" id="backToDryRun">← Back to Dry Run</button>
+
+                <div class="problem-header">
+                    <h2 id="dryrunTitle"></h2>
+                    <span class="difficulty-badge" id="dryrunDifficulty"></span>
+                </div>
+
+                <div class="problem-content">
+                    <div class="section">
+                        <h3>Description</h3>
+                        <p id="dryrunDescription"></p>
+                    </div>
+
+                    <div class="section">
+                        <h3>Code to Trace</h3>
+                        <pre id="dryrunCode"
+                            style="background: #161b22; padding: 1rem; border-radius: 8px; overflow-x: auto; font-family: 'Courier New', monospace; line-height: 1.6;"></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel - Answer Input -->
+            <div class="code-panel">
+                <div class="editor-header">
+                    <span class="editor-title">Your Answer</span>
+                    <div class="editor-actions">
+                        <button class="btn-secondary btn-small" id="viewExplanationBtn">📖 View Explanation</button>
+                        <button class="btn-primary btn-small" id="submitDryRunBtn">Submit Answer</button>
+                    </div>
+                </div>
+
+                <div class="dryrun-answer-section">
+                    <label for="dryrunAnswer"
+                        style="display: block; margin-bottom: 0.5rem; color: var(--text-secondary);">
+                        Enter the exact output (including spaces and newlines):
+                    </label>
+                    <textarea id="dryrunAnswer" class="dryrun-answer-input"
+                        placeholder="Type your predicted output here..." rows="10"
+                        style="width: 100%; padding: 1rem; background: #161b22; border: 1px solid #30363d; border-radius: 8px; color: #c9d1d9; font-family: 'Courier New', monospace; resize: vertical;"></textarea>
+                </div>
+
+                <div class="output-panel">
+                    <div class="output-header">
+                        <span>Result</span>
+                        <button class="btn-small" id="clearDryRunOutput">Clear</button>
+                    </div>
+                    <div id="dryrunOutput" class="output-content">
+                        <p class="output-placeholder">Submit your answer to see the result...</p>
+                    </div>
+                </div>
+
+                <!-- Explanation Section (Hidden Initially) -->
+                <div id="explanationSection" class="explanation-section"
+                    style="display: none; margin-top: 1rem; padding: 1rem; background: #161b22; border-radius: 8px; border-left: 4px solid #58a6ff;">
+                    <h3 style="margin-top: 0; color: #58a6ff;">📖 Explanation</h3>
+                    <pre id="explanationContent"
+                        style="white-space: pre-wrap; font-family: 'Courier New', monospace; line-height: 1.6; color: #c9d1d9;"></pre>
+                    <div style="margin-top: 1rem; padding: 0.75rem; background: #21262d; border-radius: 6px;">
+                        <strong style="color: #f85149;">⚠️ Note:</strong> <span style="color: #8b949e;">You viewed the
+                            explanation before submitting. You will receive 0 points even if your answer is
+                            correct.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Code Editor Screen -->

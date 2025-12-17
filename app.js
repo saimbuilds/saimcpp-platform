@@ -15,6 +15,11 @@ let allProblems = [];
 let userFavorites = [];
 let allUsers = [];
 
+// Dry Run State
+let allDryRunProblems = [];
+let currentDryRun = null;
+let hasViewedExplanation = false;
+
 // ========================================
 // INITIALIZATION
 // ========================================
@@ -23,6 +28,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Load problems first
     allProblems = await problemLoader.loadAll();
     console.log(`Loaded ${allProblems.length} problems`);
+
+    // Load dry run problems
+    await loadDryRunProblems();
+    console.log(`Loaded ${allDryRunProblems.length} dry run problems`);
 
     checkAuth();
     setupEventListeners();
@@ -102,6 +111,15 @@ function setupEventListeners() {
     document.getElementById('categoryFilter')?.addEventListener('change', renderProblems);
     document.getElementById('difficultyFilter')?.addEventListener('change', renderProblems);
     document.getElementById('favoritesOnly')?.addEventListener('change', renderProblems);
+
+    // Dry Run actions
+    document.getElementById('backToDryRun')?.addEventListener('click', () => {
+        showScreen('dashboardScreen');
+        switchView('dryrun');
+    });
+    document.getElementById('submitDryRunBtn')?.addEventListener('click', submitDryRunAnswer);
+    document.getElementById('viewExplanationBtn')?.addEventListener('click', viewDryRunExplanation);
+    document.getElementById('clearDryRunOutput')?.addEventListener('click', clearDryRunOutput);
 }
 
 // ========================================
@@ -681,3 +699,160 @@ async function toggleFavorite(problemId) {
 
 window.openProblem = openProblem;
 window.toggleFavorite = toggleFavorite;
+
+// ========================================
+// DRY RUN FUNCTIONS
+// ========================================
+
+async function loadDryRunProblems() {
+    const categories = ['easy', 'medium', 'hard'];
+    let id = 1;
+
+    for (const difficulty of categories) {
+        try {
+            const response = await fetch(`/problems/DryRun/dryrun_${difficulty}.json`);
+            const data = await response.json();
+
+            data.problems.forEach(problem => {
+                allDryRunProblems.push({
+                    id: id++,
+                    ...problem,
+                    category: data.category
+                });
+            });
+        } catch (error) {
+            console.error(`Error loading dry run ${difficulty}:`, error);
+        }
+    }
+}
+
+function renderDryRunProblems() {
+    const container = document.getElementById('dryrunGrid');
+    if (!container) return;
+
+    container.innerHTML = allDryRunProblems.map(problem => `
+        <div class="problem-card" onclick="openDryRunProblem(${problem.id})">
+            <div class="problem-card-header">
+                <div class="problem-card-title">
+                    <h3>${problem.title}</h3>
+                    <span class="difficulty-badge ${problem.difficulty}">${problem.difficulty}</span>
+                </div>
+            </div>
+            <p>${problem.description}</p>
+            <div class="problem-meta">
+                <span>${problem.points} pts</span>
+                <span>${problem.category}</span>
+            </div>
+        </div>
+    `).join('');
+}
+
+function openDryRunProblem(problemId) {
+    currentDryRun = allDryRunProblems.find(p => p.id === problemId);
+    if (!currentDryRun) return;
+
+    // Reset state
+    hasViewedExplanation = false;
+
+    // Populate UI
+    document.getElementById('dryrunTitle').textContent = currentDryRun.title;
+    document.getElementById('dryrunDifficulty').textContent = currentDryRun.difficulty;
+    document.getElementById('dryrunDifficulty').className = `difficulty-badge ${currentDryRun.difficulty}`;
+    document.getElementById('dryrunDescription').textContent = currentDryRun.description;
+    document.getElementById('dryrunCode').textContent = currentDryRun.code;
+
+    // Clear previous answer and output
+    document.getElementById('dryrunAnswer').value = '';
+    document.getElementById('explanationSection').style.display = 'none';
+    clearDryRunOutput();
+
+    showScreen('dryrunScreen');
+}
+
+function viewDryRunExplanation() {
+    if (hasViewedExplanation) {
+        // Already viewed, just show it
+        document.getElementById('explanationSection').style.display = 'block';
+        return;
+    }
+
+    // Confirm with user
+    const confirmed = confirm(
+        '⚠️ WARNING: Viewing the explanation will give you 0 points even if you submit the correct answer later.\\n\\nAre you sure you want to continue?'
+    );
+
+    if (confirmed) {
+        hasViewedExplanation = true;
+        document.getElementById('explanationContent').textContent = currentDryRun.explanation;
+        document.getElementById('explanationSection').style.display = 'block';
+    }
+}
+
+async function submitDryRunAnswer() {
+    const userAnswer = document.getElementById('dryrunAnswer').value;
+    const expectedOutput = currentDryRun.expectedOutput;
+
+    // Exact match validation
+    const isCorrect = userAnswer === expectedOutput;
+
+    if (isCorrect && !hasViewedExplanation) {
+        // Correct answer + didn't view explanation = full points
+        displayDryRunOutput(`✅ Correct!\\n\\nYou earned ${currentDryRun.points} points!`, 'success');
+        await updateUserScore(currentDryRun.points);
+        await saveDryRunSubmission(userAnswer, 'correct', currentDryRun.points);
+    } else if (isCorrect && hasViewedExplanation) {
+        // Correct answer but viewed explanation = 0 points
+        displayDryRunOutput(
+            `✅ Your answer is correct!\\n\\nHowever, you viewed the explanation before submitting.\\nPoints earned: 0`,
+            'warning'
+        );
+        await saveDryRunSubmission(userAnswer, 'viewed_explanation', 0);
+    } else {
+        // Wrong answer = 0 points
+        displayDryRunOutput(
+            `❌ Incorrect Answer\\n\\nYour Output:\\n${userAnswer}\\n\\nExpected Output:\\n${expectedOutput}\\n\\nPoints earned: 0`,
+            'error'
+        );
+        await saveDryRunSubmission(userAnswer, 'wrong', 0);
+    }
+
+    // Show explanation after submission
+    if (!hasViewedExplanation) {
+        document.getElementById('explanationContent').textContent = currentDryRun.explanation;
+        document.getElementById('explanationSection').style.display = 'block';
+        // Remove the warning since they submitted first
+        const warningDiv = document.querySelector('#explanationSection > div:last-child');
+        if (warningDiv) warningDiv.style.display = 'none';
+    }
+}
+
+async function saveDryRunSubmission(userAnswer, status, points) {
+    await supabaseClient.from('submissions').insert({
+        user_id: userProfile.id,
+        problem_id: currentDryRun.id,
+        code: `DRY RUN ANSWER:\\n${userAnswer}`,
+        status: status,
+        test_cases_passed: status === 'correct' ? 1 : 0,
+        test_cases_total: 1,
+        points_earned: points
+    });
+}
+
+function displayDryRunOutput(text, type = '') {
+    document.getElementById('dryrunOutput').innerHTML = `<pre class="output-${type}">${text}</pre>`;
+}
+
+function clearDryRunOutput() {
+    document.getElementById('dryrunOutput').innerHTML = '<p class="output-placeholder">Submit your answer to see the result...</p>';
+}
+
+// Update switchView to handle dry run
+const originalSwitchView = switchView;
+function switchView(viewName) {
+    originalSwitchView(viewName);
+    if (viewName === 'dryrun') {
+        renderDryRunProblems();
+    }
+}
+
+window.openDryRunProblem = openDryRunProblem;

@@ -1,0 +1,95 @@
+{
+    "category": "Dry Run - Medium",
+    "problems": [
+        {
+            "title": "Array Pointer Manipulation",
+            "difficulty": "medium",
+            "description": "Trace the code and predict the exact output.",
+            "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int arr[] = {10, 20, 30, 40};\n    int *ptr = arr;\n    cout << *ptr << \" \";\n    ptr += 2;\n    cout << *ptr << \" \";\n    cout << *(ptr - 1);\n    return 0;\n}",
+            "explanation": "Pointer arithmetic:\n1. arr[] = {10, 20, 30, 40}\n2. ptr = arr (points to arr[0]=10)\n3. *ptr = 10, print '10 '\n4. ptr += 2 (now points to arr[2]=30)\n5. *ptr = 30, print '30 '\n6. *(ptr-1) = arr[1] = 20, print '20'\n\nOutput: 10 30 20",
+            "expectedOutput": "10 30 20",
+            "points": 20
+        },
+        {
+            "title": "Recursive Function Trace",
+            "difficulty": "medium",
+            "description": "Trace the code and predict the exact output.",
+            "code": "#include <iostream>\nusing namespace std;\n\nint func(int n) {\n    if(n <= 1) return 1;\n    return n + func(n - 1);\n}\n\nint main() {\n    cout << func(4);\n    return 0;\n}",
+            "explanation": "Recursive calls:\nfunc(4) = 4 + func(3)\nfunc(3) = 3 + func(2)\nfunc(2) = 2 + func(1)\nfunc(1) = 1 (base case)\n\nUnwinding:\nfunc(2) = 2 + 1 = 3\nfunc(3) = 3 + 3 = 6\nfunc(4) = 4 + 6 = 10\n\nOutput: 10",
+            "expectedOutput": "10",
+            "points": 20
+        },
+        {
+            "title": "2D Array Access",
+            "difficulty": "medium",
+            "description": "Trace the code and predict the exact output.",
+            "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int matrix[2][3] = {{1,2,3}, {4,5,6}};\n    for(int i = 0; i < 2; i++) {\n        cout << matrix[i][i+1] << \" \";\n    }\n    return 0;\n}",
+            "explanation": "2D array access:\nmatrix[0][0]=1, matrix[0][1]=2, matrix[0][2]=3\nmatrix[1][0]=4, matrix[1][1]=5, matrix[1][2]=6\n\ni=0: matrix[0][0+1] = matrix[0][1] = 2, print '2 '\ni=1: matrix[1][1+1] = matrix[1][2] = 6, print '6 '\n\nOutput: 2 6 ",
+            "expectedOutput": "2 6 ",
+            "points": 20
+        },
+        {
+            "title": "Bitwise Operations",
+            "difficulty": "medium",
+            "description": "Trace the code and predict the exact output.",
+            "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int a = 5, b = 3;\n    cout << (a & b) << \" \";\n    cout << (a | b) << \" \";\n    cout << (a ^ b);\n    return 0;\n}",
+            "explanation": "Bitwise operations:\na = 5 = 101 (binary)\nb = 3 = 011 (binary)\n\na & b = 101 & 011 = 001 = 1\na | b = 101 | 011 = 111 = 7\na ^ b = 101 ^ 011 = 110 = 6\n\nOutput: 1 7 6",
+            "expectedOutput": "1 7 6",
+            "points": 20
+        },
+        {
+            "title": "Function with Reference",
+            "difficulty": "medium",
+            "description": "Trace the code and predict the exact output.",
+            "code": "#include <iostream>\nusing namespace std;\n\nvoid modify(int &x) {\n    x = x * 2;\n}\n\nint main() {\n    int num = 5;\n    modify(num);\n    cout << num << \" \";\n    modify(num);\n    cout << num;\n    return 0;\n}",
+            "explanation": "Pass by reference:\n1. num = 5\n2. modify(num): x refers to num, x = 5*2 = 10, num becomes 10\n3. Print num = 10, output '10 '\n4. modify(num): x refers to num, x = 10*2 = 20, num becomes 20\n5. Print num = 20, output '20'\n\nOutput: 10 20",
+            "expectedOutput": "10 20",
+            "points": 20
+        },
+        {
+            "title": "Continue Statement",
+            "difficulty": "medium",
+            "description": "Trace the code and predict the exact output.",
+            "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    for(int i = 1; i <= 6; i++) {\n        if(i % 3 == 0) {\n            continue;\n        }\n        cout << i << \" \";\n    }\n    return 0;\n}",
+            "explanation": "Loop with continue:\ni=1: 1%3=1 (not 0), print '1 '\ni=2: 2%3=2 (not 0), print '2 '\ni=3: 3%3=0 (true), continue (skip print)\ni=4: 4%3=1 (not 0), print '4 '\ni=5: 5%3=2 (not 0), print '5 '\ni=6: 6%3=0 (true), continue (skip print)\n\nOutput: 1 2 4 5 ",
+            "expectedOutput": "1 2 4 5 ",
+            "points": 20
+        },
+        {
+            "title": "Switch Case",
+            "difficulty": "medium",
+            "description": "Trace the code and predict the exact output.",
+            "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int x = 2;\n    switch(x) {\n        case 1: cout << \"A\"; break;\n        case 2: cout << \"B\";\n        case 3: cout << \"C\"; break;\n        default: cout << \"D\";\n    }\n    return 0;\n}",
+            "explanation": "Switch without break:\n1. x = 2\n2. Match case 2: print 'B'\n3. No break, fall through to case 3\n4. Print 'C'\n5. Break statement stops execution\n\nOutput: BC",
+            "expectedOutput": "BC",
+            "points": 20
+        },
+        {
+            "title": "Nested Conditionals",
+            "difficulty": "medium",
+            "description": "Trace the code and predict the exact output.",
+            "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int a = 10, b = 5, c = 15;\n    if(a > b) {\n        if(c > a) {\n            cout << \"X\";\n        } else {\n            cout << \"Y\";\n        }\n    } else {\n        cout << \"Z\";\n    }\n    return 0;\n}",
+            "explanation": "Nested if-else:\n1. a=10, b=5, c=15\n2. Check a > b: 10 > 5 = true, enter outer if\n3. Check c > a: 15 > 10 = true, enter inner if\n4. Print 'X'\n\nOutput: X",
+            "expectedOutput": "X",
+            "points": 20
+        },
+        {
+            "title": "String Character Access",
+            "difficulty": "medium",
+            "description": "Trace the code and predict the exact output.",
+            "code": "#include <iostream>\n#include <string>\nusing namespace std;\n\nint main() {\n    string str = \"CODE\";\n    for(int i = 0; i < 4; i++) {\n        cout << str[i];\n        if(i < 3) cout << \"-\";\n    }\n    return 0;\n}",
+            "explanation": "String iteration with separator:\ni=0: print str[0]='C', i<3 true, print '-'\ni=1: print str[1]='O', i<3 true, print '-'\ni=2: print str[2]='D', i<3 true, print '-'\ni=3: print str[3]='E', i<3 false, no '-'\n\nOutput: C-O-D-E",
+            "expectedOutput": "C-O-D-E",
+            "points": 20
+        },
+        {
+            "title": "Do-While Loop",
+            "difficulty": "medium",
+            "description": "Trace the code and predict the exact output.",
+            "code": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int x = 0;\n    do {\n        cout << x << \" \";\n        x += 2;\n    } while(x < 5);\n    return 0;\n}",
+            "explanation": "Do-while executes at least once:\nIteration 1: print '0 ', x = 0+2 = 2, check 2<5 (true)\nIteration 2: print '2 ', x = 2+2 = 4, check 4<5 (true)\nIteration 3: print '4 ', x = 4+2 = 6, check 6<5 (false), stop\n\nOutput: 0 2 4 ",
+            "expectedOutput": "0 2 4 ",
+            "points": 20
+        }
+    ]
+}
