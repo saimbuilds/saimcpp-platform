@@ -472,10 +472,12 @@ function openProblem(problemId) {
         monacoEditor.setValue(codeToUse);
     }
 
-    // Save code to localStorage on change
-    monacoEditor.onDidChangeModelContent(() => {
-        localStorage.setItem(`problem_${problemId}_code`, monacoEditor.getValue());
-    });
+    // Save code to localStorage on change (only if editor exists)
+    if (monacoEditor && monacoEditor.onDidChangeModelContent) {
+        monacoEditor.onDidChangeModelContent(() => {
+            localStorage.setItem(`problem_${problemId}_code`, monacoEditor.getValue());
+        });
+    }
 
     showScreen('editorScreen');
     clearOutput();
