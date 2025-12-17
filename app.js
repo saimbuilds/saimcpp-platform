@@ -102,7 +102,6 @@ function setupEventListeners() {
     });
 
     // Code editor actions
-    // document.getElementById('copyCodeBtn')?.addEventListener('click', copyCode); // Temporarily disabled
     document.getElementById('runCodeBtn')?.addEventListener('click', runCode);
     document.getElementById('submitCodeBtn')?.addEventListener('click', submitCode);
     document.getElementById('clearOutput')?.addEventListener('click', clearOutput);
