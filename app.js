@@ -657,15 +657,21 @@ async function saveSubmission(code, status, passed, total) {
     });
 }
 
-async function updateUserScore(points) {
+async function updateUserScore(points, incrementProblemsSolved = true) {
     const newScore = userProfile.total_score + points;
+    const updates = { total_score: newScore };
+
+    if (incrementProblemsSolved) {
+        updates.problems_solved = userProfile.problems_solved + 1;
+        userProfile.problems_solved++;
+    }
+
     await supabaseClient
         .from('profiles')
-        .update({ total_score: newScore, problems_solved: userProfile.problems_solved + 1 })
+        .update(updates)
         .eq('id', userProfile.id);
 
     userProfile.total_score = newScore;
-    userProfile.problems_solved++;
     updateHeader();
 }
 
