@@ -105,6 +105,16 @@ body {
     }
 }
 
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 .mobile-content h1 {
     font-size: 1.5rem;
     margin-bottom: 0.5rem;
