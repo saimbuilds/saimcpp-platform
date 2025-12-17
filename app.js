@@ -20,6 +20,10 @@ let allDryRunProblems = [];
 let currentDryRun = null;
 let hasViewedExplanation = false;
 
+// Submission locks to prevent race conditions
+let isSubmitting = false;
+let isDryRunSubmitting = false;
+
 // ========================================
 // INITIALIZATION
 // ========================================
@@ -558,6 +562,12 @@ async function runCode() {
 }
 
 async function submitCode() {
+    // Prevent multiple simultaneous submissions
+    if (isSubmitting) {
+        return;
+    }
+
+    isSubmitting = true;
     const submitBtn = document.getElementById('submitCodeBtn');
     const code = monacoEditor.getValue();
 
@@ -580,6 +590,7 @@ async function submitCode() {
         displayOutput('No test cases available', 'error');
         submitBtn.disabled = false;
         submitBtn.textContent = 'Submit Code';
+        isSubmitting = false;
         return;
     }
 
@@ -631,9 +642,10 @@ async function submitCode() {
         }
     }
 
-    // Re-enable button
+    // Re-enable button and unlock
     submitBtn.disabled = false;
     submitBtn.textContent = 'Submit Code';
+    isSubmitting = false;
 }
 
 async function executeCode(code, input) {
@@ -900,6 +912,12 @@ function viewDryRunExplanation() {
 }
 
 async function submitDryRunAnswer() {
+    // Prevent multiple simultaneous submissions
+    if (isDryRunSubmitting) {
+        return;
+    }
+
+    isDryRunSubmitting = true;
     const submitBtn = document.getElementById('submitDryRunBtn');
     const userAnswer = document.getElementById('dryrunAnswer').value;
     const expectedOutput = currentDryRun.expectedOutput;
@@ -958,9 +976,10 @@ async function submitDryRunAnswer() {
         if (warningDiv) warningDiv.style.display = 'none';
     }
 
-    // Re-enable button
+    // Re-enable button and unlock
     submitBtn.disabled = false;
     submitBtn.textContent = 'Submit Answer';
+    isDryRunSubmitting = false;
 }
 
 async function saveDryRunSubmission(userAnswer, status, points) {
