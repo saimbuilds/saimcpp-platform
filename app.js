@@ -113,13 +113,30 @@ function setupEventListeners() {
     document.getElementById('favoritesOnly')?.addEventListener('change', renderProblems);
 
     // Dry Run actions
-    document.getElementById('backToDryRun')?.addEventListener('click', () => {
+    const backBtn = document.getElementById('backToDryRun');
+    const submitBtn = document.getElementById('submitDryRunBtn');
+    const viewBtn = document.getElementById('viewExplanationBtn');
+    const clearBtn = document.getElementById('clearDryRunOutput');
+
+    console.log('Dry Run buttons:', { backBtn, submitBtn, viewBtn, clearBtn });
+
+    backBtn?.addEventListener('click', () => {
+        console.log('Back to Dry Run clicked');
         showScreen('dashboardScreen');
         switchView('dryrun');
     });
-    document.getElementById('submitDryRunBtn')?.addEventListener('click', submitDryRunAnswer);
-    document.getElementById('viewExplanationBtn')?.addEventListener('click', viewDryRunExplanation);
-    document.getElementById('clearDryRunOutput')?.addEventListener('click', clearDryRunOutput);
+    submitBtn?.addEventListener('click', () => {
+        console.log('Submit Dry Run clicked');
+        submitDryRunAnswer();
+    });
+    viewBtn?.addEventListener('click', () => {
+        console.log('View Explanation clicked');
+        viewDryRunExplanation();
+    });
+    clearBtn?.addEventListener('click', () => {
+        console.log('Clear Output clicked');
+        clearDryRunOutput();
+    });
 }
 
 // ========================================
