@@ -772,7 +772,7 @@ async function updateUserScore(points, incrementProblemsSolved = true) {
 
     // Calculate streak
     const today = new Date().toDateString();
-    const lastSolvedDate = userProfile.last_solved_date ? new Date(userProfile.last_solved_date).toDateString() : null;
+    const lastSolvedDate = userProfile.last_solve_date ? new Date(userProfile.last_solve_date).toDateString() : null;
     const yesterday = new Date(Date.now() - 86400000).toDateString(); // 24 hours ago
 
     let newStreak = userProfile.current_streak || 0;
@@ -798,11 +798,12 @@ async function updateUserScore(points, incrementProblemsSolved = true) {
             total_score: newScore,
             problems_solved: newProblemsSolved,
             current_streak: newStreak,
-            last_solved_date: new Date().toISOString()
+            last_solve_date: new Date().toISOString()
         })
         .eq('id', userProfile.id);
 
     if (error) {
+        console.error('Error updating score:', error);
         return;
     }
 
@@ -810,7 +811,7 @@ async function updateUserScore(points, incrementProblemsSolved = true) {
     userProfile.total_score = newScore;
     userProfile.problems_solved = newProblemsSolved;
     userProfile.current_streak = newStreak;
-    userProfile.last_solved_date = new Date().toISOString();
+    userProfile.last_solve_date = new Date().toISOString();
 
     // Update UI
     document.getElementById('scoreDisplay').textContent = newScore;
