@@ -70,13 +70,6 @@ export default function Leaderboard() {
         )
     }
 
-    return (
-        <div>
-            {/* Header */}
-            <div className="mb-8">
-                <h2 className="mb-2 text-4xl font-bold">Leaderboard</h2>
-                <p className="text-muted-foreground">Top performers this week</p>
-            </div>
 
             {/* Top 3 Podium */}
             {leaderboard.length >= 3 && (
