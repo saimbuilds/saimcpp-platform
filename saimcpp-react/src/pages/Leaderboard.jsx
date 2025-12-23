@@ -317,15 +317,17 @@ export default function Leaderboard() {
                                                     {profile.full_name?.charAt(0)?.toUpperCase() || profile.email?.charAt(0)?.toUpperCase() || '👤'}
                                                 </div>
                                                 <div>
-                                                    <p className="font-medium text-foreground">
-                                                        {profile.full_name || profile.email?.split('@')[0]}
-                                                        {isCurrentUser && (
-                                                            <Badge variant="outline" className="ml-2 text-xs">
-                                                                You
-                                                            </Badge>
+                                                    <div className="flex items-center gap-2">
+                                                        <p className="font-medium text-foreground">
+                                                            {profile.full_name || profile.email?.split('@')[0]}
+                                                            {isCurrentUser && (
+                                                                <Badge variant="outline" className="ml-2 text-xs">
+                                                                    You
+                                                                </Badge>
+                                                            )}
+                                                        </p>
                                                         {isCreator(profile.email) && <CreatorBadge />}
-                                                        )}
-                                                    </p>
+                                                    </div>
                                                     <p className="text-xs text-muted-foreground">
                                                         {profile.university?.short_name || profile.department || 'N/A'}
                                                     </p>
