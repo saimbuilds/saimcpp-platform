@@ -119,15 +119,15 @@ export default function Problems() {
                         <Select
                             value={filters.category}
                             onChange={(e) => setFilters({ ...filters, category: e.target.value })}
-                            className="w-full"
+                            className="w-full cursor-pointer"
                         >
                             <option value="all">All Categories</option>
-                            <option value="Arrays">📊 Arrays</option>
-                            <option value="Functions">⚙️ Functions</option>
-                            <option value="Pointers">👉 Pointers</option>
-                            <option value="Bitwise">🔢 Bitwise Ops</option>
-                            <option value="DynamicMemory">💾 Dynamic Memory</option>
-                            <option value="Recursion">🔁 Recursion</option>
+                            <option value="Arrays">Arrays</option>
+                            <option value="Functions">Functions</option>
+                            <option value="Pointers">Pointers</option>
+                            <option value="Bitwise">Bitwise Operations</option>
+                            <option value="DynamicMemory">Dynamic Memory</option>
+                            <option value="Recursion">Recursion</option>
                         </Select>
                     </div>
 

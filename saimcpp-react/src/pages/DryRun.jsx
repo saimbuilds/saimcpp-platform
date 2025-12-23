@@ -61,14 +61,6 @@ export default function DryRun() {
 
     return (
         <div className="container mx-auto px-6 py-8">
-            {/* Header */}
-            <div className="mb-8">
-                <h2 className="mb-2 text-3xl font-bold">Dry Run - Code Tracing</h2>
-                <p className="text-muted-foreground">
-                    Trace the code and predict the output
-                </p>
-            </div>
-
             {/* Filters */}
             <div className="mb-8 rounded-xl border border-border bg-card p-6 shadow-lg">
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
