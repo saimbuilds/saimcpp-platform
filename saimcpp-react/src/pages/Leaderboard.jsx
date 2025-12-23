@@ -177,6 +177,7 @@ export default function Leaderboard() {
 
             {/* Top 3 Podium */}
             {leaderboard.length >= 3 && (
+            </div>
                 <div className="mb-12 flex items-end justify-center gap-8">
                     {/* 2nd Place */}
                     <motion.div
