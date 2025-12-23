@@ -264,11 +264,11 @@ export default function DryRunEditor() {
                             value={answer}
                             onChange={(e) => setAnswer(e.target.value)}
                             placeholder="Type your predicted output here..."
-                            className="h-64 w-full rounded-lg border border-border bg-secondary p-4 font-mono text-base text-foreground placeholder:text-muted focus:border-accent-blue focus:outline-none focus:ring-2 focus:ring-accent-blue/20"
+                            className="h-48 w-full rounded-lg border border-border bg-secondary p-4 font-mono text-base text-foreground placeholder:text-muted focus:border-accent-blue focus:outline-none focus:ring-2 focus:ring-accent-blue/20"
                         />
                     </div>
 
-                    <div className="flex h-[35%] flex-col border-t border-border">
+                    <div className="flex h-48 flex-col border-t border-border">
                         <div className="border-b border-border bg-card px-6 py-2">
                             <span className="text-sm font-medium">Result</span>
                         </div>
