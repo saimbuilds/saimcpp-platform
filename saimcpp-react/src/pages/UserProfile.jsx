@@ -109,10 +109,10 @@ export default function UserProfile() {
                     className="h-24 w-24 rounded-full object-cover"
                 />
             ) : (
-            <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 to-purple-400 text-5xl">
-                👤
-            </div>
-        )
+                <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 to-purple-400 text-5xl">
+                    👤
+                </div>
+            )
         }
         return (
             <div className="flex min-h-screen items-center justify-center">
@@ -227,7 +227,10 @@ export default function UserProfile() {
                         {/* Follow/Edit Button */}
                         <div>
                             {isOwnProfile ? (
-                                <Button variant="outline">
+                                <Button
+                                    variant="outline"
+                                    onClick={() => navigate('/edit-profile')}
+                                >
                                     Edit Profile
                                 </Button>
                             ) : (
@@ -254,11 +257,17 @@ export default function UserProfile() {
 
                     {/* Follower Stats */}
                     <div className="mt-6 flex gap-6 border-t border-border pt-4">
-                        <div className="cursor-pointer hover:underline">
+                        <div
+                            className="cursor-pointer hover:underline"
+                            onClick={() => navigate(`/u/${profile.username}/followers`)}
+                        >
                             <span className="font-bold">{profile.follower_count || 0}</span>
                             <span className="ml-1 text-muted-foreground">followers</span>
                         </div>
-                        <div className="cursor-pointer hover:underline">
+                        <div
+                            className="cursor-pointer hover:underline"
+                            onClick={() => navigate(`/u/${profile.username}/following`)}
+                        >
                             <span className="font-bold">{profile.following_count || 0}</span>
                             <span className="ml-1 text-muted-foreground">following</span>
                         </div>

@@ -15,6 +15,8 @@ import Profile from './pages/Profile'
 import UniversityOnboarding from './pages/UniversityOnboarding'
 import UserProfile from './pages/UserProfile'
 import UserDiscovery from './pages/UserDiscovery'
+import EditProfile from './pages/EditProfile'
+import FollowersPage from './pages/FollowersPage'
 
 // Components
 import MobileBlocker from './components/layout/MobileBlocker'
@@ -89,6 +91,8 @@ function App() {
                         <Route path="profile" element={<Profile />} />
                     </Route>
                     <Route path="/discover" element={<UserDiscovery />} />
+                    <Route path="/edit-profile" element={<ProtectedRoute><EditProfile /></ProtectedRoute>} />
+                    <Route path="/u/:username/:type" element={<FollowersPage />} />
                     <Route
                         path="/onboarding"
                         element={
