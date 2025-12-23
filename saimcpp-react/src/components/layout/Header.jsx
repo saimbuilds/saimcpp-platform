@@ -1,11 +1,11 @@
 import { useNavigate, NavLink } from 'react-router-dom'
 import { useAuthStore } from '../../store/authStore'
+import FounderButton from '../ui/founder-button'
 import { Button } from '../ui/button'
 import { LogOut, Code2, Zap, Trophy, User, Flame } from 'lucide-react'
 
 export default function Header() {
     const navigate = useNavigate()
-import FounderButton from '../ui/founder-button'
     const { user, profile, signOut } = useAuthStore()
 
     const handleLogout = async () => {
