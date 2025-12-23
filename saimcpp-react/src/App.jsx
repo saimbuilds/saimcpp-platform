@@ -61,7 +61,16 @@ function App() {
             <BrowserRouter>
                 <MobileBlocker />
                 <Routes>
-                    <Route path="/login" element={<Login />} />
+                    <Route
+                        path="/login"
+                        element={
+                            useAuthStore.getState().user ? (
+                                <Navigate to="/problems" replace />
+                            ) : (
+                                <Login />
+                            )
+                        }
+                    />
                     <Route
                         path="/"
                         element={
