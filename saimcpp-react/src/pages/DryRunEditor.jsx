@@ -201,19 +201,18 @@ export default function DryRunEditor() {
                                 <motion.section
                                     initial={{ opacity: 0, height: 0 }}
                                     animate={{ opacity: 1, height: 'auto' }}
-                                    className="rounded-lg border-l-4 border-accent-blue bg-accent-blue/10 p-4"
+                                    className="overflow-hidden rounded-lg border border-border bg-card p-6"
                                 >
-                                    <h3 className="mb-2 text-lg font-semibold text-accent-blue">
+                                    <h3 className="mb-4 text-lg font-semibold">
                                         📖 Explanation
                                     </h3>
-                                    <pre className="whitespace-pre-wrap font-mono text-sm text-foreground">
+                                    <pre className="whitespace-pre-wrap rounded-lg bg-secondary p-4 font-mono text-sm text-foreground">
                                         {problem.explanation}
                                     </pre>
                                     {!hasViewedExplanation && (
-                                        <div className="mt-4 rounded-lg bg-destructive/10 p-3">
+                                        <div className="mt-4 rounded-lg border border-destructive/50 bg-destructive/10 p-4">
                                             <p className="text-sm font-medium text-destructive">
-                                                ⚠️ Note: You viewed the explanation before submitting. You will
-                                                receive 0 points even if your answer is correct.
+                                                ⚠️ Note: You viewed the explanation before submitting. You will receive 0 points even if your answer is correct.
                                             </p>
                                         </div>
                                     )}
