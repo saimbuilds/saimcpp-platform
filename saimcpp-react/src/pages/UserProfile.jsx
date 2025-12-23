@@ -101,6 +101,17 @@ export default function UserProfile() {
     }
 
     if (isLoading) {
+                            {profile.avatar_url ? (
+                                <img 
+                                    src={profile.avatar_url} 
+                                    alt={profile.full_name}
+                                    className="h-24 w-24 rounded-full object-cover"
+                                />
+                            ) : (
+                                <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 to-purple-400 text-5xl">
+                                    👤
+                                </div>
+                            )}
         return (
             <div className="flex min-h-screen items-center justify-center">
                 <div className="text-center">

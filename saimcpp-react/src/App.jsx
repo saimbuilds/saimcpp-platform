@@ -14,6 +14,7 @@ import Leaderboard from './pages/Leaderboard'
 import Profile from './pages/Profile'
 import UniversityOnboarding from './pages/UniversityOnboarding'
 import UserProfile from './pages/UserProfile'
+import UserDiscovery from './pages/UserDiscovery'
 
 // Components
 import MobileBlocker from './components/layout/MobileBlocker'
@@ -87,6 +88,7 @@ function App() {
                         <Route path="leaderboard" element={<Leaderboard />} />
                         <Route path="profile" element={<Profile />} />
                     </Route>
+                    <Route path="/discover" element={<UserDiscovery />} />
                     <Route
                         path="/onboarding"
                         element={
