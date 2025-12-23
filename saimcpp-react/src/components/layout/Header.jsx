@@ -80,7 +80,7 @@ export default function Header() {
                     <div className="hidden items-center gap-3 text-sm md:flex">
                         <div className="flex items-center gap-1.5 rounded-lg bg-accent-green/10 px-3 py-1.5">
                             <Flame className="h-4 w-4 text-accent-green" />
-                            <span className="font-semibold text-accent-green">{profile?.streak || 0}</span>
+                            <span className="font-semibold text-accent-green">{profile?.current_streak || 0}</span>
                         </div>
                         <div className="flex items-center gap-1.5 rounded-lg bg-accent-blue/10 px-3 py-1.5">
                             <Trophy className="h-4 w-4 text-accent-blue" />

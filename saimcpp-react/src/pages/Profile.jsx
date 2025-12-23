@@ -45,7 +45,7 @@ export default function Profile() {
                 rank,
                 totalUsers,
                 total_score: profile?.total_score || 0,
-                current_streak: profile?.streak || 0,
+                current_streak: profile?.current_streak || 0,
             }
         },
         enabled: !!user,
@@ -177,7 +177,7 @@ export default function Profile() {
                                 <Flame className="h-6 w-6 text-accent-green" />
                             </div>
                             <CardTitle className="text-3xl font-bold text-accent-green">
-                                {stats?.streak || 0}
+                                {stats?.current_streak || 0}
                             </CardTitle>
                         </CardHeader>
                         <CardContent>

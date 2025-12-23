@@ -95,7 +95,7 @@ export default function Leaderboard() {
                                 {leaderboard[1].full_name || leaderboard[1].email?.split('@')[0]}
                             </p>
                             <p className="mb-3 text-2xl font-bold text-accent-blue">
-                                {leaderboard[1].score}
+                                {leaderboard[1].total_score}
                             </p>
                             <p className="text-xs text-muted-foreground">
                                 {leaderboard[1].solved} solved
@@ -116,7 +116,7 @@ export default function Leaderboard() {
                                 {leaderboard[0].full_name || leaderboard[0].email?.split('@')[0]}
                             </p>
                             <p className="mb-3 text-3xl font-bold text-accent-blue">
-                                {leaderboard[0].score}
+                                {leaderboard[0].total_score}
                             </p>
                             <p className="text-xs text-muted-foreground">
                                 {leaderboard[0].solved} solved
@@ -138,7 +138,7 @@ export default function Leaderboard() {
                                 {leaderboard[2].full_name || leaderboard[2].email?.split('@')[0]}
                             </p>
                             <p className="mb-3 text-2xl font-bold text-accent-blue">
-                                {leaderboard[2].score}
+                                {leaderboard[2].total_score}
                             </p>
                             <p className="text-xs text-muted-foreground">
                                 {leaderboard[2].solved} solved
