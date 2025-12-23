@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 import { Badge } from '../components/ui/badge'
 import { Button } from '../components/ui/button'
 import { Target, Trophy, Flame, Calendar } from 'lucide-react'
+import { Linkedin, Github, Twitter, Globe } from 'lucide-react'
 
 export default function Profile() {
     const navigate = useNavigate()
