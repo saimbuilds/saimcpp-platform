@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
+import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { supabase } from '../lib/supabase'
 import { useAuthStore } from '../store/authStore'
@@ -27,6 +28,7 @@ function useDebounce(value, delay) {
 
 export default function Leaderboard() {
     const { user } = useAuthStore()
+    const navigate = useNavigate()
     const [searchQuery, setSearchQuery] = useState('')
     const [selectedUniversity, setSelectedUniversity] = useState('all')
     const [universities, setUniversities] = useState([])
