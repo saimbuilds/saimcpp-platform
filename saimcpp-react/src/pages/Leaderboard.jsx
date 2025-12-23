@@ -70,7 +70,8 @@ export default function Leaderboard() {
         )
     }
 
-
+    return (
+        <div className="container mx-auto max-w-7xl px-8 py-8">
             {/* Top 3 Podium */}
             {leaderboard.length >= 3 && (
                 <div className="mb-12 flex items-end justify-center gap-8">
