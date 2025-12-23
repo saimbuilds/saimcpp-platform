@@ -10,6 +10,7 @@ import { Button } from '../components/ui/button'
 import { Badge } from '../components/ui/badge'
 import { ArrowLeft, Trophy, Target, Flame, Calendar, Linkedin, Github, Twitter, Globe, Users, UserPlus, UserMinus } from 'lucide-react'
 
+import { CreatorBadge, isCreator } from '../components/ui/creator-badge'
 export default function UserProfile() {
     const navigate = useNavigate()
     const { username } = useParams()
