@@ -32,7 +32,7 @@ export default function Profile() {
             // Get global rank
             const { data: allProfiles } = await supabase
                 .from('profiles')
-                .select('id, score')
+                .select('id, total_score')
                 .order('total_score', { ascending: false })
 
             const rank =

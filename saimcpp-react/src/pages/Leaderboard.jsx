@@ -15,7 +15,7 @@ export default function Leaderboard() {
         queryFn: async () => {
             const { data, error } = await supabase
                 .from('profiles')
-                .select('id, full_name, email, score, batch, department')
+                .select('id, full_name, email, total_score, current_streak, batch, department')
                 .order('total_score', { ascending: false })
                 .limit(20)
 
