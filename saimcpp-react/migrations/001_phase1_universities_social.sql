@@ -64,10 +64,10 @@ UPDATE profiles
 SET username = LOWER(SPLIT_PART(email, '@', 1))
 WHERE username IS NULL;
 
--- Backfill FAST NUCES for existing users with @nu.edu.pk emails
+-- Backfill FAST NUCES for existing users with nu.edu.pk emails (all campuses)
 UPDATE profiles
 SET university_id = (SELECT id FROM universities WHERE short_name = 'FAST-NUCES')
-WHERE email LIKE '%@nu.edu.pk' OR email LIKE '%@edu.nu.edu.pk';
+WHERE email LIKE '%nu.edu.pk';
 
 -- 4. Create function to update follower counts
 CREATE OR REPLACE FUNCTION update_follower_counts()
