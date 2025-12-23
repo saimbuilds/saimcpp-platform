@@ -23,9 +23,11 @@ export default function Problems() {
     })
 
     // Load problems
-    const { data: problems = [], isLoading } = useQuery({
+    const { data: problems = [], isLoading, error } = useQuery({
         queryKey: ['problems'],
         queryFn: loadAllProblems,
+        retry: false,
+        staleTime: Infinity,
     })
 
     // Load solved problems
@@ -41,6 +43,7 @@ export default function Problems() {
             return data?.map((s) => s.problem_id) || []
         },
         enabled: !!user,
+        retry: false,
     })
 
     // Load favorites
@@ -55,6 +58,7 @@ export default function Problems() {
             return data?.map((f) => f.problem_id) || []
         },
         enabled: !!user,
+        retry: false,
     })
 
     // Toggle favorite
@@ -89,12 +93,19 @@ export default function Problems() {
         return true
     })
 
-    if (isLoading) {
+    // Show error if query failed
+    if (error) {
+        console.error('Failed to load problems:', error)
+    }
+
+    // Don't block on loading - show what we have
+    if (isLoading && problems.length === 0) {
         return (
             <div className="flex min-h-[60vh] items-center justify-center">
                 <div className="text-center">
                     <div className="mb-4 text-4xl">⚡</div>
                     <p className="text-muted-foreground">Loading problems...</p>
+                    <p className="mt-2 text-xs text-muted">If stuck, check console (F12)</p>
                 </div>
             </div>
         )
