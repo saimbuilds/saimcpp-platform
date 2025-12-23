@@ -9,7 +9,7 @@ import { useAuthStore } from '../store/authStore'
 import { Card, CardHeader, CardTitle, CardContent } from '../components/ui/card'
 import { Button } from '../components/ui/button'
 import { Badge } from '../components/ui/badge'
-import { Trophy, Target, Flame, Calendar, Linkedin, Github, Twitter, Globe, Users, UserPlus, UserMinus } from 'lucide-react'
+import { ArrowLeft, Trophy, Target, Flame, Calendar, Linkedin, Github, Twitter, Globe, Users, UserPlus, UserMinus } from 'lucide-react'
 
 export default function UserProfile() {
     const navigate = useNavigate()
@@ -130,6 +130,15 @@ export default function UserProfile() {
 
     return (
         <div className="container mx-auto max-w-6xl px-8 py-8">
+            <Button
+                variant="ghost"
+                onClick={() => navigate(-1)}
+                className="mb-4 flex items-center gap-2"
+            >
+                <ArrowLeft className="h-4 w-4" />
+                Back
+            </Button>
+
             {/* Profile Header */}
             <motion.div
                 initial={{ opacity: 0, y: -20 }}
