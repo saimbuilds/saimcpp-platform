@@ -33,6 +33,7 @@ export default function UserProfile() {
                 .maybeSingle()
 
             if (error) throw error
+            if (!profileData) return null
 
             // Get submissions count
             const { data: submissions } = await supabase
@@ -49,7 +50,9 @@ export default function UserProfile() {
                 solved: solvedProblems.size,
                 submissions: submissions?.length || 0
             }
-        }
+        },
+        staleTime: 1000 * 60 * 5, // Cache for 5 minutes to prevent loading on page reload
+        enabled: !!username
     })
 
     // Check if current user follows this profile
@@ -128,6 +131,9 @@ export default function UserProfile() {
 
     const isOwnProfile = currentUser?.id === profile.id
 
+    // Check if this profile is the founder (from database role)
+    const isFounder = profile?.role === 'founder'
+
     return (
         <div className="container mx-auto max-w-6xl px-8 py-8">
             <Button
@@ -146,35 +152,78 @@ export default function UserProfile() {
                 className="mb-8"
             >
                 <Card className="p-8">
-                            {profile?.avatar_url ? (
-                                <img
-                                    src={profile?.avatar_url}
-                                    alt={profile?.full_name || profile.username}
-                                    className="h-24 w-24 rounded-full object-cover"
-                                    onError={(e) => {
-                                        e.target.style.display = 'none'
-                                        e.target.nextSibling.style.display = 'flex'
-                                    }}
-                                />
-                            ) : null}
-                            <div
-                                className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 to-purple-400 text-5xl font-bold text-white"
-                                style={{ display: profile?.avatar_url ? 'none' : 'flex' }}
-                            >
-                                {profile?.full_name?.charAt(0)?.toUpperCase() || profile.email?.charAt(0)?.toUpperCase() || '👤'}
+                    <div className="flex items-start justify-between gap-8">
+                        <div className="flex gap-6">
+                            {/* Avatar */}
+                            <div className="flex-shrink-0">
+                                {profile?.avatar_url ? (
+                                    <img
+                                        src={profile?.avatar_url}
+                                        alt={profile?.full_name || profile.username}
+                                        className="h-24 w-24 rounded-full object-cover"
+                                        style={isFounder ? {
+                                            border: '3px solid rgb(168, 85, 247)',
+                                            boxShadow: '0 0 20px rgba(168, 85, 247, 0.8), 0 0 35px rgba(168, 85, 247, 0.5)',
+                                            animation: 'gentleGlow 3s ease-in-out infinite'
+                                        } : {}}
+                                        onError={(e) => {
+                                            e.target.style.display = 'none'
+                                            e.target.nextSibling.style.display = 'flex'
+                                        }}
+                                    />
+                                ) : null}
+                                <div
+                                    className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 to-purple-400 text-5xl font-bold text-white"
+                                    style={isFounder ? {
+                                        border: '3px solid rgb(168, 85, 247)',
+                                        boxShadow: '0 0 20px rgba(168, 85, 247, 0.8), 0 0 35px rgba(168, 85, 247, 0.5)',
+                                        animation: 'gentleGlow 3s ease-in-out infinite',
+                                        display: profile?.avatar_url ? 'none' : 'flex'
+                                    } : { display: profile?.avatar_url ? 'none' : 'flex' }}
+                                >
+                                    {profile?.full_name?.charAt(0)?.toUpperCase() || profile.email?.charAt(0)?.toUpperCase() || '👤'}
+                                </div>
                             </div>
 
                             {/* Info */}
                             <div>
                                 <div className="flex items-center gap-3">
-                                    <h1 className="mb-1 text-3xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 bg-clip-text text-transparent">
+                                    <h1
+                                        className={`mb-1 text-3xl font-bold ${isFounder
+                                            ? 'text-purple-600'
+                                            : ''
+                                            }`}
+                                        style={isFounder ? {
+                                            textShadow: '0 0 20px rgba(147, 51, 234, 0.5), 0 0 35px rgba(147, 51, 234, 0.3)',
+                                            animation: 'gentleGlow 3s ease-in-out infinite'
+                                        } : {}}
+                                    >
                                         {profile?.full_name || profile.email?.split('@')[0]}
                                     </h1>
-                                    <div className="rounded-lg bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 px-3 py-1 text-xs font-bold text-white shadow-lg">
-                                        FOUNDER
-                                    </div>
+                                    {isFounder && (
+                                        <div
+                                            className="rounded-md bg-purple-500 px-2.5 py-1 text-xs font-semibold text-white border border-purple-400"
+                                            style={{
+                                                boxShadow: '0 0 15px rgba(168, 85, 247, 0.6), 0 0 25px rgba(168, 85, 247, 0.4)',
+                                                animation: 'gentleGlow 3s ease-in-out infinite'
+                                            }}
+                                        >
+                                            FOUNDER
+                                        </div>
+                                    )}
                                 </div>
-                                </div>
+
+                                {/* CSS Keyframes for gentle glow animation */}
+                                <style>{`
+                                    @keyframes gentleGlow {
+                                        0%, 100% {
+                                            filter: drop-shadow(0 0 8px rgba(147, 51, 234, 0.4));
+                                        }
+                                        50% {
+                                            filter: drop-shadow(0 0 12px rgba(147, 51, 234, 0.6));
+                                        }
+                                    }
+                                `}</style>
 
                                 {profile.bio && (
                                     <p className="mb-3 max-w-2xl text-foreground">{profile.bio}</p>
@@ -184,8 +233,8 @@ export default function UserProfile() {
                                 <div className="flex gap-2">
                                     {profile.linkedin_url && (
                                         <a href={profile.linkedin_url} target="_blank" rel="noopener noreferrer">
-                                            <Button variant="ghost" size="sm">
-                                                <Linkedin className="h-4 w-4" />
+                                            <Button variant="ghost" size="sm" className="hover:bg-[#0A66C2] hover:text-white transition-colors">
+                                                <Linkedin className="h-4 w-4" fill="currentColor" />
                                             </Button>
                                         </a>
                                     )}
@@ -345,6 +394,6 @@ export default function UserProfile() {
                     </CardContent>
                 </Card>
             </motion.div>
-        </div>
+        </div >
     )
 }
