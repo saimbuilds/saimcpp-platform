@@ -109,7 +109,7 @@ export default function Problems() {
     }
 
     return (
-        <div className="container mx-auto px-6 py-8">
+        <div className="container mx-auto max-w-7xl px-8 py-8">
             {/* Compact Filters */}
             <div className="mb-6 flex flex-wrap items-center gap-4 rounded-lg border border-border bg-card p-4">
                 {/* Category Dropdown */}
