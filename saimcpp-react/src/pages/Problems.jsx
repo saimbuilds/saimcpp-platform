@@ -75,8 +75,8 @@ export default function Problems() {
                 .insert([{ user_id: user.id, problem_id: problemId }])
         }
 
-        // Refetch favorites
-        // React Query will automatically update
+        // Force refetch favorites
+        window.location.reload()
     }
 
     // Filter problems
