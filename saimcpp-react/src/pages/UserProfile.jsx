@@ -101,17 +101,19 @@ export default function UserProfile() {
     }
 
     if (isLoading) {
-                            {profile.avatar_url ? (
-                                <img 
-                                    src={profile.avatar_url} 
-                                    alt={profile.full_name}
-                                    className="h-24 w-24 rounded-full object-cover"
-                                />
-                            ) : (
-                                <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 to-purple-400 text-5xl">
-                                    👤
-                                </div>
-                            )}
+        {
+            profile.avatar_url ? (
+                <img
+                    src={profile.avatar_url}
+                    alt={profile.full_name}
+                    className="h-24 w-24 rounded-full object-cover"
+                />
+            ) : (
+            <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 to-purple-400 text-5xl">
+                👤
+            </div>
+        )
+        }
         return (
             <div className="flex min-h-screen items-center justify-center">
                 <div className="text-center">
@@ -148,8 +150,22 @@ export default function UserProfile() {
                     <div className="flex items-start justify-between">
                         <div className="flex gap-6">
                             {/* Avatar */}
-                            <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 to-purple-400 text-5xl">
-                                👤
+                            {profile.avatar_url ? (
+                                <img
+                                    src={profile.avatar_url}
+                                    alt={profile.full_name || profile.username}
+                                    className="h-24 w-24 rounded-full object-cover"
+                                    onError={(e) => {
+                                        e.target.style.display = 'none'
+                                        e.target.nextSibling.style.display = 'flex'
+                                    }}
+                                />
+                            ) : null}
+                            <div
+                                className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 to-purple-400 text-5xl font-bold text-white"
+                                style={{ display: profile.avatar_url ? 'none' : 'flex' }}
+                            >
+                                {profile.full_name?.charAt(0)?.toUpperCase() || profile.email?.charAt(0)?.toUpperCase() || '👤'}
                             </div>
 
                             {/* Info */}
