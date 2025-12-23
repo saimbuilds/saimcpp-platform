@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import { supabase } from '../lib/supabase'
@@ -8,11 +8,31 @@ import { Badge } from '../components/ui/badge'
 import { Button } from '../components/ui/button'
 import { Trophy, Medal, Award, Search, Users } from 'lucide-react'
 
+// Debounce hook
+function useDebounce(value, delay) {
+    const [debouncedValue, setDebouncedValue] = useState(value)
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setDebouncedValue(value)
+        }, delay)
+
+        return () => {
+            clearTimeout(handler)
+        }
+    }, [value, delay])
+
+    return debouncedValue
+}
+
 export default function Leaderboard() {
     const { user } = useAuthStore()
     const [searchQuery, setSearchQuery] = useState('')
     const [selectedUniversity, setSelectedUniversity] = useState('all')
     const [universities, setUniversities] = useState([])
+
+    // Debounce search by 500ms
+    const debouncedSearch = useDebounce(searchQuery, 500)
 
     useEffect(() => {
         loadUniversities()
@@ -28,11 +48,11 @@ export default function Leaderboard() {
 
     // Load leaderboard data
     const { data: leaderboard = [], isLoading } = useQuery({
-        queryKey: ['leaderboard', selectedUniversity, searchQuery],
+        queryKey: ['leaderboard', selectedUniversity, debouncedSearch],
         queryFn: async () => {
             let query = supabase
                 .from('profiles')
-                .select('id, full_name, email, total_score, current_streak, batch, department, avatar_url, username, university:universities(short_name)')
+                .select('id, full_name, email, total_score, current_streak, batch, department, avatar_url, username, university_id, university:universities(short_name)')
                 .order('total_score', { ascending: false })
                 .limit(20)
 
@@ -41,10 +61,9 @@ export default function Leaderboard() {
                 query = query.eq('university_id', selectedUniversity)
             }
 
-            // Search by name or username
-            if (searchQuery.trim()) {
-                query = query.or(`full_name.ilike.%${searchQuery}%,username.ilike.%${searchQuery}%,email.ilike.%${searchQuery}%`)
-
+            // Search by name or username (only if debouncedSearch has value)
+            if (debouncedSearch.trim()) {
+                query = query.or(`full_name.ilike.%${debouncedSearch}%,username.ilike.%${debouncedSearch}%,email.ilike.%${debouncedSearch}%`)
             }
 
             const { data, error } = await query
@@ -89,7 +108,10 @@ export default function Leaderboard() {
         return 'text-foreground'
     }
 
-    if (isLoading) {
+    // Check if still loading due to debounce
+    const isSearching = searchQuery !== debouncedSearch
+
+    if (isLoading && !isSearching) {
         return (
             <div className="flex min-h-[60vh] items-center justify-center">
                 <div className="text-center">
@@ -114,6 +136,11 @@ export default function Leaderboard() {
                         placeholder="Search by name or username..."
                         className="w-full rounded-lg border border-border bg-secondary py-2 pl-10 pr-4 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20"
                     />
+                    {isSearching && (
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                            <div className="h-4 w-4 animate-spin rounded-full border-2 border-purple-500 border-t-transparent"></div>
+                        </div>
+                    )}
                 </div>
 
                 {/* University Filter Pills */}
@@ -270,14 +297,20 @@ export default function Leaderboard() {
                                                 {profile.avatar_url ? (
                                                     <img
                                                         src={profile.avatar_url}
-                                                        alt={profile.full_name}
+                                                        alt={profile.full_name || profile.username}
                                                         className="h-10 w-10 rounded-full object-cover"
+                                                        onError={(e) => {
+                                                            e.target.style.display = 'none'
+                                                            e.target.nextSibling.style.display = 'flex'
+                                                        }}
                                                     />
-                                                ) : (
-                                                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 to-purple-400 text-lg">
-                                                        👤
-                                                    </div>
-                                                )}
+                                                ) : null}
+                                                <div
+                                                    className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 to-purple-400 text-lg"
+                                                    style={{ display: profile.avatar_url ? 'none' : 'flex' }}
+                                                >
+                                                    {profile.full_name?.charAt(0)?.toUpperCase() || profile.email?.charAt(0)?.toUpperCase() || '👤'}
+                                                </div>
                                                 <div>
                                                     <p className="font-medium text-foreground">
                                                         {profile.full_name || profile.email?.split('@')[0]}
@@ -317,13 +350,16 @@ export default function Leaderboard() {
                 </div>
             </Card>
 
-            {leaderboard.length === 0 && (
+            {leaderboard.length === 0 && !isLoading && (
                 <div className="flex min-h-[40vh] items-center justify-center">
                     <div className="text-center">
                         <div className="mb-4 text-6xl">🏆</div>
                         <p className="text-xl text-muted-foreground">No users found</p>
                         <p className="mt-2 text-sm text-muted">
-                            Try adjusting your search or filters
+                            {selectedUniversity !== 'all'
+                                ? 'No users from this university yet. Make sure the migration was run!'
+                                : 'Try adjusting your search'
+                            }
                         </p>
                     </div>
                 </div>
