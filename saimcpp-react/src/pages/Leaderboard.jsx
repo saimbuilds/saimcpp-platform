@@ -146,10 +146,9 @@ export default function Leaderboard() {
                                 <div className="h-4 w-4 animate-spin rounded-full border-2 border-purple-500 border-t-transparent"></div>
                             </div>
                         )}
-                {/* Meet the Founder Button */}
-                <div className="mb-6 flex justify-center">
+                </div>
+                    </div>
                     <FounderButton />
-            </div>
                 </div>
                 </div>
 
