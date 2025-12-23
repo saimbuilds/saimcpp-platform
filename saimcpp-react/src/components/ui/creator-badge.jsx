@@ -17,7 +17,9 @@ export function CreatorBadge() {
 
 // Helper function to check if user is the creator
 export const isCreator = (email) => {
-    return email === 'saimkhanwah@gmail.com'
+    const creator = email === 'saimkhanwah@gmail.com'
+    console.log('🔍 Creator check:', email, '→', creator)
+    return creator
 }
 
 // Glowing wrapper for creator's elements
