@@ -12,6 +12,8 @@ import DryRun from './pages/DryRun'
 import DryRunEditor from './pages/DryRunEditor'
 import Leaderboard from './pages/Leaderboard'
 import Profile from './pages/Profile'
+import UniversityOnboarding from './pages/UniversityOnboarding'
+import UserProfile from './pages/UserProfile'
 
 // Components
 import MobileBlocker from './components/layout/MobileBlocker'
@@ -85,6 +87,15 @@ function App() {
                         <Route path="leaderboard" element={<Leaderboard />} />
                         <Route path="profile" element={<Profile />} />
                     </Route>
+                    <Route
+                        path="/onboarding"
+                        element={
+                            <ProtectedRoute>
+                                <UniversityOnboarding />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route path="/u/:username" element={<UserProfile />} />
                     <Route
                         path="/problem/:id"
                         element={
