@@ -146,12 +146,9 @@ export default function Leaderboard() {
                                 <div className="h-4 w-4 animate-spin rounded-full border-2 border-purple-500 border-t-transparent"></div>
                             </div>
                         )}
-                </div>
                     </div>
                     <FounderButton />
                 </div>
-                </div>
-
                 {/* University Filter Pills */}
                 <div className="flex flex-wrap gap-2">
                     <Button
