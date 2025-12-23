@@ -149,6 +149,7 @@ export default function Leaderboard() {
                 {/* Meet the Founder Button */}
                 <div className="mb-6 flex justify-center">
                     <FounderButton />
+            </div>
                 </div>
 
                 {/* University Filter Pills */}
