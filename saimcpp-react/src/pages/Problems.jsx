@@ -187,87 +187,77 @@ export default function Problems() {
                         </label>
                     </div>
                 </div>
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
-                whileHover={{
-                    y: -8,
-                    transition: { type: "spring", stiffness: 400, damping: 10 }
-                }}
-                        >
-                <Card
-                    onClick={() => navigate(`/problem/${problem.id}`)}
-                    className={`group relative cursor-pointer overflow-hidden rounded-2xl border-2 p-6 transition-all duration-300 hover:border-brand-purple/50 hover:shadow-2xl hover:shadow-brand-purple/20 ${solvedProblems.includes(problem.id)
-                        ? 'border-easy/50 bg-gradient-to-br from-easy/5 to-transparent'
-                        : 'border-border/50 hover:bg-card/80'
-                        }`}
-                >
-                    <div className="mb-4 flex items-start justify-between">
-                        <div className="flex-1">
-                            <h3 className="mb-1 text-lg font-semibold">{problem.title}</h3>
-                            <Badge variant={problem.difficulty} className="mt-2">
-                                {problem.difficulty}
-                            </Badge>
-                        </div>
-                        <div className="absolute right-4 top-4">
-                            <motion.button
-                                onClick={(e) => {
-                                    e.stopPropagation()
-                                    toggleFavorite(problem.id)
-                                }}
-                                whileHover={{ scale: 1.2, rotate: 15 }}
-                                whileTap={{ scale: 0.9 }}
-                                transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                                className={`group relative rounded-lg p-2 transition-all ${favorites.includes(problem.id)
-                                    ? 'bg-accent-yellow/20'
-                                    : 'hover:bg-muted'
-                                    }`}
-                            >
-                                <Star
-                                    className={`h-5 w-5 transition-all duration-300 ${favorites.includes(problem.id)
-                                        ? 'fill-accent-yellow text-accent-yellow drop-shadow-[0_0_8px_rgba(234,179,8,0.6)]'
-                                        : 'text-muted-foreground group-hover:text-accent-yellow'
-                                        }`}
-                                />
-                            </motion.button>
-                        </div>
-                    </div>
-
-                    <div className="mt-4 flex items-center gap-4 text-sm text-muted-foreground">
-                        <div className="flex items-center gap-1.5">
-                            <FolderOpen className="h-4 w-4" />
-                            <span>{problem.category}</span>
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                            <Target className="h-4 w-4" />
-                            <span>{problem.points || 10} points</span>
-                        </div>
-                    </div>
-
-                    {solvedProblems.includes(problem.id) && (
-                        <div className="mt-3 flex items-center gap-1.5 text-sm font-medium text-easy">
-                            <CheckCircle2 className="h-4 w-4" />
-                            Solved
-                        </div>
-                    )}
-                </Card>
-            </motion.div>
-                    ))}
-        </div>
-
-                {
-        filteredProblems.length === 0 && (
-            <div className="flex min-h-[40vh] items-center justify-center">
-                <div className="text-center">
-                    <div className="mb-4 text-6xl">🔍</div>
-                    <p className="text-xl text-muted-foreground">No problems found</p>
-                    <p className="mt-2 text-sm text-muted">
-                        Try adjusting your filters
-                    </p>
-                </div>
             </div>
-        )
-    }
-            </div >
-            )
+
+            {/* Problems Grid */}
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {filteredProblems.map((problem, index) => (
+                    <motion.div
+                        key={problem.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.05 }}
+                        whileHover={{ y: -4 }}
+                    >
+                        <Card
+                            className={`cursor-pointer p-6 transition-all hover:border-accent-blue hover:shadow-lg ${solvedProblems.includes(problem.id)
+                                ? 'border-l-4 border-l-easy bg-gradient-to-r from-easy/5 to-transparent'
+                                : ''
+                                }`}
+                            onClick={() => navigate(`/problem/${problem.id}`)}
+                        >
+                            <div className="mb-4 flex items-start justify-between">
+                                <div className="flex-1">
+                                    <h3 className="mb-1 text-lg font-semibold">{problem.title}</h3>
+                                    <Badge variant={problem.difficulty} className="mt-2">
+                                        {problem.difficulty}
+                                    </Badge>
+                                </div>
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        toggleFavorite(problem.id)
+                                    }}
+                                    className={`text-2xl transition-transform hover:scale-125 ${favorites.includes(problem.id) ? '' : 'grayscale'
+                                        }`}
+                                >
+                                    ⭐
+                                </button>
+                            </div>
+
+                            <div className="mt-4 flex items-center gap-4 text-sm text-muted-foreground">
+                                <div className="flex items-center gap-1.5">
+                                    <FolderOpen className="h-4 w-4" />
+                                    <span>{problem.category}</span>
+                                </div>
+                                <div className="flex items-center gap-1.5">
+                                    <Target className="h-4 w-4" />
+                                    <span>{problem.points || 10} points</span>
+                                </div>
+                            </div>
+
+                            {solvedProblems.includes(problem.id) && (
+                                <div className="mt-3 flex items-center gap-1.5 text-sm font-medium text-easy">
+                                    <CheckCircle2 className="h-4 w-4" />
+                                    Solved
+                                </div>
+                            )}
+                        </Card>
+                    </motion.div>
+                ))}
+            </div>
+
+            {filteredProblems.length === 0 && (
+                <div className="flex min-h-[40vh] items-center justify-center">
+                    <div className="text-center">
+                        <div className="mb-4 text-6xl">🔍</div>
+                        <p className="text-xl text-muted-foreground">No problems found</p>
+                        <p className="mt-2 text-sm text-muted">
+                            Try adjusting your filters
+                        </p>
+                    </div>
+                </div>
+            )}
+        </div>
+    )
 }
