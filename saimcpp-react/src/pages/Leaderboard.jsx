@@ -151,6 +151,7 @@ export default function Leaderboard() {
                     <FounderButton />
             </div>
                 </div>
+                </div>
 
                 {/* University Filter Pills */}
                 <div className="flex flex-wrap gap-2">
