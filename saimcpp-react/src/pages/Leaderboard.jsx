@@ -1,23 +1,53 @@
+import { useState, useEffect } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import { supabase } from '../lib/supabase'
 import { useAuthStore } from '../store/authStore'
 import { Card } from '../components/ui/card'
 import { Badge } from '../components/ui/badge'
-import { Trophy, Medal, Award } from 'lucide-react'
+import { Button } from '../components/ui/button'
+import { Trophy, Medal, Award, Search, Users } from 'lucide-react'
 
 export default function Leaderboard() {
     const { user } = useAuthStore()
+    const [searchQuery, setSearchQuery] = useState('')
+    const [selectedUniversity, setSelectedUniversity] = useState('all')
+    const [universities, setUniversities] = useState([])
+
+    useEffect(() => {
+        loadUniversities()
+    }, [])
+
+    const loadUniversities = async () => {
+        const { data } = await supabase
+            .from('universities')
+            .select('*')
+            .order('name')
+        setUniversities(data || [])
+    }
 
     // Load leaderboard data
     const { data: leaderboard = [], isLoading } = useQuery({
-        queryKey: ['leaderboard'],
+        queryKey: ['leaderboard', selectedUniversity, searchQuery],
         queryFn: async () => {
-            const { data, error } = await supabase
+            let query = supabase
                 .from('profiles')
-                .select('id, full_name, email, total_score, current_streak, batch, department')
+                .select('id, full_name, email, total_score, current_streak, batch, department, avatar_url, username, university:universities(short_name)')
                 .order('total_score', { ascending: false })
                 .limit(20)
+
+            // Filter by university
+            if (selectedUniversity !== 'all') {
+                query = query.eq('university_id', selectedUniversity)
+            }
+
+            // Search by name or username
+            if (searchQuery.trim()) {
+                query = query.or(`full_name.ilike.%${searchQuery}%,username.ilike.%${searchQuery}%,email.ilike.%${searchQuery}%`)
+
+            }
+
+            const { data, error } = await query
 
             if (error) throw error
 
@@ -42,7 +72,7 @@ export default function Leaderboard() {
 
             return usersWithStats
         },
-        refetchInterval: 30000, // Refetch every 30 seconds
+        refetchInterval: 30000,
     })
 
     const getMedalIcon = (rank) => {
@@ -72,6 +102,51 @@ export default function Leaderboard() {
 
     return (
         <div className="container mx-auto max-w-7xl px-8 py-8">
+            {/* Search and Filters */}
+            <div className="mb-6 space-y-4">
+                {/* Search Bar */}
+                <div className="relative">
+                    <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+                    <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Search by name or username..."
+                        className="w-full rounded-lg border border-border bg-secondary py-2 pl-10 pr-4 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20"
+                    />
+                </div>
+
+                {/* University Filter Pills */}
+                <div className="flex flex-wrap gap-2">
+                    <Button
+                        variant={selectedUniversity === 'all' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setSelectedUniversity('all')}
+                        className={selectedUniversity === 'all'
+                            ? 'bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600'
+                            : 'hover:border-purple-500 hover:text-purple-500'
+                        }
+                    >
+                        <Users className="mr-2 h-4 w-4" />
+                        All Universities
+                    </Button>
+                    {universities.slice(0, 8).map((uni) => (
+                        <Button
+                            key={uni.id}
+                            variant={selectedUniversity === uni.id ? 'default' : 'outline'}
+                            size="sm"
+                            onClick={() => setSelectedUniversity(uni.id)}
+                            className={selectedUniversity === uni.id
+                                ? 'bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600'
+                                : 'hover:border-purple-500 hover:text-purple-500'
+                            }
+                        >
+                            {uni.short_name}
+                        </Button>
+                    ))}
+                </div>
+            </div>
+
             {/* Top 3 Podium */}
             {leaderboard.length >= 3 && (
                 <div className="mb-12 flex items-end justify-center gap-8">
@@ -179,7 +254,7 @@ export default function Leaderboard() {
                                         initial={{ opacity: 0, x: -20 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ delay: index * 0.03 }}
-                                        className={`border-b border-border transition-colors hover:bg-muted ${isCurrentUser ? 'bg-accent-blue/10' : ''
+                                        className={`border-b border-border transition-colors hover:bg-muted ${isCurrentUser ? 'bg-purple-500/10' : ''
                                             }`}
                                     >
                                         <td className="px-6 py-4">
@@ -191,18 +266,31 @@ export default function Leaderboard() {
                                             </div>
                                         </td>
                                         <td className="px-6 py-4">
-                                            <div>
-                                                <p className="font-medium text-foreground">
-                                                    {profile.full_name || profile.email?.split('@')[0]}
-                                                    {isCurrentUser && (
-                                                        <Badge variant="outline" className="ml-2 text-xs">
-                                                            You
-                                                        </Badge>
-                                                    )}
-                                                </p>
-                                                <p className="text-xs text-muted-foreground">
-                                                    {profile.department || 'N/A'}
-                                                </p>
+                                            <div className="flex items-center gap-3">
+                                                {profile.avatar_url ? (
+                                                    <img
+                                                        src={profile.avatar_url}
+                                                        alt={profile.full_name}
+                                                        className="h-10 w-10 rounded-full object-cover"
+                                                    />
+                                                ) : (
+                                                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 to-purple-400 text-lg">
+                                                        👤
+                                                    </div>
+                                                )}
+                                                <div>
+                                                    <p className="font-medium text-foreground">
+                                                        {profile.full_name || profile.email?.split('@')[0]}
+                                                        {isCurrentUser && (
+                                                            <Badge variant="outline" className="ml-2 text-xs">
+                                                                You
+                                                            </Badge>
+                                                        )}
+                                                    </p>
+                                                    <p className="text-xs text-muted-foreground">
+                                                        {profile.university?.short_name || profile.department || 'N/A'}
+                                                    </p>
+                                                </div>
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 text-center">
@@ -233,9 +321,9 @@ export default function Leaderboard() {
                 <div className="flex min-h-[40vh] items-center justify-center">
                     <div className="text-center">
                         <div className="mb-4 text-6xl">🏆</div>
-                        <p className="text-xl text-muted-foreground">No data yet</p>
+                        <p className="text-xl text-muted-foreground">No users found</p>
                         <p className="mt-2 text-sm text-muted">
-                            Start solving problems to appear on the leaderboard!
+                            Try adjusting your search or filters
                         </p>
                     </div>
                 </div>
