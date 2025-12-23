@@ -101,7 +101,7 @@ export default function Problems() {
     }
 
     return (
-        <div>
+        <div className="container mx-auto px-6 py-8">
             {/* Header */}
             <div className="mb-8">
                 <h2 className="mb-2 text-4xl font-bold">Problem Bank</h2>
@@ -194,8 +194,8 @@ export default function Problems() {
                         <Card
                             onClick={() => navigate(`/problem/${problem.id}`)}
                             className={`group relative cursor-pointer overflow-hidden border-2 transition-all duration-300 hover:border-accent-blue/50 hover:shadow-2xl hover:shadow-accent-blue/20 ${solvedProblems.includes(problem.id)
-                                    ? 'border-easy/30 bg-easy/5'
-                                    : 'hover:bg-card/80'
+                                ? 'border-easy/30 bg-easy/5'
+                                : 'hover:bg-card/80'
                                 }`}
                         >
                             <div className="mb-4 flex items-start justify-between">
