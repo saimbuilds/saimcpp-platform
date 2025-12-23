@@ -1,64 +1,70 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-    darkMode: 'class',
-    content: [
-        './index.html',
-        './src/**/*.{js,jsx,ts,tsx}',
-    ],
+    darkMode: ['class'],
+    content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
     theme: {
+        container: {
+            center: true,
+            padding: '2rem',
+            screens: {
+                '2xl': '1400px',
+            },
+        },
         extend: {
             colors: {
-                // GitHub Dark Theme
-                background: '#0d1117',
-                foreground: '#c9d1d9',
-                card: {
-                    DEFAULT: '#161b22',
-                    foreground: '#c9d1d9',
-                },
-                popover: {
-                    DEFAULT: '#161b22',
-                    foreground: '#c9d1d9',
-                },
+                border: 'hsl(var(--border))',
+                input: 'hsl(var(--input))',
+                ring: 'hsl(var(--ring))',
+                background: 'hsl(var(--background))',
+                foreground: 'hsl(var(--foreground))',
                 primary: {
-                    DEFAULT: '#58a6ff',
-                    foreground: '#000000',
+                    DEFAULT: 'hsl(var(--primary))',
+                    foreground: 'hsl(var(--primary-foreground))',
                 },
                 secondary: {
-                    DEFAULT: '#1c2128',
-                    foreground: '#c9d1d9',
-                },
-                muted: {
-                    DEFAULT: '#21262d',
-                    foreground: '#8b949e',
-                },
-                accent: {
-                    DEFAULT: '#58a6ff',
-                    foreground: '#000000',
-                    blue: '#58a6ff',
-                    green: '#3fb950',
-                    yellow: '#d29922',
-                    red: '#f85149',
+                    DEFAULT: 'hsl(var(--secondary))',
+                    foreground: 'hsl(var(--secondary-foreground))',
                 },
                 destructive: {
-                    DEFAULT: '#f85149',
-                    foreground: '#ffffff',
+                    DEFAULT: 'hsl(var(--destructive))',
+                    foreground: 'hsl(var(--destructive-foreground))',
                 },
-                border: '#30363d',
-                input: '#30363d',
-                ring: '#58a6ff',
-                // Difficulty colors
-                easy: '#3fb950',
-                medium: '#d29922',
-                hard: '#f85149',
+                muted: {
+                    DEFAULT: 'hsl(var(--muted))',
+                    foreground: 'hsl(var(--muted-foreground))',
+                },
+                accent: {
+                    DEFAULT: 'hsl(var(--accent))',
+                    foreground: 'hsl(var(--accent-foreground))',
+                },
+                popover: {
+                    DEFAULT: 'hsl(var(--popover))',
+                    foreground: 'hsl(var(--popover-foreground))',
+                },
+                card: {
+                    DEFAULT: 'hsl(var(--card))',
+                    foreground: 'hsl(var(--card-foreground))',
+                },
+                // Custom theme colors - Modern Purple/Blue scheme
+                'brand-purple': '#8b5cf6',
+                'brand-blue': '#3b82f6',
+                'brand-cyan': '#06b6d4',
+                'brand-pink': '#ec4899',
+                'brand-green': '#10b981',
+                'brand-orange': '#f59e0b',
+
+                'accent-blue': '#3b82f6',
+                'accent-green': '#10b981',
+                'accent-yellow': '#f59e0b',
+
+                easy: '#10b981',
+                medium: '#f59e0b',
+                hard: '#ef4444',
             },
             borderRadius: {
-                lg: '0.5rem',
-                md: '0.375rem',
-                sm: '0.25rem',
-            },
-            fontFamily: {
-                sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'sans-serif'],
-                mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
+                lg: 'var(--radius)',
+                md: 'calc(var(--radius) - 2px)',
+                sm: 'calc(var(--radius) - 4px)',
             },
             keyframes: {
                 'accordion-down': {
@@ -76,5 +82,5 @@ export default {
             },
         },
     },
-    plugins: [],
+    plugins: [require('tailwindcss-animate')],
 }
