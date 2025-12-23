@@ -1,46 +1,48 @@
 import { useQuery } from '@tanstack/react-query'
-import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import { supabase } from '../lib/supabase'
-import { Button } from '../components/ui/button'
 import { useAuthStore } from '../store/authStore'
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 import { Badge } from '../components/ui/badge'
-    const navigate = useNavigate()
+import { Button } from '../components/ui/button'
 import { Target, Trophy, Flame, Calendar } from 'lucide-react'
 
 export default function Profile() {
+    const navigate = useNavigate()
     const { user, profile } = useAuthStore()
 
-    // Load user stats
+    // Get user stats
     const { data: stats, isLoading } = useQuery({
         queryKey: ['user-stats', user?.id],
         queryFn: async () => {
             if (!user) return null
 
-            // Get submissions
-            const { data: submissions } = await supabase
+            // Get all submissions for this user
+            const { data: submissions, error: submissionsError } = await supabase
                 .from('submissions')
-                .select('problem_id, status, created_at')
+                .select('*')
                 .eq('user_id', user.id)
-                .order('created_at', { ascending: false })
 
-            // Count unique solved problems
+            if (submissionsError) throw submissionsError
+
+            // Count solved problems (unique problem_ids with accepted status)
             const solvedProblems = new Set(
-                submissions
-                    ?.filter((s) => s.status === 'accepted')
-                    .map((s) => s.problem_id) || []
+                submissions?.filter((s) => s.status === 'accepted').map((s) => s.problem_id) ||
+                []
             )
 
-            // Get global rank
-            const { data: allProfiles } = await supabase
+            // Get all profiles to calculate rank
+            const { data: allProfiles, error: profilesError } = await supabase
                 .from('profiles')
                 .select('id, total_score')
                 .order('total_score', { ascending: false })
 
-            const rank =
-                allProfiles?.findIndex((p) => p.id === user.id) + 1 || 0
-            const totalUsers = allProfiles?.length || 0
+            if (profilesError) throw profilesError
+
+            // Find user's rank
+            const rank = allProfiles.findIndex((p) => p.id === user.id) + 1
+            const totalUsers = allProfiles.length
 
             return {
                 solved: solvedProblems.size,
@@ -50,24 +52,6 @@ export default function Profile() {
                 total_score: profile?.total_score || 0,
                 current_streak: profile?.current_streak || 0,
             }
-        },
-        enabled: !!user,
-    })
-
-    // Load recent submissions
-    const { data: recentSubmissions = [] } = useQuery({
-        queryKey: ['recent-submissions', user?.id],
-        queryFn: async () => {
-            if (!user) return []
-
-            const { data } = await supabase
-                .from('submissions')
-                .select('problem_id, status, created_at, points_earned')
-                .eq('user_id', user.id)
-                .order('created_at', { ascending: false })
-                .limit(10)
-
-            return data || []
         },
         enabled: !!user,
     })
@@ -84,7 +68,7 @@ export default function Profile() {
     }
 
     return (
-        <div>
+        <div className="container mx-auto max-w-6xl px-8 py-8">
             {/* Profile Header */}
             <motion.div
                 initial={{ opacity: 0, y: -20 }}
@@ -94,8 +78,22 @@ export default function Profile() {
                 <Card className="p-8">
                     <div className="flex items-center gap-6">
                         {/* Avatar */}
-                        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-accent-blue to-accent-green text-4xl">
-                            👤
+                        {profile?.avatar_url ? (
+                            <img
+                                src={profile.avatar_url}
+                                alt={profile?.full_name}
+                                className="h-20 w-20 rounded-full object-cover"
+                                onError={(e) => {
+                                    e.target.style.display = 'none'
+                                    e.target.nextSibling.style.display = 'flex'
+                                }}
+                            />
+                        ) : null}
+                        <div
+                            className="flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 to-purple-400 text-4xl font-bold text-white"
+                            style={{ display: profile?.avatar_url ? 'none' : 'flex' }}
+                        >
+                            {profile?.full_name?.charAt(0)?.toUpperCase() || user?.email?.charAt(0)?.toUpperCase() || '👤'}
                         </div>
 
                         {/* User Info */}
@@ -103,25 +101,41 @@ export default function Profile() {
                             <h2 className="mb-1 text-3xl font-bold">
                                 {profile?.full_name || user?.email?.split('@')[0]}
                             </h2>
-                            <p className="text-muted-foreground">
-                                {profile?.email || user?.email}
+                            <p className="text-sm text-muted-foreground">
+                                @{profile?.username}
                             </p>
-                            {profile?.batch && profile?.department && (
-                                <p className="mt-1 text-sm text-muted-foreground">
-                                    {profile.department} · {profile.batch}
-                                </p>
-                            )}
+                            <div className="mt-2 flex gap-4 text-sm">
+                                <span
+                                    className="cursor-pointer hover:underline"
+                                    onClick={() => navigate(`/u/${profile?.username}/followers`)}
+                                >
+                                    <strong>{profile?.follower_count || 0}</strong> followers
+                                </span>
+                                <span
+                                    className="cursor-pointer hover:underline"
+                                    onClick={() => navigate(`/u/${profile?.username}/following`)}
+                                >
+                                    <strong>{profile?.following_count || 0}</strong> following
+                                </span>
+                            </div>
                         </div>
 
-                        {/* Rank Badge */}
-                        <div className="text-right">
-                            <p className="text-sm text-muted-foreground">Global Rank</p>
-                            <p className="text-3xl font-bold text-accent-blue">
-                                #{stats?.rank || '--'}
-                            </p>
-                            <p className="text-xs text-muted">
-                                of {stats?.totalUsers || '--'} users
-                            </p>
+                        {/* Action Buttons */}
+                        <div className="flex flex-col gap-2">
+                            <Button
+                                variant="outline"
+                                onClick={() => navigate('/edit-profile')}
+                                className="whitespace-nowrap bg-gradient-to-r from-purple-600 to-purple-500 text-white hover:from-purple-700 hover:to-purple-600"
+                            >
+                                Edit Profile
+                            </Button>
+                            <Button
+                                variant="ghost"
+                                onClick={() => navigate(`/u/${profile?.username}`)}
+                                className="whitespace-nowrap text-xs"
+                            >
+                                View Public Profile
+                            </Button>
                         </div>
                     </div>
                 </Card>
@@ -210,7 +224,7 @@ export default function Profile() {
                 </motion.div>
             </div>
 
-            {/* Recent Submissions */}
+            {/* Recent Activity */}
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -221,51 +235,9 @@ export default function Profile() {
                         <CardTitle>Recent Submissions</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        {recentSubmissions.length > 0 ? (
-                            <div className="space-y-3">
-                                {recentSubmissions.map((submission, index) => (
-                                    <motion.div
-                                        key={index}
-                                        initial={{ opacity: 0, x: -20 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        transition={{ delay: index * 0.05 }}
-                                        className="flex items-center justify-between rounded-lg border border-border p-4 transition-colors hover:bg-muted"
-                                    >
-                                        <div className="flex items-center gap-4">
-                                            <Badge
-                                                variant={
-                                                    submission.status === 'accepted'
-                                                        ? 'easy'
-                                                        : 'destructive'
-                                                }
-                                            >
-                                                {submission.status === 'accepted' ? '✓' : '✗'}
-                                            </Badge>
-                                            <div>
-                                                <p className="font-medium">
-                                                    Problem #{submission.problem_id}
-                                                </p>
-                                                <p className="text-xs text-muted-foreground">
-                                                    {new Date(submission.created_at).toLocaleDateString()}
-                                                </p>
-                                            </div>
-                                        </div>
-                                        {submission.status === 'accepted' && (
-                                            <span className="text-sm font-medium text-accent-blue">
-                                                +{submission.points_earned} pts
-                                            </span>
-                                        )}
-                                    </motion.div>
-                                ))}
-                            </div>
-                        ) : (
-                            <div className="py-12 text-center">
-                                <p className="text-muted-foreground">No submissions yet</p>
-                                <p className="mt-1 text-sm text-muted">
-                                    Start solving problems to see your activity here!
-                                </p>
-                            </div>
-                        )}
+                        <p className="py-12 text-center text-muted-foreground">
+                            Recent submissions will appear here...
+                        </p>
                     </CardContent>
                 </Card>
             </motion.div>
