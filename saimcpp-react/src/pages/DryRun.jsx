@@ -61,42 +61,36 @@ export default function DryRun() {
 
     return (
         <div className="container mx-auto px-6 py-8">
-            {/* Filters */}
-            <div className="mb-8 rounded-xl border border-border bg-card p-6 shadow-lg">
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                    <div className="flex flex-col gap-2">
-                        <label className="text-sm font-semibold text-foreground">Difficulty</label>
-                        <div className="flex gap-2">
-                            {['all', 'easy', 'medium', 'hard'].map((diff) => (
-                                <Button
-                                    key={diff}
-                                    variant={filters.difficulty === diff ? 'default' : 'outline'}
-                                    size="sm"
-                                    onClick={() => setFilters({ ...filters, difficulty: diff })}
-                                    className="flex-1 capitalize"
-                                >
-                                    {diff === 'all' ? 'All' : diff}
-                                </Button>
-                            ))}
-                        </div>
-                    </div>
+            {/* Compact Filters */}
+            <div className="mb-6 flex flex-wrap items-center gap-4 rounded-lg border border-border bg-card p-4">
+                {/* Difficulty Buttons */}
+                <div className="flex gap-2">
+                    {['all', 'easy', 'medium', 'hard'].map((diff) => (
+                        <Button
+                            key={diff}
+                            variant={filters.difficulty === diff ? 'default' : 'outline'}
+                            size="sm"
+                            onClick={() => setFilters({ ...filters, difficulty: diff })}
+                            className="capitalize"
+                        >
+                            {diff === 'all' ? 'All' : diff}
+                        </Button>
+                    ))}
+                </div>
 
-                    <div className="flex flex-col gap-2">
-                        <label className="text-sm font-semibold text-foreground">Status</label>
-                        <div className="flex gap-2">
-                            {['all', 'unsolved', 'solved'].map((status) => (
-                                <Button
-                                    key={status}
-                                    variant={filters.status === status ? 'default' : 'outline'}
-                                    size="sm"
-                                    onClick={() => setFilters({ ...filters, status })}
-                                    className="flex-1 capitalize"
-                                >
-                                    {status === 'all' ? 'All' : status}
-                                </Button>
-                            ))}
-                        </div>
-                    </div>
+                {/* Status Buttons */}
+                <div className="flex gap-2">
+                    {['all', 'unsolved', 'solved'].map((status) => (
+                        <Button
+                            key={status}
+                            variant={filters.status === status ? 'default' : 'outline'}
+                            size="sm"
+                            onClick={() => setFilters({ ...filters, status })}
+                            className="capitalize"
+                        >
+                            {status === 'all' ? 'All' : status}
+                        </Button>
+                    ))}
                 </div>
             </div>
 

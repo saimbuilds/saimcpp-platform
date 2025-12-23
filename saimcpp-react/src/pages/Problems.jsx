@@ -110,79 +110,63 @@ export default function Problems() {
 
     return (
         <div className="container mx-auto px-6 py-8">
-            {/* Filters */}
-            <div className="mb-8 rounded-xl border border-border bg-card p-6 shadow-lg">
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
-                    {/* Category */}
-                    <div className="flex flex-col gap-2">
-                        <label className="text-sm font-semibold text-foreground">Category</label>
-                        <Select
-                            value={filters.category}
-                            onChange={(e) => setFilters({ ...filters, category: e.target.value })}
-                            className="w-full cursor-pointer"
+            {/* Compact Filters */}
+            <div className="mb-6 flex flex-wrap items-center gap-4 rounded-lg border border-border bg-card p-4">
+                {/* Category Dropdown */}
+                <Select
+                    value={filters.category}
+                    onChange={(e) => setFilters({ ...filters, category: e.target.value })}
+                    className="w-48"
+                >
+                    <option value="all">All Categories</option>
+                    <option value="Arrays">Arrays</option>
+                    <option value="Functions">Functions</option>
+                    <option value="Pointers">Pointers</option>
+                    <option value="Bitwise">Bitwise Operations</option>
+                    <option value="DynamicMemory">Dynamic Memory</option>
+                    <option value="Recursion">Recursion</option>
+                </Select>
+
+                {/* Difficulty Buttons */}
+                <div className="flex gap-2">
+                    {['all', 'easy', 'medium', 'hard'].map((diff) => (
+                        <Button
+                            key={diff}
+                            variant={filters.difficulty === diff ? 'default' : 'outline'}
+                            size="sm"
+                            onClick={() => setFilters({ ...filters, difficulty: diff })}
+                            className="capitalize"
                         >
-                            <option value="all">All Categories</option>
-                            <option value="Arrays">Arrays</option>
-                            <option value="Functions">Functions</option>
-                            <option value="Pointers">Pointers</option>
-                            <option value="Bitwise">Bitwise Operations</option>
-                            <option value="DynamicMemory">Dynamic Memory</option>
-                            <option value="Recursion">Recursion</option>
-                        </Select>
-                    </div>
-
-                    {/* Difficulty */}
-                    <div className="flex flex-col gap-2">
-                        <label className="text-sm font-semibold text-foreground">Difficulty</label>
-                        <div className="flex gap-2">
-                            {['all', 'easy', 'medium', 'hard'].map((diff) => (
-                                <Button
-                                    key={diff}
-                                    variant={filters.difficulty === diff ? 'default' : 'outline'}
-                                    size="sm"
-                                    onClick={() => setFilters({ ...filters, difficulty: diff })}
-                                    className="flex-1 capitalize"
-                                >
-                                    {diff === 'all' ? 'All' : diff}
-                                </Button>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Status */}
-                    <div className="flex flex-col gap-2">
-                        <label className="text-sm font-semibold text-foreground">Status</label>
-                        <div className="flex gap-2">
-                            {['all', 'unsolved', 'solved'].map((status) => (
-                                <Button
-                                    key={status}
-                                    variant={filters.status === status ? 'default' : 'outline'}
-                                    size="sm"
-                                    onClick={() => setFilters({ ...filters, status })}
-                                    className="flex-1 capitalize"
-                                >
-                                    {status === 'all' ? 'All' : status}
-                                </Button>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Favorites Only */}
-                    <div className="flex flex-col gap-2">
-                        <label className="text-sm font-semibold text-foreground">Filter</label>
-                        <label className="flex items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-sm font-medium transition-colors hover:bg-muted">
-                            <input
-                                type="checkbox"
-                                checked={filters.favoritesOnly}
-                                onChange={(e) =>
-                                    setFilters({ ...filters, favoritesOnly: e.target.checked })
-                                }
-                                className="h-4 w-4 rounded border-border"
-                            />
-                            ⭐ Favorites Only
-                        </label>
-                    </div>
+                            {diff === 'all' ? 'All' : diff}
+                        </Button>
+                    ))}
                 </div>
+
+                {/* Status Buttons */}
+                <div className="flex gap-2">
+                    {['all', 'unsolved', 'solved'].map((status) => (
+                        <Button
+                            key={status}
+                            variant={filters.status === status ? 'default' : 'outline'}
+                            size="sm"
+                            onClick={() => setFilters({ ...filters, status })}
+                            className="capitalize"
+                        >
+                            {status === 'all' ? 'All' : status}
+                        </Button>
+                    ))}
+                </div>
+
+                {/* Favorites Checkbox */}
+                <label className="flex items-center gap-2 text-sm font-medium">
+                    <input
+                        type="checkbox"
+                        checked={filters.favoritesOnly}
+                        onChange={(e) => setFilters({ ...filters, favoritesOnly: e.target.checked })}
+                        className="h-4 w-4 rounded border-border"
+                    />
+                    ⭐ Favorites
+                </label>
             </div>
 
             {/* Problems Grid */}
