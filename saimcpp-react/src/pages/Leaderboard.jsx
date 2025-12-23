@@ -8,6 +8,7 @@ import { Card } from '../components/ui/card'
 import { Badge } from '../components/ui/badge'
 import { Button } from '../components/ui/button'
 import { Trophy, Medal, Award, Search, Users } from 'lucide-react'
+import { CreatorBadge, isCreator, CreatorGlow } from '../components/ui/creator-badge'
 
 // Debounce hook
 function useDebounce(value, delay) {
@@ -322,6 +323,7 @@ export default function Leaderboard() {
                                                             <Badge variant="outline" className="ml-2 text-xs">
                                                                 You
                                                             </Badge>
+                                                        {isCreator(profile.email) && <CreatorBadge />}
                                                         )}
                                                     </p>
                                                     <p className="text-xs text-muted-foreground">
