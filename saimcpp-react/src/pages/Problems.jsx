@@ -78,9 +78,6 @@ export default function Problems() {
                 .from('favorites')
                 .insert([{ user_id: user.id, problem_id: problemId }])
         }
-
-        // Force refetch favorites
-        window.location.reload()
     }
 
     // Filter problems
