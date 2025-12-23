@@ -95,14 +95,14 @@ export default function Problems() {
         console.error('Failed to load problems:', error)
     }
 
-    // Don't block on loading - show what we have
+    // Only show loading on initial load (no data yet)
+    // Don't block on refetch
     if (isLoading && problems.length === 0) {
         return (
             <div className="flex min-h-[60vh] items-center justify-center">
                 <div className="text-center">
                     <div className="mb-4 text-4xl">⚡</div>
                     <p className="text-muted-foreground">Loading problems...</p>
-                    <p className="mt-2 text-xs text-muted">If stuck, check console (F12)</p>
                 </div>
             </div>
         )
