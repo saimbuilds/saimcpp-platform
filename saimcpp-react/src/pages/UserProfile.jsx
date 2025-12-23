@@ -103,19 +103,6 @@ export default function UserProfile() {
     }
 
     if (isLoading) {
-        {
-            profile.avatar_url ? (
-                <img
-                    src={profile.avatar_url}
-                    alt={profile.full_name}
-                    className="h-24 w-24 rounded-full object-cover"
-                />
-            ) : (
-                <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 to-purple-400 text-5xl">
-                    👤
-                </div>
-            )
-        }
         return (
             <div className="flex min-h-screen items-center justify-center">
                 <div className="text-center">
@@ -152,10 +139,10 @@ export default function UserProfile() {
                     <div className="flex items-start justify-between">
                         <div className="flex gap-6">
                             {/* Avatar */}
-                            {profile.avatar_url ? (
+                            {profile?.avatar_url ? (
                                 <img
-                                    src={profile.avatar_url}
-                                    alt={profile.full_name || profile.username}
+                                    src={profile?.avatar_url}
+                                    alt={profile?.full_name || profile.username}
                                     className="h-24 w-24 rounded-full object-cover"
                                     onError={(e) => {
                                         e.target.style.display = 'none'
@@ -165,15 +152,15 @@ export default function UserProfile() {
                             ) : null}
                             <div
                                 className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 to-purple-400 text-5xl font-bold text-white"
-                                style={{ display: profile.avatar_url ? 'none' : 'flex' }}
+                                style={{ display: profile?.avatar_url ? 'none' : 'flex' }}
                             >
-                                {profile.full_name?.charAt(0)?.toUpperCase() || profile.email?.charAt(0)?.toUpperCase() || '👤'}
+                                {profile?.full_name?.charAt(0)?.toUpperCase() || profile.email?.charAt(0)?.toUpperCase() || '👤'}
                             </div>
 
                             {/* Info */}
                             <div>
                                 <h1 className="mb-1 text-3xl font-bold">
-                                    {profile.full_name || profile.email?.split('@')[0]}
+                                    {profile?.full_name || profile.email?.split('@')[0]}
                                 </h1>
                                 <p className="mb-2 text-muted-foreground">@{profile.username}</p>
 
