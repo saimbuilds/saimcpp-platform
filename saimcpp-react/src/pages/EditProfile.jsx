@@ -10,7 +10,7 @@ import { Linkedin, Github, Twitter, Globe, Save, X } from 'lucide-react'
 
 export default function EditProfile() {
     const navigate = useNavigate()
-    const { user, profile, updateProfile } = useAuthStore()
+    const { user, profile } = useAuthStore()
     const [loading, setLoading] = useState(false)
     const [formData, setFormData] = useState({
         bio: '',
@@ -39,21 +39,26 @@ export default function EditProfile() {
         setLoading(true)
 
         try {
-            const { error } = await supabase
+            console.log('Updating profile:', formData)
+
+            const { data, error } = await supabase
                 .from('profiles')
                 .update(formData)
                 .eq('id', user.id)
+                .select()
 
             if (error) throw error
 
-            // Update local profile state
-            await updateProfile()
+            console.log('Update successful:', data)
 
-            // Navigate to profile
+            // Show success message
+            alert('✅ Profile updated successfully!')
+
+            // Navigate back to public profile
             navigate(`/u/${profile.username}`)
         } catch (error) {
             console.error('Update error:', error)
-            alert('Failed to update profile: ' + error.message)
+            alert('❌ Failed to update profile: ' + error.message)
         } finally {
             setLoading(false)
         }

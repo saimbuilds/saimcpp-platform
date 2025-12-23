@@ -118,18 +118,460 @@ export default function Profile() {
                                 >
                                     <strong>{profile?.following_count || 0}</strong> following
                                 </span>
+                            
+                            {/* Social Media Links */}
+                            {(profile?.linkedin_url || profile?.github_url || profile?.twitter_url || profile?.portfolio_url) && (
+                                <div className="mt-3 flex gap-2">
+                                    {profile?.linkedin_url && (
+                                        <a href={profile.linkedin_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Linkedin className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.github_url && (
+                                        <a href={profile.github_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Github className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.twitter_url && (
+                                        <a href={profile.twitter_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Twitter className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.portfolio_url && (
+                                        <a href={profile.portfolio_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Globe className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                </div>
+                            )}
                             </div>
+                            
+                            {/* Social Media Links */}
+                            {(profile?.linkedin_url || profile?.github_url || profile?.twitter_url || profile?.portfolio_url) && (
+                                <div className="mt-3 flex gap-2">
+                                    {profile?.linkedin_url && (
+                                        <a href={profile.linkedin_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Linkedin className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.github_url && (
+                                        <a href={profile.github_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Github className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.twitter_url && (
+                                        <a href={profile.twitter_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Twitter className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.portfolio_url && (
+                                        <a href={profile.portfolio_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Globe className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                </div>
+                            )}
                         </div>
+                            
+                            {/* Social Media Links */}
+                            {(profile?.linkedin_url || profile?.github_url || profile?.twitter_url || profile?.portfolio_url) && (
+                                <div className="mt-3 flex gap-2">
+                                    {profile?.linkedin_url && (
+                                        <a href={profile.linkedin_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Linkedin className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.github_url && (
+                                        <a href={profile.github_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Github className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.twitter_url && (
+                                        <a href={profile.twitter_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Twitter className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.portfolio_url && (
+                                        <a href={profile.portfolio_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Globe className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                </div>
+                            )}
 
+                            
+                            {/* Social Media Links */}
+                            {(profile?.linkedin_url || profile?.github_url || profile?.twitter_url || profile?.portfolio_url) && (
+                                <div className="mt-3 flex gap-2">
+                                    {profile?.linkedin_url && (
+                                        <a href={profile.linkedin_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Linkedin className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.github_url && (
+                                        <a href={profile.github_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Github className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.twitter_url && (
+                                        <a href={profile.twitter_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Twitter className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.portfolio_url && (
+                                        <a href={profile.portfolio_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Globe className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                </div>
+                            )}
                         {/* Action Buttons */}
+                            
+                            {/* Social Media Links */}
+                            {(profile?.linkedin_url || profile?.github_url || profile?.twitter_url || profile?.portfolio_url) && (
+                                <div className="mt-3 flex gap-2">
+                                    {profile?.linkedin_url && (
+                                        <a href={profile.linkedin_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Linkedin className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.github_url && (
+                                        <a href={profile.github_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Github className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.twitter_url && (
+                                        <a href={profile.twitter_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Twitter className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.portfolio_url && (
+                                        <a href={profile.portfolio_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Globe className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                </div>
+                            )}
                         <div className="flex flex-col gap-2">
+                            
+                            {/* Social Media Links */}
+                            {(profile?.linkedin_url || profile?.github_url || profile?.twitter_url || profile?.portfolio_url) && (
+                                <div className="mt-3 flex gap-2">
+                                    {profile?.linkedin_url && (
+                                        <a href={profile.linkedin_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Linkedin className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.github_url && (
+                                        <a href={profile.github_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Github className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.twitter_url && (
+                                        <a href={profile.twitter_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Twitter className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.portfolio_url && (
+                                        <a href={profile.portfolio_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Globe className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                </div>
+                            )}
                             <Button
+                            
+                            {/* Social Media Links */}
+                            {(profile?.linkedin_url || profile?.github_url || profile?.twitter_url || profile?.portfolio_url) && (
+                                <div className="mt-3 flex gap-2">
+                                    {profile?.linkedin_url && (
+                                        <a href={profile.linkedin_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Linkedin className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.github_url && (
+                                        <a href={profile.github_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Github className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.twitter_url && (
+                                        <a href={profile.twitter_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Twitter className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.portfolio_url && (
+                                        <a href={profile.portfolio_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Globe className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                </div>
+                            )}
                                 variant="outline"
+                            
+                            {/* Social Media Links */}
+                            {(profile?.linkedin_url || profile?.github_url || profile?.twitter_url || profile?.portfolio_url) && (
+                                <div className="mt-3 flex gap-2">
+                                    {profile?.linkedin_url && (
+                                        <a href={profile.linkedin_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Linkedin className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.github_url && (
+                                        <a href={profile.github_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Github className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.twitter_url && (
+                                        <a href={profile.twitter_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Twitter className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.portfolio_url && (
+                                        <a href={profile.portfolio_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Globe className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                </div>
+                            )}
                                 onClick={() => navigate('/edit-profile')}
+                            
+                            {/* Social Media Links */}
+                            {(profile?.linkedin_url || profile?.github_url || profile?.twitter_url || profile?.portfolio_url) && (
+                                <div className="mt-3 flex gap-2">
+                                    {profile?.linkedin_url && (
+                                        <a href={profile.linkedin_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Linkedin className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.github_url && (
+                                        <a href={profile.github_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Github className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.twitter_url && (
+                                        <a href={profile.twitter_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Twitter className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.portfolio_url && (
+                                        <a href={profile.portfolio_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Globe className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                </div>
+                            )}
                                 className="whitespace-nowrap bg-gradient-to-r from-purple-600 to-purple-500 text-white hover:from-purple-700 hover:to-purple-600"
+                            
+                            {/* Social Media Links */}
+                            {(profile?.linkedin_url || profile?.github_url || profile?.twitter_url || profile?.portfolio_url) && (
+                                <div className="mt-3 flex gap-2">
+                                    {profile?.linkedin_url && (
+                                        <a href={profile.linkedin_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Linkedin className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.github_url && (
+                                        <a href={profile.github_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Github className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.twitter_url && (
+                                        <a href={profile.twitter_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Twitter className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.portfolio_url && (
+                                        <a href={profile.portfolio_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Globe className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                </div>
+                            )}
                             >
+                            
+                            {/* Social Media Links */}
+                            {(profile?.linkedin_url || profile?.github_url || profile?.twitter_url || profile?.portfolio_url) && (
+                                <div className="mt-3 flex gap-2">
+                                    {profile?.linkedin_url && (
+                                        <a href={profile.linkedin_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Linkedin className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.github_url && (
+                                        <a href={profile.github_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Github className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.twitter_url && (
+                                        <a href={profile.twitter_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Twitter className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.portfolio_url && (
+                                        <a href={profile.portfolio_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Globe className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                </div>
+                            )}
                                 Edit Profile
+                            
+                            {/* Social Media Links */}
+                            {(profile?.linkedin_url || profile?.github_url || profile?.twitter_url || profile?.portfolio_url) && (
+                                <div className="mt-3 flex gap-2">
+                                    {profile?.linkedin_url && (
+                                        <a href={profile.linkedin_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Linkedin className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.github_url && (
+                                        <a href={profile.github_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Github className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.twitter_url && (
+                                        <a href={profile.twitter_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Twitter className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.portfolio_url && (
+                                        <a href={profile.portfolio_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Globe className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                </div>
+                            )}
                             </Button>
+                            
+                            {/* Social Media Links */}
+                            {(profile?.linkedin_url || profile?.github_url || profile?.twitter_url || profile?.portfolio_url) && (
+                                <div className="mt-3 flex gap-2">
+                                    {profile?.linkedin_url && (
+                                        <a href={profile.linkedin_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Linkedin className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.github_url && (
+                                        <a href={profile.github_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Github className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.twitter_url && (
+                                        <a href={profile.twitter_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Twitter className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                    {profile?.portfolio_url && (
+                                        <a href={profile.portfolio_url} target="_blank" rel="noopener noreferrer">
+                                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                <Globe className="h-4 w-4" />
+                                            </Button>
+                                        </a>
+                                    )}
+                                </div>
+                            )}
                             <Button
                                 variant="ghost"
                                 onClick={() => navigate(`/u/${profile?.username}`)}
