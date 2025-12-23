@@ -146,18 +146,6 @@ export default function UserProfile() {
                 className="mb-8"
             >
                 <Card className="p-8">
-                    <div className="flex items-start justify-between">
-                        <div className="flex gap-6">
-                            {/* Avatar */}
-            {/* Back Button */}
-            <Button
-                variant="ghost"
-                onClick={() => navigate(-1)}
-                className="mb-4"
-            >
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                Back
-            </Button>
                             {profile?.avatar_url ? (
                                 <img
                                     src={profile?.avatar_url}
@@ -178,20 +166,14 @@ export default function UserProfile() {
 
                             {/* Info */}
                             <div>
-                                <h1 className="mb-1 text-3xl font-bold">
-                                    {profile?.full_name || profile.email?.split('@')[0]}
-                                </h1>
-                                <p className="mb-2 text-muted-foreground">@{profile.username}</p>
-
-                                <div className="mb-3 flex items-center gap-4 text-sm">
-                                    {profile.university && (
-                                        <span className="flex items-center gap-1">
-                                            🎓 {profile.university.short_name}
-                                        </span>
-                                    )}
-                                    {profile.batch && (
-                                        <span>Batch {profile.batch}</span>
-                                    )}
+                                <div className="flex items-center gap-3">
+                                    <h1 className="mb-1 text-3xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 bg-clip-text text-transparent">
+                                        {profile?.full_name || profile.email?.split('@')[0]}
+                                    </h1>
+                                    <div className="rounded-lg bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 px-3 py-1 text-xs font-bold text-white shadow-lg">
+                                        FOUNDER
+                                    </div>
+                                </div>
                                 </div>
 
                                 {profile.bio && (
