@@ -29,7 +29,7 @@ export default function UserProfile() {
                     university:universities(short_name, name)
                 `)
                 .eq('username', username)
-                .single()
+                .maybeSingle()
 
             if (error) throw error
 
@@ -66,7 +66,7 @@ export default function UserProfile() {
             .select('id')
             .eq('follower_id', currentUser.id)
             .eq('following_id', profile.id)
-            .single()
+            .maybeSingle()
 
         setIsFollowing(!!data)
     }
