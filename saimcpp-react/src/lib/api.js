@@ -63,11 +63,40 @@ export async function loadAllProblems() {
         }
 
         console.log(`✅ Successfully loaded ${allProblems.length} total problems`)
+
+        // If no problems loaded, return mock data
+        if (allProblems.length === 0) {
+            console.warn('⚠️ No problems loaded from JSON files, using fallback data')
+            return getMockProblems()
+        }
+
         return allProblems
     } catch (error) {
         console.error('❌ Error loading problems:', error)
-        return []
+        console.warn('⚠️ Returning fallback mock data')
+        return getMockProblems()
     }
+}
+
+// Fallback mock data
+function getMockProblems() {
+    const mockProblems = []
+    for (let i = 1; i <= 10; i++) {
+        mockProblems.push({
+            id: i,
+            title: `Sample Problem ${i}`,
+            difficulty: i <= 3 ? 'easy' : i <= 7 ? 'medium' : 'hard',
+            category: 'Arrays',
+            description: `This is a sample problem ${i}. The actual JSON files may not be loading correctly.`,
+            inputFormat: 'Sample input format',
+            outputFormat: 'Sample output format',
+            sampleInput: '5',
+            sampleOutput: '5',
+            explanation: 'Sample explanation',
+            points: i * 10,
+        })
+    }
+    return mockProblems
 }
 
 export async function loadDryRunProblems() {
