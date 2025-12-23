@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { Button } from '../components/ui/button'
-import { CreatorBadge } from '../components/ui/creator-badge'
+import { Button } from './button'
 import { Crown, Sparkles } from 'lucide-react'
 
 export default function FounderButton() {
