@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { ArrowLeft } from 'lucide-react'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
