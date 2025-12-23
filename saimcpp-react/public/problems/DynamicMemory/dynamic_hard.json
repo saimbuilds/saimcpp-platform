@@ -1,0 +1,275 @@
+{
+    "category": "Dynamic Memory - Hard",
+    "problems": [
+        {
+            "title": "Allocate 3D Array",
+            "difficulty": "hard",
+            "description": "Dynamically allocate a 3D array, fill it, print it, and properly deallocate all memory.",
+            "inputFormat": "First line: x y z (dimensions)\nNext x*y lines: z space-separated integers",
+            "outputFormat": "Print the 3D array layer by layer",
+            "constraints": "1 ≤ x, y, z ≤ 5",
+            "sampleTestCases": [
+                {
+                    "input": "2 2 2\n1 2\n3 4\n5 6\n7 8",
+                    "output": "1 2\n3 4\n5 6\n7 8",
+                    "explanation": "2x2x2 3D array printed layer by layer"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "2 3 2\n1 2\n3 4\n5 6\n7 8\n9 10\n11 12",
+                    "output": "1 2\n3 4\n5 6\n7 8\n9 10\n11 12"
+                },
+                {
+                    "input": "3 2 2\n1 1\n1 1\n2 2\n2 2\n3 3\n3 3",
+                    "output": "1 1\n1 1\n2 2\n2 2\n3 3\n3 3"
+                }
+            ],
+            "points": 30,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int x, y, z;\n    cin >> x >> y >> z;\n    \n    // Allocate 3D array\n    int*** arr = new int**[x];\n    for(int i = 0; i < x; i++) {\n        arr[i] = new int*[y];\n        for(int j = 0; j < y; j++) {\n            arr[i][j] = new int[z];\n        }\n    }\n    \n    // Fill 3D array\n    for(int i = 0; i < x; i++) {\n        for(int j = 0; j < y; j++) {\n            for(int k = 0; k < z; k++) {\n                cin >> arr[i][j][k];\n            }\n        }\n    }\n    \n    // Print 3D array\n    for(int i = 0; i < x; i++) {\n        for(int j = 0; j < y; j++) {\n            for(int k = 0; k < z; k++) {\n                cout << arr[i][j][k];\n                if(k < z-1) cout << \" \";\n            }\n            cout << endl;\n        }\n    }\n    \n    // Deallocate 3D array properly\n    for(int i = 0; i < x; i++) {\n        for(int j = 0; j < y; j++) {\n            delete[] arr[i][j];\n        }\n        delete[] arr[i];\n    }\n    delete[] arr;\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Sum of 3D Array",
+            "difficulty": "hard",
+            "description": "Allocate 3D array, calculate total sum, deallocate properly.",
+            "inputFormat": "First line: x y z (dimensions)\nNext x*y lines: z space-separated integers",
+            "outputFormat": "Print the total sum",
+            "constraints": "1 ≤ x, y, z ≤ 5",
+            "sampleTestCases": [
+                {
+                    "input": "2 2 2\n1 2\n3 4\n5 6\n7 8",
+                    "output": "36",
+                    "explanation": "Sum of all elements"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "2 3 2\n1 2\n3 4\n5 6\n7 8\n9 10\n11 12",
+                    "output": "78"
+                },
+                {
+                    "input": "3 2 2\n1 1\n1 1\n2 2\n2 2\n3 3\n3 3",
+                    "output": "24"
+                }
+            ],
+            "points": 30,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int x, y, z;\n    cin >> x >> y >> z;\n    \n    int*** arr = new int**[x];\n    for(int i = 0; i < x; i++) {\n        arr[i] = new int*[y];\n        for(int j = 0; j < y; j++) {\n            arr[i][j] = new int[z];\n        }\n    }\n    \n    for(int i = 0; i < x; i++) {\n        for(int j = 0; j < y; j++) {\n            for(int k = 0; k < z; k++) {\n                cin >> arr[i][j][k];\n            }\n        }\n    }\n    \n    // Calculate sum\n    \n    // Deallocate\n    for(int i = 0; i < x; i++) {\n        for(int j = 0; j < y; j++) {\n            delete[] arr[i][j];\n        }\n        delete[] arr[i];\n    }\n    delete[] arr;\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Find Max in 3D Array",
+            "difficulty": "hard",
+            "description": "Allocate 3D array, find maximum element and its position, deallocate.",
+            "inputFormat": "First line: x y z (dimensions)\nNext x*y lines: z space-separated integers",
+            "outputFormat": "Print 'max_value i j k'",
+            "constraints": "1 ≤ x, y, z ≤ 5\n-1000 ≤ array[i][j][k] ≤ 1000",
+            "sampleTestCases": [
+                {
+                    "input": "2 2 2\n1 5\n3 2\n9 4\n7 6",
+                    "output": "9 1 0 0",
+                    "explanation": "Max is 9 at [1][0][0]"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "2 3 2\n1 2\n3 4\n5 6\n7 8\n9 10\n11 12",
+                    "output": "12 1 2 1"
+                },
+                {
+                    "input": "3 2 2\n-5 -2\n-8 -1\n-9 -3\n-4 -6\n-7 -10\n-11 -12",
+                    "output": "-1 0 1 1"
+                }
+            ],
+            "points": 30,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int x, y, z;\n    cin >> x >> y >> z;\n    \n    int*** arr = new int**[x];\n    for(int i = 0; i < x; i++) {\n        arr[i] = new int*[y];\n        for(int j = 0; j < y; j++) {\n            arr[i][j] = new int[z];\n        }\n    }\n    \n    for(int i = 0; i < x; i++) {\n        for(int j = 0; j < y; j++) {\n            for(int k = 0; k < z; k++) {\n                cin >> arr[i][j][k];\n            }\n        }\n    }\n    \n    // Find maximum and position\n    \n    // Deallocate\n    for(int i = 0; i < x; i++) {\n        for(int j = 0; j < y; j++) {\n            delete[] arr[i][j];\n        }\n        delete[] arr[i];\n    }\n    delete[] arr;\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Layer Sum in 3D Array",
+            "difficulty": "hard",
+            "description": "Allocate 3D array, calculate sum of each layer (x-dimension), deallocate.",
+            "inputFormat": "First line: x y z (dimensions)\nNext x*y lines: z space-separated integers",
+            "outputFormat": "Print x lines, each with sum of that layer",
+            "constraints": "1 ≤ x, y, z ≤ 5",
+            "sampleTestCases": [
+                {
+                    "input": "2 2 2\n1 2\n3 4\n5 6\n7 8",
+                    "output": "10\n26",
+                    "explanation": "Layer 0: 1+2+3+4=10, Layer 1: 5+6+7+8=26"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "3 2 2\n1 1\n1 1\n2 2\n2 2\n3 3\n3 3",
+                    "output": "4\n8\n12"
+                },
+                {
+                    "input": "2 3 2\n1 2\n3 4\n5 6\n7 8\n9 10\n11 12",
+                    "output": "21\n57"
+                }
+            ],
+            "points": 30,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int x, y, z;\n    cin >> x >> y >> z;\n    \n    int*** arr = new int**[x];\n    for(int i = 0; i < x; i++) {\n        arr[i] = new int*[y];\n        for(int j = 0; j < y; j++) {\n            arr[i][j] = new int[z];\n        }\n    }\n    \n    for(int i = 0; i < x; i++) {\n        for(int j = 0; j < y; j++) {\n            for(int k = 0; k < z; k++) {\n                cin >> arr[i][j][k];\n            }\n        }\n    }\n    \n    // Calculate layer sums\n    \n    // Deallocate\n    for(int i = 0; i < x; i++) {\n        for(int j = 0; j < y; j++) {\n            delete[] arr[i][j];\n        }\n        delete[] arr[i];\n    }\n    delete[] arr;\n    \n    return 0;\n}"
+        },
+        {
+            "title": "3D Array Transpose",
+            "difficulty": "hard",
+            "description": "Allocate 3D array, create transposed version (swap y and z), print, deallocate both.",
+            "inputFormat": "First line: x y z (dimensions)\nNext x*y lines: z space-separated integers",
+            "outputFormat": "Print transposed array (x z y)",
+            "constraints": "1 ≤ x, y, z ≤ 4",
+            "sampleTestCases": [
+                {
+                    "input": "2 2 3\n1 2 3\n4 5 6\n7 8 9\n10 11 12",
+                    "output": "1 4\n2 5\n3 6\n7 10\n8 11\n9 12",
+                    "explanation": "Swapped y and z: 2x2x3 → 2x3x2"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "2 3 2\n1 2\n3 4\n5 6\n7 8\n9 10\n11 12",
+                    "output": "1 3 5\n2 4 6\n7 9 11\n8 10 12"
+                },
+                {
+                    "input": "3 2 2\n1 2\n3 4\n5 6\n7 8\n9 10\n11 12",
+                    "output": "1 3\n2 4\n5 7\n6 8\n9 11\n10 12"
+                }
+            ],
+            "points": 30,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int x, y, z;\n    cin >> x >> y >> z;\n    \n    // Allocate original 3D array\n    int*** arr = new int**[x];\n    for(int i = 0; i < x; i++) {\n        arr[i] = new int*[y];\n        for(int j = 0; j < y; j++) {\n            arr[i][j] = new int[z];\n        }\n    }\n    \n    for(int i = 0; i < x; i++) {\n        for(int j = 0; j < y; j++) {\n            for(int k = 0; k < z; k++) {\n                cin >> arr[i][j][k];\n            }\n        }\n    }\n    \n    // Allocate transposed array (x, z, y)\n    int*** transposed = new int**[x];\n    for(int i = 0; i < x; i++) {\n        transposed[i] = new int*[z];\n        for(int k = 0; k < z; k++) {\n            transposed[i][k] = new int[y];\n        }\n    }\n    \n    // Transpose\n    \n    // Print transposed\n    for(int i = 0; i < x; i++) {\n        for(int k = 0; k < z; k++) {\n            for(int j = 0; j < y; j++) {\n                cout << transposed[i][k][j];\n                if(j < y-1) cout << \" \";\n            }\n            cout << endl;\n        }\n    }\n    \n    // Deallocate both arrays\n    for(int i = 0; i < x; i++) {\n        for(int j = 0; j < y; j++) {\n            delete[] arr[i][j];\n        }\n        delete[] arr[i];\n    }\n    delete[] arr;\n    \n    for(int i = 0; i < x; i++) {\n        for(int k = 0; k < z; k++) {\n            delete[] transposed[i][k];\n        }\n        delete[] transposed[i];\n    }\n    delete[] transposed;\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Dynamic String Array",
+            "difficulty": "hard",
+            "description": "Allocate array of strings (char*), fill with input, print, deallocate all properly.",
+            "inputFormat": "First line: n (number of strings)\nNext n lines: one string per line (max 50 chars)",
+            "outputFormat": "Print all strings, one per line",
+            "constraints": "1 ≤ n ≤ 10\n1 ≤ string length ≤ 50",
+            "sampleTestCases": [
+                {
+                    "input": "3\nhello\nworld\ntest",
+                    "output": "hello\nworld\ntest",
+                    "explanation": "Array of strings allocated and deallocated"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "2\nfoo\nbar",
+                    "output": "foo\nbar"
+                },
+                {
+                    "input": "4\na\nbb\nccc\ndddd",
+                    "output": "a\nbb\nccc\ndddd"
+                }
+            ],
+            "points": 30,
+            "starterCode": "#include <iostream>\n#include <cstring>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    cin.ignore(); // Ignore newline after number\n    \n    // Allocate array of char pointers\n    char** strings = new char*[n];\n    \n    // Allocate and fill each string\n    for(int i = 0; i < n; i++) {\n        char temp[51];\n        cin.getline(temp, 51);\n        \n        // Allocate exact size needed\n        strings[i] = new char[strlen(temp) + 1];\n        strcpy(strings[i], temp);\n    }\n    \n    // Print strings\n    for(int i = 0; i < n; i++) {\n        cout << strings[i] << endl;\n    }\n    \n    // Deallocate all strings\n    for(int i = 0; i < n; i++) {\n        delete[] strings[i];\n    }\n    delete[] strings;\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Matrix of Matrices",
+            "difficulty": "hard",
+            "description": "Create a 2x2 grid where each cell contains a small matrix, fill, print, deallocate all.",
+            "inputFormat": "First line: r c (size of each small matrix)\nNext 4*r lines: c integers (for 4 matrices in 2x2 grid)",
+            "outputFormat": "Print all 4 matrices separated by blank lines",
+            "constraints": "1 ≤ r, c ≤ 3",
+            "sampleTestCases": [
+                {
+                    "input": "2 2\n1 2\n3 4\n5 6\n7 8\n9 10\n11 12\n13 14\n15 16",
+                    "output": "1 2\n3 4\n\n5 6\n7 8\n\n9 10\n11 12\n\n13 14\n15 16",
+                    "explanation": "2x2 grid of 2x2 matrices"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "1 2\n1 2\n3 4\n5 6\n7 8",
+                    "output": "1 2\n\n3 4\n\n5 6\n\n7 8"
+                },
+                {
+                    "input": "2 1\n1\n2\n3\n4\n5\n6\n7\n8",
+                    "output": "1\n2\n\n3\n4\n\n5\n6\n\n7\n8"
+                }
+            ],
+            "points": 30,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int r, c;\n    cin >> r >> c;\n    \n    // Allocate 2x2 grid of matrices\n    int**** grid = new int***[2];\n    for(int i = 0; i < 2; i++) {\n        grid[i] = new int**[2];\n        for(int j = 0; j < 2; j++) {\n            grid[i][j] = new int*[r];\n            for(int k = 0; k < r; k++) {\n                grid[i][j][k] = new int[c];\n            }\n        }\n    }\n    \n    // Fill grid\n    for(int i = 0; i < 2; i++) {\n        for(int j = 0; j < 2; j++) {\n            for(int k = 0; k < r; k++) {\n                for(int l = 0; l < c; l++) {\n                    cin >> grid[i][j][k][l];\n                }\n            }\n        }\n    }\n    \n    // Print grid\n    for(int i = 0; i < 2; i++) {\n        for(int j = 0; j < 2; j++) {\n            for(int k = 0; k < r; k++) {\n                for(int l = 0; l < c; l++) {\n                    cout << grid[i][j][k][l];\n                    if(l < c-1) cout << \" \";\n                }\n                cout << endl;\n            }\n            if(i < 1 || j < 1) cout << endl;\n        }\n    }\n    \n    // Deallocate all\n    for(int i = 0; i < 2; i++) {\n        for(int j = 0; j < 2; j++) {\n            for(int k = 0; k < r; k++) {\n                delete[] grid[i][j][k];\n            }\n            delete[] grid[i][j];\n        }\n        delete[] grid[i];\n    }\n    delete[] grid;\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Flatten 3D to 1D Array",
+            "difficulty": "hard",
+            "description": "Allocate 3D array, create 1D array with all elements, print, deallocate both.",
+            "inputFormat": "First line: x y z (dimensions)\nNext x*y lines: z space-separated integers",
+            "outputFormat": "Print flattened 1D array, space-separated",
+            "constraints": "1 ≤ x, y, z ≤ 5",
+            "sampleTestCases": [
+                {
+                    "input": "2 2 2\n1 2\n3 4\n5 6\n7 8",
+                    "output": "1 2 3 4 5 6 7 8",
+                    "explanation": "3D array flattened to 1D"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "2 3 2\n1 2\n3 4\n5 6\n7 8\n9 10\n11 12",
+                    "output": "1 2 3 4 5 6 7 8 9 10 11 12"
+                },
+                {
+                    "input": "3 2 2\n1 1\n1 1\n2 2\n2 2\n3 3\n3 3",
+                    "output": "1 1 1 1 2 2 2 2 3 3 3 3"
+                }
+            ],
+            "points": 30,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int x, y, z;\n    cin >> x >> y >> z;\n    \n    // Allocate 3D array\n    int*** arr = new int**[x];\n    for(int i = 0; i < x; i++) {\n        arr[i] = new int*[y];\n        for(int j = 0; j < y; j++) {\n            arr[i][j] = new int[z];\n        }\n    }\n    \n    for(int i = 0; i < x; i++) {\n        for(int j = 0; j < y; j++) {\n            for(int k = 0; k < z; k++) {\n                cin >> arr[i][j][k];\n            }\n        }\n    }\n    \n    // Allocate 1D array\n    int* flat = new int[x * y * z];\n    \n    // Flatten\n    \n    // Print\n    for(int i = 0; i < x * y * z; i++) {\n        cout << flat[i];\n        if(i < x * y * z - 1) cout << \" \";\n    }\n    \n    // Deallocate both\n    for(int i = 0; i < x; i++) {\n        for(int j = 0; j < y; j++) {\n            delete[] arr[i][j];\n        }\n        delete[] arr[i];\n    }\n    delete[] arr;\n    delete[] flat;\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Copy 3D Array",
+            "difficulty": "hard",
+            "description": "Allocate 3D array, create deep copy, modify copy, print both, deallocate both.",
+            "inputFormat": "First line: x y z (dimensions)\nNext x*y lines: z space-separated integers",
+            "outputFormat": "Print original, then blank line, then modified copy (all elements +1)",
+            "constraints": "1 ≤ x, y, z ≤ 4",
+            "sampleTestCases": [
+                {
+                    "input": "2 2 2\n1 2\n3 4\n5 6\n7 8",
+                    "output": "1 2\n3 4\n5 6\n7 8\n\n2 3\n4 5\n6 7\n8 9",
+                    "explanation": "Original and copy (+1 to each element)"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "2 2 3\n1 2 3\n4 5 6\n7 8 9\n10 11 12",
+                    "output": "1 2 3\n4 5 6\n7 8 9\n10 11 12\n\n2 3 4\n5 6 7\n8 9 10\n11 12 13"
+                },
+                {
+                    "input": "3 2 2\n1 1\n1 1\n2 2\n2 2\n3 3\n3 3",
+                    "output": "1 1\n1 1\n2 2\n2 2\n3 3\n3 3\n\n2 2\n2 2\n3 3\n3 3\n4 4\n4 4"
+                }
+            ],
+            "points": 30,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int x, y, z;\n    cin >> x >> y >> z;\n    \n    // Allocate original 3D array\n    int*** arr = new int**[x];\n    for(int i = 0; i < x; i++) {\n        arr[i] = new int*[y];\n        for(int j = 0; j < y; j++) {\n            arr[i][j] = new int[z];\n        }\n    }\n    \n    for(int i = 0; i < x; i++) {\n        for(int j = 0; j < y; j++) {\n            for(int k = 0; k < z; k++) {\n                cin >> arr[i][j][k];\n            }\n        }\n    }\n    \n    // Allocate copy\n    int*** copy = new int**[x];\n    for(int i = 0; i < x; i++) {\n        copy[i] = new int*[y];\n        for(int j = 0; j < y; j++) {\n            copy[i][j] = new int[z];\n        }\n    }\n    \n    // Deep copy and modify\n    \n    // Print original\n    for(int i = 0; i < x; i++) {\n        for(int j = 0; j < y; j++) {\n            for(int k = 0; k < z; k++) {\n                cout << arr[i][j][k];\n                if(k < z-1) cout << \" \";\n            }\n            cout << endl;\n        }\n    }\n    \n    cout << endl;\n    \n    // Print copy\n    for(int i = 0; i < x; i++) {\n        for(int j = 0; j < y; j++) {\n            for(int k = 0; k < z; k++) {\n                cout << copy[i][j][k];\n                if(k < z-1) cout << \" \";\n            }\n            cout << endl;\n        }\n    }\n    \n    // Deallocate both\n    for(int i = 0; i < x; i++) {\n        for(int j = 0; j < y; j++) {\n            delete[] arr[i][j];\n            delete[] copy[i][j];\n        }\n        delete[] arr[i];\n        delete[] copy[i];\n    }\n    delete[] arr;\n    delete[] copy;\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Dynamic Linked Structure",
+            "difficulty": "hard",
+            "description": "Create array of pointers where each points to a dynamically allocated array of different size, fill, print, deallocate all.",
+            "inputFormat": "First line: n (number of arrays)\nNext n lines: first integer is size, followed by that many integers",
+            "outputFormat": "Print each array on separate line, with sum at the end of each line",
+            "constraints": "1 ≤ n ≤ 10\n1 ≤ array size ≤ 10",
+            "sampleTestCases": [
+                {
+                    "input": "3\n2 1 2\n3 3 4 5\n1 6",
+                    "output": "1 2 3\n3 4 5 12\n6 6",
+                    "explanation": "Each array printed with its sum"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "2\n3 10 20 30\n2 40 50",
+                    "output": "10 20 30 60\n40 50 90"
+                },
+                {
+                    "input": "4\n1 1\n2 2 3\n3 4 5 6\n1 7",
+                    "output": "1 1\n2 3 5\n4 5 6 15\n7 7"
+                }
+            ],
+            "points": 30,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    // Allocate array of pointers\n    int** arrays = new int*[n];\n    int* sizes = new int[n];\n    \n    // Allocate and fill each array\n    for(int i = 0; i < n; i++) {\n        cin >> sizes[i];\n        arrays[i] = new int[sizes[i]];\n        for(int j = 0; j < sizes[i]; j++) {\n            cin >> arrays[i][j];\n        }\n    }\n    \n    // Print each array with sum\n    for(int i = 0; i < n; i++) {\n        int sum = 0;\n        for(int j = 0; j < sizes[i]; j++) {\n            cout << arrays[i][j] << \" \";\n            sum += arrays[i][j];\n        }\n        cout << sum << endl;\n    }\n    \n    // Deallocate all\n    for(int i = 0; i < n; i++) {\n        delete[] arrays[i];\n    }\n    delete[] arrays;\n    delete[] sizes;\n    \n    return 0;\n}"
+        }
+    ]
+}

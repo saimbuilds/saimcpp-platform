@@ -1,0 +1,51 @@
+{
+  "category": "Arrays 3D",
+  "problems": [
+    {
+      "title": "3D Array Sum",
+      "difficulty": "medium",
+      "description": "Calculate the sum of all elements in a 3D array.",
+      "inputFormat": "First line: x y z (dimensions)\nNext x*y lines: z space-separated integers each",
+      "outputFormat": "Print the sum of all elements",
+      "constraints": "1 ≤ x, y, z ≤ 5",
+      "sampleTestCases": [
+        {
+          "input": "2 2 2\n1 2\n3 4\n5 6\n7 8",
+          "output": "36",
+          "explanation": "Sum of all 8 elements"
+        }
+      ],
+      "hiddenTestCases": [
+        {
+          "input": "2 2 3\n1 2 3\n4 5 6\n7 8 9\n10 11 12",
+          "output": "78"
+        }
+      ],
+      "points": 25,
+      "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int x, y, z;\n    cin >> x >> y >> z;\n    \n    int arr[5][5][5];\n    for(int i = 0; i < x; i++) {\n        for(int j = 0; j < y; j++) {\n            for(int k = 0; k < z; k++) {\n                cin >> arr[i][j][k];\n            }\n        }\n    }\n    \n    // Your code here\n    \n    return 0;\n}"
+    },
+    {
+      "title": "3D Array Maximum",
+      "difficulty": "medium",
+      "description": "Find the maximum element in a 3D array.",
+      "inputFormat": "First line: x y z (dimensions)\nNext x*y lines: z space-separated integers each",
+      "outputFormat": "Print the maximum element",
+      "constraints": "1 ≤ x, y, z ≤ 5",
+      "sampleTestCases": [
+        {
+          "input": "2 2 2\n1 2\n3 4\n5 6\n7 8",
+          "output": "8",
+          "explanation": "Maximum element is 8"
+        }
+      ],
+      "hiddenTestCases": [
+        {
+          "input": "2 2 3\n10 20 30\n40 50 60\n70 80 90\n100 110 120",
+          "output": "120"
+        }
+      ],
+      "points": 25,
+      "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int x, y, z;\n    cin >> x >> y >> z;\n    \n    int arr[5][5][5];\n    for(int i = 0; i < x; i++) {\n        for(int j = 0; j < y; j++) {\n            for(int k = 0; k < z; k++) {\n                cin >> arr[i][j][k];\n            }\n        }\n    }\n    \n    // Your code here\n    \n    return 0;\n}"
+    }
+  ]
+}

@@ -1,0 +1,518 @@
+{
+    "category": "Dynamic Memory - Medium",
+    "problems": [
+        {
+            "title": "Allocate 2D Array",
+            "difficulty": "medium",
+            "description": "Dynamically allocate a 2D array, fill it, print it, and properly deallocate.",
+            "inputFormat": "First line: r c (rows and columns)\nNext r lines: c space-separated integers",
+            "outputFormat": "Print the 2D array",
+            "constraints": "1 ≤ r, c ≤ 10",
+            "sampleTestCases": [
+                {
+                    "input": "2 3\n1 2 3\n4 5 6",
+                    "output": "1 2 3\n4 5 6",
+                    "explanation": "2D array allocated and deallocated"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "3 2\n10 20\n30 40\n50 60",
+                    "output": "10 20\n30 40\n50 60"
+                },
+                {
+                    "input": "3 3\n1 2 3\n4 5 6\n7 8 9",
+                    "output": "1 2 3\n4 5 6\n7 8 9"
+                }
+            ],
+            "points": 20,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int r, c;\n    cin >> r >> c;\n    \n    // Allocate 2D array\n    int** matrix = new int*[r];\n    for(int i = 0; i < r; i++) {\n        matrix[i] = new int[c];\n    }\n    \n    // Fill matrix\n    for(int i = 0; i < r; i++) {\n        for(int j = 0; j < c; j++) {\n            cin >> matrix[i][j];\n        }\n    }\n    \n    // Print matrix\n    for(int i = 0; i < r; i++) {\n        for(int j = 0; j < c; j++) {\n            cout << matrix[i][j];\n            if(j < c-1) cout << \" \";\n        }\n        cout << endl;\n    }\n    \n    // Deallocate 2D array\n    for(int i = 0; i < r; i++) {\n        delete[] matrix[i];\n    }\n    delete[] matrix;\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Transpose Matrix Dynamically",
+            "difficulty": "medium",
+            "description": "Allocate 2D matrix, create transposed matrix dynamically, print, deallocate both.",
+            "inputFormat": "First line: r c (rows and columns)\nNext r lines: c space-separated integers",
+            "outputFormat": "Print transposed matrix",
+            "constraints": "1 ≤ r, c ≤ 10",
+            "sampleTestCases": [
+                {
+                    "input": "2 3\n1 2 3\n4 5 6",
+                    "output": "1 4\n2 5\n3 6",
+                    "explanation": "Matrix transposed"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "3 2\n1 2\n3 4\n5 6",
+                    "output": "1 3 5\n2 4 6"
+                },
+                {
+                    "input": "3 3\n1 2 3\n4 5 6\n7 8 9",
+                    "output": "1 4 7\n2 5 8\n3 6 9"
+                }
+            ],
+            "points": 20,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int r, c;\n    cin >> r >> c;\n    \n    // Allocate original matrix\n    int** matrix = new int*[r];\n    for(int i = 0; i < r; i++) {\n        matrix[i] = new int[c];\n    }\n    \n    for(int i = 0; i < r; i++) {\n        for(int j = 0; j < c; j++) {\n            cin >> matrix[i][j];\n        }\n    }\n    \n    // Allocate transposed matrix (c x r)\n    int** transposed = new int*[c];\n    for(int i = 0; i < c; i++) {\n        transposed[i] = new int[r];\n    }\n    \n    // Transpose\n    \n    // Print transposed\n    for(int i = 0; i < c; i++) {\n        for(int j = 0; j < r; j++) {\n            cout << transposed[i][j];\n            if(j < r-1) cout << \" \";\n        }\n        cout << endl;\n    }\n    \n    // Deallocate both matrices\n    for(int i = 0; i < r; i++) {\n        delete[] matrix[i];\n    }\n    delete[] matrix;\n    \n    for(int i = 0; i < c; i++) {\n        delete[] transposed[i];\n    }\n    delete[] transposed;\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Sum of Each Row in 2D Array",
+            "difficulty": "medium",
+            "description": "Allocate 2D array dynamically, calculate sum of each row, deallocate.",
+            "inputFormat": "First line: r c (rows and columns)\nNext r lines: c space-separated integers",
+            "outputFormat": "Print r lines, each containing sum of that row",
+            "constraints": "1 ≤ r, c ≤ 10",
+            "sampleTestCases": [
+                {
+                    "input": "3 3\n1 2 3\n4 5 6\n7 8 9",
+                    "output": "6\n15\n24",
+                    "explanation": "Row sums"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "2 4\n1 2 3 4\n5 6 7 8",
+                    "output": "10\n26"
+                },
+                {
+                    "input": "3 2\n10 20\n30 40\n50 60",
+                    "output": "30\n70\n110"
+                }
+            ],
+            "points": 20,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int r, c;\n    cin >> r >> c;\n    \n    int** matrix = new int*[r];\n    for(int i = 0; i < r; i++) {\n        matrix[i] = new int[c];\n    }\n    \n    for(int i = 0; i < r; i++) {\n        for(int j = 0; j < c; j++) {\n            cin >> matrix[i][j];\n        }\n    }\n    \n    // Calculate and print row sums\n    \n    for(int i = 0; i < r; i++) {\n        delete[] matrix[i];\n    }\n    delete[] matrix;\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Matrix Multiplication",
+            "difficulty": "medium",
+            "description": "Allocate two matrices and result matrix dynamically, multiply, print result, deallocate all.",
+            "inputFormat": "First line: r1 c1\nNext r1 lines: c1 integers\nNext line: r2 c2 (where c1 = r2)\nNext r2 lines: c2 integers",
+            "outputFormat": "Print resultant matrix (r1 x c2)",
+            "constraints": "1 ≤ r1, c1, r2, c2 ≤ 5\nc1 = r2",
+            "sampleTestCases": [
+                {
+                    "input": "2 2\n1 2\n3 4\n2 2\n5 6\n7 8",
+                    "output": "19 22\n43 50",
+                    "explanation": "Matrix multiplication"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "2 3\n1 2 3\n4 5 6\n3 2\n7 8\n9 10\n11 12",
+                    "output": "58 64\n139 154"
+                },
+                {
+                    "input": "3 3\n1 0 0\n0 1 0\n0 0 1\n3 3\n5 6 7\n8 9 10\n11 12 13",
+                    "output": "5 6 7\n8 9 10\n11 12 13"
+                }
+            ],
+            "points": 20,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int r1, c1;\n    cin >> r1 >> c1;\n    \n    int** mat1 = new int*[r1];\n    for(int i = 0; i < r1; i++) {\n        mat1[i] = new int[c1];\n        for(int j = 0; j < c1; j++) {\n            cin >> mat1[i][j];\n        }\n    }\n    \n    int r2, c2;\n    cin >> r2 >> c2;\n    \n    int** mat2 = new int*[r2];\n    for(int i = 0; i < r2; i++) {\n        mat2[i] = new int[c2];\n        for(int j = 0; j < c2; j++) {\n            cin >> mat2[i][j];\n        }\n    }\n    \n    // Allocate result matrix\n    int** result = new int*[r1];\n    for(int i = 0; i < r1; i++) {\n        result[i] = new int[c2];\n    }\n    \n    // Multiply matrices\n    \n    // Print result\n    for(int i = 0; i < r1; i++) {\n        for(int j = 0; j < c2; j++) {\n            cout << result[i][j];\n            if(j < c2-1) cout << \" \";\n        }\n        cout << endl;\n    }\n    \n    // Deallocate all matrices\n    for(int i = 0; i < r1; i++) {\n        delete[] mat1[i];\n        delete[] result[i];\n    }\n    delete[] mat1;\n    delete[] result;\n    \n    for(int i = 0; i < r2; i++) {\n        delete[] mat2[i];\n    }\n    delete[] mat2;\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Resize Dynamic Array",
+            "difficulty": "medium",
+            "description": "Allocate array, resize to new size, copy old elements, fill rest with 0, deallocate old, print new, deallocate new.",
+            "inputFormat": "First line: n (original size)\nSecond line: n integers\nThird line: newSize",
+            "outputFormat": "Print resized array, space-separated",
+            "constraints": "1 ≤ n ≤ 50\n1 ≤ newSize ≤ 100",
+            "sampleTestCases": [
+                {
+                    "input": "3\n1 2 3\n5",
+                    "output": "1 2 3 0 0",
+                    "explanation": "Array resized from 3 to 5"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "4\n10 20 30 40\n6",
+                    "output": "10 20 30 40 0 0"
+                },
+                {
+                    "input": "5\n1 2 3 4 5\n3",
+                    "output": "1 2 3"
+                }
+            ],
+            "points": 20,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int* arr = new int[n];\n    for(int i = 0; i < n; i++) {\n        cin >> arr[i];\n    }\n    \n    int newSize;\n    cin >> newSize;\n    \n    // Create new array\n    int* newArr = new int[newSize];\n    \n    // Copy and resize\n    \n    // Print new array\n    for(int i = 0; i < newSize; i++) {\n        cout << newArr[i];\n        if(i < newSize-1) cout << \" \";\n    }\n    \n    delete[] arr;\n    delete[] newArr;\n    return 0;\n}"
+        },
+        {
+            "title": "Find Max in 2D Array",
+            "difficulty": "medium",
+            "description": "Allocate 2D array dynamically, find maximum element, deallocate.",
+            "inputFormat": "First line: r c (rows and columns)\nNext r lines: c space-separated integers",
+            "outputFormat": "Print the maximum element",
+            "constraints": "1 ≤ r, c ≤ 10\n-1000 ≤ matrix[i][j] ≤ 1000",
+            "sampleTestCases": [
+                {
+                    "input": "3 3\n1 5 3\n9 2 7\n4 8 6",
+                    "output": "9",
+                    "explanation": "Maximum is 9"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "2 3\n-5 -2 -8\n-1 -9 -3",
+                    "output": "-1"
+                },
+                {
+                    "input": "3 2\n10 20\n30 40\n50 60",
+                    "output": "60"
+                }
+            ],
+            "points": 20,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int r, c;\n    cin >> r >> c;\n    \n    int** matrix = new int*[r];\n    for(int i = 0; i < r; i++) {\n        matrix[i] = new int[c];\n        for(int j = 0; j < c; j++) {\n            cin >> matrix[i][j];\n        }\n    }\n    \n    // Find maximum\n    \n    for(int i = 0; i < r; i++) {\n        delete[] matrix[i];\n    }\n    delete[] matrix;\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Diagonal Sum of Square Matrix",
+            "difficulty": "medium",
+            "description": "Allocate square matrix dynamically, calculate both diagonal sums, deallocate.",
+            "inputFormat": "First line: n (matrix size)\nNext n lines: n space-separated integers",
+            "outputFormat": "Print primary diagonal sum, then secondary diagonal sum",
+            "constraints": "2 ≤ n ≤ 10",
+            "sampleTestCases": [
+                {
+                    "input": "3\n1 2 3\n4 5 6\n7 8 9",
+                    "output": "15\n15",
+                    "explanation": "Primary: 1+5+9, Secondary: 3+5+7"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "2\n1 2\n3 4",
+                    "output": "5\n5"
+                },
+                {
+                    "input": "4\n1 2 3 4\n5 6 7 8\n9 10 11 12\n13 14 15 16",
+                    "output": "34\n34"
+                }
+            ],
+            "points": 20,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int** matrix = new int*[n];\n    for(int i = 0; i < n; i++) {\n        matrix[i] = new int[n];\n        for(int j = 0; j < n; j++) {\n            cin >> matrix[i][j];\n        }\n    }\n    \n    // Calculate diagonal sums\n    \n    for(int i = 0; i < n; i++) {\n        delete[] matrix[i];\n    }\n    delete[] matrix;\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Rotate Matrix 90 Degrees",
+            "difficulty": "medium",
+            "description": "Allocate square matrix, create rotated matrix (90° clockwise), print, deallocate both.",
+            "inputFormat": "First line: n (matrix size)\nNext n lines: n space-separated integers",
+            "outputFormat": "Print rotated matrix",
+            "constraints": "2 ≤ n ≤ 10",
+            "sampleTestCases": [
+                {
+                    "input": "3\n1 2 3\n4 5 6\n7 8 9",
+                    "output": "7 4 1\n8 5 2\n9 6 3",
+                    "explanation": "90° clockwise rotation"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "2\n1 2\n3 4",
+                    "output": "3 1\n4 2"
+                },
+                {
+                    "input": "4\n1 2 3 4\n5 6 7 8\n9 10 11 12\n13 14 15 16",
+                    "output": "13 9 5 1\n14 10 6 2\n15 11 7 3\n16 12 8 4"
+                }
+            ],
+            "points": 20,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int** matrix = new int*[n];\n    for(int i = 0; i < n; i++) {\n        matrix[i] = new int[n];\n        for(int j = 0; j < n; j++) {\n            cin >> matrix[i][j];\n        }\n    }\n    \n    // Allocate rotated matrix\n    int** rotated = new int*[n];\n    for(int i = 0; i < n; i++) {\n        rotated[i] = new int[n];\n    }\n    \n    // Rotate\n    \n    // Print rotated\n    for(int i = 0; i < n; i++) {\n        for(int j = 0; j < n; j++) {\n            cout << rotated[i][j];\n            if(j < n-1) cout << \" \";\n        }\n        cout << endl;\n    }\n    \n    // Deallocate both\n    for(int i = 0; i < n; i++) {\n        delete[] matrix[i];\n        delete[] rotated[i];\n    }\n    delete[] matrix;\n    delete[] rotated;\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Merge Sorted Arrays",
+            "difficulty": "medium",
+            "description": "Allocate two sorted arrays and result array, merge them sorted, deallocate all.",
+            "inputFormat": "First line: n (size of array 1)\nSecond line: n sorted integers\nThird line: m (size of array 2)\nFourth line: m sorted integers",
+            "outputFormat": "Print merged sorted array, space-separated",
+            "constraints": "1 ≤ n, m ≤ 50",
+            "sampleTestCases": [
+                {
+                    "input": "3\n1 3 5\n3\n2 4 6",
+                    "output": "1 2 3 4 5 6",
+                    "explanation": "Merged sorted arrays"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "2\n10 20\n2\n15 25",
+                    "output": "10 15 20 25"
+                },
+                {
+                    "input": "3\n1 2 3\n2\n4 5",
+                    "output": "1 2 3 4 5"
+                }
+            ],
+            "points": 20,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, m;\n    cin >> n;\n    \n    int* arr1 = new int[n];\n    for(int i = 0; i < n; i++) {\n        cin >> arr1[i];\n    }\n    \n    cin >> m;\n    int* arr2 = new int[m];\n    for(int i = 0; i < m; i++) {\n        cin >> arr2[i];\n    }\n    \n    // Allocate merged array\n    int* merged = new int[n + m];\n    \n    // Merge sorted arrays\n    \n    for(int i = 0; i < n + m; i++) {\n        cout << merged[i];\n        if(i < n + m - 1) cout << \" \";\n    }\n    \n    delete[] arr1;\n    delete[] arr2;\n    delete[] merged;\n    return 0;\n}"
+        },
+        {
+            "title": "Search in 2D Array",
+            "difficulty": "medium",
+            "description": "Allocate 2D array, search for element, return position, deallocate.",
+            "inputFormat": "First line: r c (rows and columns)\nNext r lines: c space-separated integers\nLast line: target element",
+            "outputFormat": "Print 'row col' if found, else '-1 -1'",
+            "constraints": "1 ≤ r, c ≤ 10",
+            "sampleTestCases": [
+                {
+                    "input": "3 3\n1 2 3\n4 5 6\n7 8 9\n5",
+                    "output": "1 1",
+                    "explanation": "5 found at row 1, col 1"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "2 3\n10 20 30\n40 50 60\n25",
+                    "output": "-1 -1"
+                },
+                {
+                    "input": "3 2\n1 2\n3 4\n5 6\n6",
+                    "output": "2 1"
+                }
+            ],
+            "points": 20,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int r, c;\n    cin >> r >> c;\n    \n    int** matrix = new int*[r];\n    for(int i = 0; i < r; i++) {\n        matrix[i] = new int[c];\n        for(int j = 0; j < c; j++) {\n            cin >> matrix[i][j];\n        }\n    }\n    \n    int target;\n    cin >> target;\n    \n    // Search for target\n    \n    for(int i = 0; i < r; i++) {\n        delete[] matrix[i];\n    }\n    delete[] matrix;\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Column Sum in 2D Array",
+            "difficulty": "medium",
+            "description": "Allocate 2D array, calculate sum of each column, deallocate.",
+            "inputFormat": "First line: r c (rows and columns)\nNext r lines: c space-separated integers",
+            "outputFormat": "Print c space-separated integers (column sums)",
+            "constraints": "1 ≤ r, c ≤ 10",
+            "sampleTestCases": [
+                {
+                    "input": "3 3\n1 2 3\n4 5 6\n7 8 9",
+                    "output": "12 15 18",
+                    "explanation": "Column sums"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "2 4\n1 2 3 4\n5 6 7 8",
+                    "output": "6 8 10 12"
+                },
+                {
+                    "input": "4 2\n10 20\n30 40\n50 60\n70 80",
+                    "output": "160 200"
+                }
+            ],
+            "points": 20,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int r, c;\n    cin >> r >> c;\n    \n    int** matrix = new int*[r];\n    for(int i = 0; i < r; i++) {\n        matrix[i] = new int[c];\n        for(int j = 0; j < c; j++) {\n            cin >> matrix[i][j];\n        }\n    }\n    \n    // Calculate column sums\n    \n    for(int i = 0; i < r; i++) {\n        delete[] matrix[i];\n    }\n    delete[] matrix;\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Filter Positive Numbers",
+            "difficulty": "medium",
+            "description": "Allocate array, create new array with only positive numbers, print, deallocate both.",
+            "inputFormat": "First line: n (array size)\nSecond line: n space-separated integers",
+            "outputFormat": "Print positive numbers, space-separated",
+            "constraints": "1 ≤ n ≤ 100\n-1000 ≤ array[i] ≤ 1000",
+            "sampleTestCases": [
+                {
+                    "input": "5\n-2 3 -1 5 0",
+                    "output": "3 5",
+                    "explanation": "Only positive numbers"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "4\n-5 -10 -15 -20",
+                    "output": ""
+                },
+                {
+                    "input": "3\n1 2 3",
+                    "output": "1 2 3"
+                }
+            ],
+            "points": 20,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int* arr = new int[n];\n    for(int i = 0; i < n; i++) {\n        cin >> arr[i];\n    }\n    \n    // Count positive numbers\n    int count = 0;\n    // Your code here\n    \n    // Allocate new array for positive numbers\n    int* positive = new int[count];\n    \n    // Fill positive array\n    \n    // Print\n    for(int i = 0; i < count; i++) {\n        cout << positive[i];\n        if(i < count-1) cout << \" \";\n    }\n    \n    delete[] arr;\n    delete[] positive;\n    return 0;\n}"
+        },
+        {
+            "title": "Swap Rows in Matrix",
+            "difficulty": "medium",
+            "description": "Allocate 2D matrix, swap two rows, print, deallocate.",
+            "inputFormat": "First line: r c (rows and columns)\nNext r lines: c space-separated integers\nLast line: row1 row2 (0-indexed)",
+            "outputFormat": "Print matrix after swapping rows",
+            "constraints": "2 ≤ r, c ≤ 10\n0 ≤ row1, row2 < r",
+            "sampleTestCases": [
+                {
+                    "input": "3 3\n1 2 3\n4 5 6\n7 8 9\n0 2",
+                    "output": "7 8 9\n4 5 6\n1 2 3",
+                    "explanation": "Swapped rows 0 and 2"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "2 3\n10 20 30\n40 50 60\n0 1",
+                    "output": "40 50 60\n10 20 30"
+                },
+                {
+                    "input": "4 2\n1 2\n3 4\n5 6\n7 8\n1 3",
+                    "output": "1 2\n7 8\n5 6\n3 4"
+                }
+            ],
+            "points": 20,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int r, c;\n    cin >> r >> c;\n    \n    int** matrix = new int*[r];\n    for(int i = 0; i < r; i++) {\n        matrix[i] = new int[c];\n        for(int j = 0; j < c; j++) {\n            cin >> matrix[i][j];\n        }\n    }\n    \n    int row1, row2;\n    cin >> row1 >> row2;\n    \n    // Swap rows (swap pointers)\n    int* temp = matrix[row1];\n    matrix[row1] = matrix[row2];\n    matrix[row2] = temp;\n    \n    for(int i = 0; i < r; i++) {\n        for(int j = 0; j < c; j++) {\n            cout << matrix[i][j];\n            if(j < c-1) cout << \" \";\n        }\n        cout << endl;\n    }\n    \n    for(int i = 0; i < r; i++) {\n        delete[] matrix[i];\n    }\n    delete[] matrix;\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Boundary Elements of Matrix",
+            "difficulty": "medium",
+            "description": "Allocate 2D matrix, extract boundary elements to 1D array, print, deallocate both.",
+            "inputFormat": "First line: r c (rows and columns)\nNext r lines: c space-separated integers",
+            "outputFormat": "Print boundary elements clockwise, space-separated",
+            "constraints": "2 ≤ r, c ≤ 10",
+            "sampleTestCases": [
+                {
+                    "input": "3 3\n1 2 3\n4 5 6\n7 8 9",
+                    "output": "1 2 3 6 9 8 7 4",
+                    "explanation": "Boundary elements"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "2 4\n1 2 3 4\n5 6 7 8",
+                    "output": "1 2 3 4 8 7 6 5"
+                },
+                {
+                    "input": "4 3\n1 2 3\n4 5 6\n7 8 9\n10 11 12",
+                    "output": "1 2 3 6 9 12 11 10 7 4"
+                }
+            ],
+            "points": 20,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int r, c;\n    cin >> r >> c;\n    \n    int** matrix = new int*[r];\n    for(int i = 0; i < r; i++) {\n        matrix[i] = new int[c];\n        for(int j = 0; j < c; j++) {\n            cin >> matrix[i][j];\n        }\n    }\n    \n    // Calculate boundary count\n    int boundaryCount = 2*r + 2*c - 4;\n    int* boundary = new int[boundaryCount];\n    \n    // Extract boundary elements\n    \n    // Print\n    for(int i = 0; i < boundaryCount; i++) {\n        cout << boundary[i];\n        if(i < boundaryCount-1) cout << \" \";\n    }\n    \n    for(int i = 0; i < r; i++) {\n        delete[] matrix[i];\n    }\n    delete[] matrix;\n    delete[] boundary;\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Flatten 2D Array",
+            "difficulty": "medium",
+            "description": "Allocate 2D array, create 1D array with all elements, print, deallocate both.",
+            "inputFormat": "First line: r c (rows and columns)\nNext r lines: c space-separated integers",
+            "outputFormat": "Print flattened 1D array, space-separated",
+            "constraints": "1 ≤ r, c ≤ 10",
+            "sampleTestCases": [
+                {
+                    "input": "2 3\n1 2 3\n4 5 6",
+                    "output": "1 2 3 4 5 6",
+                    "explanation": "2D array flattened to 1D"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "3 2\n10 20\n30 40\n50 60",
+                    "output": "10 20 30 40 50 60"
+                },
+                {
+                    "input": "3 3\n1 2 3\n4 5 6\n7 8 9",
+                    "output": "1 2 3 4 5 6 7 8 9"
+                }
+            ],
+            "points": 20,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int r, c;\n    cin >> r >> c;\n    \n    int** matrix = new int*[r];\n    for(int i = 0; i < r; i++) {\n        matrix[i] = new int[c];\n        for(int j = 0; j < c; j++) {\n            cin >> matrix[i][j];\n        }\n    }\n    \n    // Allocate 1D array\n    int* flat = new int[r * c];\n    \n    // Flatten\n    \n    // Print\n    for(int i = 0; i < r * c; i++) {\n        cout << flat[i];\n        if(i < r * c - 1) cout << \" \";\n    }\n    \n    for(int i = 0; i < r; i++) {\n        delete[] matrix[i];\n    }\n    delete[] matrix;\n    delete[] flat;\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Identity Matrix Creation",
+            "difficulty": "medium",
+            "description": "Allocate square matrix dynamically, fill as identity matrix, print, deallocate.",
+            "inputFormat": "Single integer n (matrix size)",
+            "outputFormat": "Print identity matrix",
+            "constraints": "2 ≤ n ≤ 10",
+            "sampleTestCases": [
+                {
+                    "input": "3",
+                    "output": "1 0 0\n0 1 0\n0 0 1",
+                    "explanation": "3x3 identity matrix"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "2",
+                    "output": "1 0\n0 1"
+                },
+                {
+                    "input": "4",
+                    "output": "1 0 0 0\n0 1 0 0\n0 0 1 0\n0 0 0 1"
+                }
+            ],
+            "points": 20,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int** matrix = new int*[n];\n    for(int i = 0; i < n; i++) {\n        matrix[i] = new int[n];\n    }\n    \n    // Fill as identity matrix\n    \n    // Print\n    for(int i = 0; i < n; i++) {\n        for(int j = 0; j < n; j++) {\n            cout << matrix[i][j];\n            if(j < n-1) cout << \" \";\n        }\n        cout << endl;\n    }\n    \n    for(int i = 0; i < n; i++) {\n        delete[] matrix[i];\n    }\n    delete[] matrix;\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Spiral Order of Matrix",
+            "difficulty": "medium",
+            "description": "Allocate 2D matrix, create 1D array with spiral order elements, print, deallocate both.",
+            "inputFormat": "First line: r c (rows and columns)\nNext r lines: c space-separated integers",
+            "outputFormat": "Print elements in spiral order, space-separated",
+            "constraints": "1 ≤ r, c ≤ 10",
+            "sampleTestCases": [
+                {
+                    "input": "3 3\n1 2 3\n4 5 6\n7 8 9",
+                    "output": "1 2 3 6 9 8 7 4 5",
+                    "explanation": "Spiral order traversal"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "2 3\n1 2 3\n4 5 6",
+                    "output": "1 2 3 6 5 4"
+                },
+                {
+                    "input": "3 2\n1 2\n3 4\n5 6",
+                    "output": "1 2 4 6 5 3"
+                }
+            ],
+            "points": 20,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int r, c;\n    cin >> r >> c;\n    \n    int** matrix = new int*[r];\n    for(int i = 0; i < r; i++) {\n        matrix[i] = new int[c];\n        for(int j = 0; j < c; j++) {\n            cin >> matrix[i][j];\n        }\n    }\n    \n    // Allocate spiral array\n    int* spiral = new int[r * c];\n    \n    // Fill spiral order\n    \n    // Print\n    for(int i = 0; i < r * c; i++) {\n        cout << spiral[i];\n        if(i < r * c - 1) cout << \" \";\n    }\n    \n    for(int i = 0; i < r; i++) {\n        delete[] matrix[i];\n    }\n    delete[] matrix;\n    delete[] spiral;\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Add Two Matrices",
+            "difficulty": "medium",
+            "description": "Allocate two matrices and result matrix, add them, print result, deallocate all.",
+            "inputFormat": "First line: r c (rows and columns)\nNext r lines: c integers (matrix 1)\nNext r lines: c integers (matrix 2)",
+            "outputFormat": "Print sum matrix",
+            "constraints": "1 ≤ r, c ≤ 10",
+            "sampleTestCases": [
+                {
+                    "input": "2 2\n1 2\n3 4\n5 6\n7 8",
+                    "output": "6 8\n10 12",
+                    "explanation": "Matrix addition"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "3 2\n1 2\n3 4\n5 6\n7 8\n9 10\n11 12",
+                    "output": "8 10\n12 14\n16 18"
+                },
+                {
+                    "input": "2 3\n1 2 3\n4 5 6\n0 0 0\n0 0 0",
+                    "output": "1 2 3\n4 5 6"
+                }
+            ],
+            "points": 20,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int r, c;\n    cin >> r >> c;\n    \n    int** mat1 = new int*[r];\n    for(int i = 0; i < r; i++) {\n        mat1[i] = new int[c];\n        for(int j = 0; j < c; j++) {\n            cin >> mat1[i][j];\n        }\n    }\n    \n    int** mat2 = new int*[r];\n    for(int i = 0; i < r; i++) {\n        mat2[i] = new int[c];\n        for(int j = 0; j < c; j++) {\n            cin >> mat2[i][j];\n        }\n    }\n    \n    // Allocate result matrix\n    int** result = new int*[r];\n    for(int i = 0; i < r; i++) {\n        result[i] = new int[c];\n    }\n    \n    // Add matrices\n    \n    // Print result\n    for(int i = 0; i < r; i++) {\n        for(int j = 0; j < c; j++) {\n            cout << result[i][j];\n            if(j < c-1) cout << \" \";\n        }\n        cout << endl;\n    }\n    \n    // Deallocate all\n    for(int i = 0; i < r; i++) {\n        delete[] mat1[i];\n        delete[] mat2[i];\n        delete[] result[i];\n    }\n    delete[] mat1;\n    delete[] mat2;\n    delete[] result;\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Jagged Array Creation",
+            "difficulty": "medium",
+            "description": "Create a jagged array where each row has different size, fill, print, deallocate properly.",
+            "inputFormat": "First line: n (number of rows)\nNext n lines: first integer is row size, followed by that many integers",
+            "outputFormat": "Print the jagged array",
+            "constraints": "1 ≤ n ≤ 10\n1 ≤ row size ≤ 10",
+            "sampleTestCases": [
+                {
+                    "input": "3\n2 1 2\n3 3 4 5\n1 6",
+                    "output": "1 2\n3 4 5\n6",
+                    "explanation": "Jagged array with varying row sizes"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "2\n3 10 20 30\n2 40 50",
+                    "output": "10 20 30\n40 50"
+                },
+                {
+                    "input": "4\n1 1\n2 2 3\n3 4 5 6\n1 7",
+                    "output": "1\n2 3\n4 5 6\n7"
+                }
+            ],
+            "points": 20,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    // Allocate array of pointers\n    int** jagged = new int*[n];\n    int* sizes = new int[n];\n    \n    // Allocate and fill each row\n    for(int i = 0; i < n; i++) {\n        cin >> sizes[i];\n        jagged[i] = new int[sizes[i]];\n        for(int j = 0; j < sizes[i]; j++) {\n            cin >> jagged[i][j];\n        }\n    }\n    \n    // Print jagged array\n    for(int i = 0; i < n; i++) {\n        for(int j = 0; j < sizes[i]; j++) {\n            cout << jagged[i][j];\n            if(j < sizes[i]-1) cout << \" \";\n        }\n        cout << endl;\n    }\n    \n    // Deallocate properly\n    for(int i = 0; i < n; i++) {\n        delete[] jagged[i];\n    }\n    delete[] jagged;\n    delete[] sizes;\n    \n    return 0;\n}"
+        }
+    ]
+}

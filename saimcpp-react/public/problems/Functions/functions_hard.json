@@ -1,0 +1,145 @@
+{
+    "category": "Functions - Hard",
+    "problems": [
+        {
+            "title": "Tower of Hanoi",
+            "difficulty": "hard",
+            "description": "Implement the Tower of Hanoi puzzle using recursion. Move n disks from source to destination using auxiliary rod.",
+            "inputFormat": "Single integer n (number of disks)",
+            "outputFormat": "Print each move in format: 'Move disk from A to C' (one move per line)",
+            "constraints": "1 ≤ n ≤ 5",
+            "sampleTestCases": [
+                {
+                    "input": "2",
+                    "output": "Move disk from A to B\nMove disk from A to C\nMove disk from B to C",
+                    "explanation": "Moves to transfer 2 disks from A to C using B"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "3",
+                    "output": "Move disk from A to C\nMove disk from A to B\nMove disk from C to B\nMove disk from A to C\nMove disk from B to A\nMove disk from B to C\nMove disk from A to C"
+                },
+                {
+                    "input": "1",
+                    "output": "Move disk from A to C"
+                }
+            ],
+            "points": 30,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\n// Write your Tower of Hanoi recursive function here\n\nint main() {\n    int n;\n    cin >> n;\n    \n    // Call your function with source='A', destination='C', auxiliary='B'\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Count All Subsets with XOR",
+            "difficulty": "hard",
+            "description": "Write a recursive function to count all subsets of an array whose XOR equals a given value.",
+            "inputFormat": "First line: n (array size)\nSecond line: n space-separated integers\nThird line: target XOR value",
+            "outputFormat": "Print count of subsets with XOR equal to target",
+            "constraints": "1 ≤ n ≤ 15\n0 ≤ array[i] ≤ 100\n0 ≤ target ≤ 100",
+            "sampleTestCases": [
+                {
+                    "input": "3\n1 2 3\n2",
+                    "output": "2",
+                    "explanation": "Subsets: {2} and {1,3} both have XOR = 2"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "4\n1 2 3 4\n4",
+                    "output": "4"
+                },
+                {
+                    "input": "3\n5 5 5\n5",
+                    "output": "3"
+                }
+            ],
+            "points": 30,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\n// Write your recursive subset XOR counting function here\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int arr[15];\n    for(int i = 0; i < n; i++) {\n        cin >> arr[i];\n    }\n    \n    int target;\n    cin >> target;\n    \n    // Call your function and print result\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Hollow Hourglass Pattern",
+            "difficulty": "hard",
+            "description": "Write a recursive function to print a hollow hourglass pattern.",
+            "inputFormat": "Single integer n (must be odd, represents total height)",
+            "outputFormat": "Print hollow hourglass pattern",
+            "constraints": "5 ≤ n ≤ 11 (n must be odd)",
+            "sampleTestCases": [
+                {
+                    "input": "7",
+                    "output": "*******\n *   *\n  * *\n   *\n  * *\n *   *\n*******",
+                    "explanation": "Hollow hourglass of height 7"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "5",
+                    "output": "*****\n * *\n  *\n * *\n*****"
+                },
+                {
+                    "input": "9",
+                    "output": "*********\n *     *\n  *   *\n   * *\n    *\n   * *\n  *   *\n *     *\n*********"
+                }
+            ],
+            "points": 30,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\n// Write your recursive hollow hourglass function here\n\nint main() {\n    int n;\n    cin >> n;\n    \n    // Call your function\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Pointer Chain Manipulation",
+            "difficulty": "hard",
+            "description": "Create functions using pointer-to-pointer to modify array elements. Implement: 1) Function to find min and max using double pointers, 2) Function to swap them in array.",
+            "inputFormat": "First line: n (array size)\nSecond line: n space-separated integers",
+            "outputFormat": "Print array after swapping min and max elements, space-separated",
+            "constraints": "2 ≤ n ≤ 100\n-1000 ≤ array[i] ≤ 1000",
+            "sampleTestCases": [
+                {
+                    "input": "5\n3 7 1 9 5",
+                    "output": "3 7 9 1 5",
+                    "explanation": "Min=1 at index 2, Max=9 at index 3, swap them"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "4\n10 5 20 15",
+                    "output": "10 20 5 15"
+                },
+                {
+                    "input": "6\n-5 3 8 -2 0 6",
+                    "output": "8 3 -5 -2 0 6"
+                }
+            ],
+            "points": 30,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\n// Write your functions using pointer-to-pointer here\n// 1. Function to find min and max positions\n// 2. Function to swap elements at those positions\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int arr[100];\n    for(int i = 0; i < n; i++) {\n        cin >> arr[i];\n    }\n    \n    // Call your functions\n    \n    for(int i = 0; i < n; i++) {\n        cout << arr[i];\n        if(i < n-1) cout << \" \";\n    }\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Advanced Bitwise - Gray Code",
+            "difficulty": "hard",
+            "description": "Write functions to: 1) Convert binary to Gray code, 2) Convert Gray code to binary. Use bitwise operations.",
+            "inputFormat": "First line: type (1 for binary to Gray, 2 for Gray to binary)\nSecond line: integer n",
+            "outputFormat": "Print the converted number",
+            "constraints": "0 ≤ n ≤ 1000",
+            "sampleTestCases": [
+                {
+                    "input": "1\n6",
+                    "output": "5",
+                    "explanation": "Binary 6 (110) to Gray code is 5 (101)"
+                },
+                {
+                    "input": "2\n5",
+                    "output": "6",
+                    "explanation": "Gray code 5 (101) to binary is 6 (110)"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "1\n15",
+                    "output": "8"
+                },
+                {
+                    "input": "2\n8",
+                    "output": "15"
+                }
+            ],
+            "points": 30,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\n// Write your binary to Gray code function\n\n// Write your Gray code to binary function\n\nint main() {\n    int type, n;\n    cin >> type >> n;\n    \n    if(type == 1) {\n        // Call binary to Gray\n    } else {\n        // Call Gray to binary\n    }\n    \n    return 0;\n}"
+        }
+    ]
+}

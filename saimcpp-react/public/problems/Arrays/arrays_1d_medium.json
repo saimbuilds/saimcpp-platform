@@ -1,0 +1,140 @@
+{
+  "category": "Arrays 1D - Medium",
+  "problems": [
+    {
+      "title": "Second Largest Element",
+      "difficulty": "medium",
+      "description": "Find the second largest element in the array.",
+      "inputFormat": "First line: n (array size)\nSecond line: n space-separated integers",
+      "outputFormat": "Print the second largest element",
+      "constraints": "2 ≤ n ≤ 100\n-1000 ≤ array[i] ≤ 1000",
+      "sampleTestCases": [
+        {
+          "input": "5\n10 20 30 40 50",
+          "output": "40",
+          "explanation": "Second largest after 50 is 40"
+        }
+      ],
+      "hiddenTestCases": [
+        {
+          "input": "4\n5 5 3 2",
+          "output": "3"
+        },
+        {
+          "input": "3\n100 50 75",
+          "output": "75"
+        }
+      ],
+      "points": 20,
+      "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int arr[100];\n    for(int i = 0; i < n; i++) {\n        cin >> arr[i];\n    }\n    \n    // Your code here\n    \n    return 0;\n}"
+    },
+    {
+      "title": "Array Rotation",
+      "difficulty": "medium",
+      "description": "Rotate array to the right by k positions.",
+      "inputFormat": "First line: n (array size)\nSecond line: n space-separated integers\nThird line: k (rotation count)",
+      "outputFormat": "Print rotated array, space-separated",
+      "constraints": "1 ≤ n ≤ 100\n1 ≤ k ≤ 100",
+      "sampleTestCases": [
+        {
+          "input": "5\n1 2 3 4 5\n2",
+          "output": "4 5 1 2 3",
+          "explanation": "Rotate right by 2: [1,2,3,4,5] -> [4,5,1,2,3]"
+        }
+      ],
+      "hiddenTestCases": [
+        {
+          "input": "4\n10 20 30 40\n1",
+          "output": "40 10 20 30"
+        },
+        {
+          "input": "3\n5 10 15\n3",
+          "output": "5 10 15"
+        }
+      ],
+      "points": 20,
+      "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int arr[100];\n    for(int i = 0; i < n; i++) {\n        cin >> arr[i];\n    }\n    \n    int k;\n    cin >> k;\n    \n    // Your code here\n    \n    return 0;\n}"
+    },
+    {
+      "title": "Remove Duplicates",
+      "difficulty": "medium",
+      "description": "Remove duplicate elements and print unique elements in order.",
+      "inputFormat": "First line: n (array size)\nSecond line: n space-separated integers",
+      "outputFormat": "Print unique elements, space-separated",
+      "constraints": "1 ≤ n ≤ 100\n-1000 ≤ array[i] ≤ 1000",
+      "sampleTestCases": [
+        {
+          "input": "7\n1 2 2 3 4 4 5",
+          "output": "1 2 3 4 5",
+          "explanation": "Removed duplicates: 2 and 4"
+        }
+      ],
+      "hiddenTestCases": [
+        {
+          "input": "5\n5 5 5 5 5",
+          "output": "5"
+        },
+        {
+          "input": "6\n1 2 3 4 5 6",
+          "output": "1 2 3 4 5 6"
+        }
+      ],
+      "points": 20,
+      "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int arr[100];\n    for(int i = 0; i < n; i++) {\n        cin >> arr[i];\n    }\n    \n    // Your code here\n    \n    return 0;\n}"
+    },
+    {
+      "title": "Merge Two Arrays",
+      "difficulty": "medium",
+      "description": "Merge two sorted arrays into one sorted array.",
+      "inputFormat": "First line: n (first array size)\nSecond line: n space-separated integers (sorted)\nThird line: m (second array size)\nFourth line: m space-separated integers (sorted)",
+      "outputFormat": "Print merged sorted array, space-separated",
+      "constraints": "1 ≤ n, m ≤ 50",
+      "sampleTestCases": [
+        {
+          "input": "3\n1 3 5\n3\n2 4 6",
+          "output": "1 2 3 4 5 6",
+          "explanation": "Merged [1,3,5] and [2,4,6]"
+        }
+      ],
+      "hiddenTestCases": [
+        {
+          "input": "2\n10 20\n2\n15 25",
+          "output": "10 15 20 25"
+        },
+        {
+          "input": "3\n1 2 3\n2\n4 5",
+          "output": "1 2 3 4 5"
+        }
+      ],
+      "points": 20,
+      "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int arr1[50];\n    for(int i = 0; i < n; i++) {\n        cin >> arr1[i];\n    }\n    \n    int m;\n    cin >> m;\n    \n    int arr2[50];\n    for(int i = 0; i < m; i++) {\n        cin >> arr2[i];\n    }\n    \n    // Your code here\n    \n    return 0;\n}"
+    },
+    {
+      "title": "Frequency Counter",
+      "difficulty": "medium",
+      "description": "Count frequency of each element in the array.",
+      "inputFormat": "First line: n (array size)\nSecond line: n space-separated integers",
+      "outputFormat": "Print each unique element and its frequency, one per line",
+      "constraints": "1 ≤ n ≤ 100\n1 ≤ array[i] ≤ 100",
+      "sampleTestCases": [
+        {
+          "input": "7\n1 2 2 3 3 3 4",
+          "output": "1 1\n2 2\n3 3\n4 1",
+          "explanation": "1 appears 1 time, 2 appears 2 times, etc."
+        }
+      ],
+      "hiddenTestCases": [
+        {
+          "input": "5\n5 5 5 5 5",
+          "output": "5 5"
+        },
+        {
+          "input": "4\n1 2 3 4",
+          "output": "1 1\n2 1\n3 1\n4 1"
+        }
+      ],
+      "points": 20,
+      "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int arr[100];\n    for(int i = 0; i < n; i++) {\n        cin >> arr[i];\n    }\n    \n    // Your code here\n    \n    return 0;\n}"
+    }
+  ]
+}

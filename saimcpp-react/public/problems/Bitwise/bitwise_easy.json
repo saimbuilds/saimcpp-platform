@@ -1,0 +1,275 @@
+{
+    "category": "Bitwise - Easy",
+    "problems": [
+        {
+            "title": "Check Even or Odd",
+            "difficulty": "easy",
+            "description": "Check if a number is even or odd using bitwise AND operation.",
+            "inputFormat": "Single integer n",
+            "outputFormat": "Print 'Even' or 'Odd'",
+            "constraints": "0 ≤ n ≤ 10000",
+            "sampleTestCases": [
+                {
+                    "input": "7",
+                    "output": "Odd",
+                    "explanation": "7 & 1 = 1, so it's odd"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "10",
+                    "output": "Even"
+                },
+                {
+                    "input": "0",
+                    "output": "Even"
+                }
+            ],
+            "points": 10,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    // Use bitwise AND to check even/odd\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Count Set Bits",
+            "difficulty": "easy",
+            "description": "Count the number of 1s (set bits) in the binary representation of a number.",
+            "inputFormat": "Single integer n",
+            "outputFormat": "Print count of set bits",
+            "constraints": "0 ≤ n ≤ 10000",
+            "sampleTestCases": [
+                {
+                    "input": "15",
+                    "output": "4",
+                    "explanation": "15 in binary is 1111, which has 4 ones"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "7",
+                    "output": "3"
+                },
+                {
+                    "input": "8",
+                    "output": "1"
+                }
+            ],
+            "points": 10,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    // Count set bits\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Power of Two Check",
+            "difficulty": "easy",
+            "description": "Check if a number is a power of 2 using bitwise operations.",
+            "inputFormat": "Single integer n",
+            "outputFormat": "Print 'Yes' if power of 2, else 'No'",
+            "constraints": "1 ≤ n ≤ 10000",
+            "sampleTestCases": [
+                {
+                    "input": "16",
+                    "output": "Yes",
+                    "explanation": "16 = 2^4, and 16 & 15 = 0"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "18",
+                    "output": "No"
+                },
+                {
+                    "input": "1024",
+                    "output": "Yes"
+                }
+            ],
+            "points": 10,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    // Check if power of 2 using n & (n-1)\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Set Kth Bit",
+            "difficulty": "easy",
+            "description": "Set the kth bit of a number to 1 (0-indexed from right).",
+            "inputFormat": "Two space-separated integers: n (number) and k (bit position)",
+            "outputFormat": "Print the number after setting kth bit",
+            "constraints": "0 ≤ n ≤ 10000\n0 ≤ k ≤ 15",
+            "sampleTestCases": [
+                {
+                    "input": "10 2",
+                    "output": "14",
+                    "explanation": "10 = 1010, set bit 2 → 1110 = 14"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "5 1",
+                    "output": "7"
+                },
+                {
+                    "input": "0 3",
+                    "output": "8"
+                }
+            ],
+            "points": 10,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, k;\n    cin >> n >> k;\n    \n    // Set kth bit using OR operation\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Clear Kth Bit",
+            "difficulty": "easy",
+            "description": "Clear (set to 0) the kth bit of a number (0-indexed from right).",
+            "inputFormat": "Two space-separated integers: n (number) and k (bit position)",
+            "outputFormat": "Print the number after clearing kth bit",
+            "constraints": "0 ≤ n ≤ 10000\n0 ≤ k ≤ 15",
+            "sampleTestCases": [
+                {
+                    "input": "15 2",
+                    "output": "11",
+                    "explanation": "15 = 1111, clear bit 2 → 1011 = 11"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "7 1",
+                    "output": "5"
+                },
+                {
+                    "input": "8 3",
+                    "output": "0"
+                }
+            ],
+            "points": 10,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, k;\n    cin >> n >> k;\n    \n    // Clear kth bit using AND with NOT\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Toggle Kth Bit",
+            "difficulty": "easy",
+            "description": "Toggle (flip) the kth bit of a number (0-indexed from right).",
+            "inputFormat": "Two space-separated integers: n (number) and k (bit position)",
+            "outputFormat": "Print the number after toggling kth bit",
+            "constraints": "0 ≤ n ≤ 10000\n0 ≤ k ≤ 15",
+            "sampleTestCases": [
+                {
+                    "input": "10 1",
+                    "output": "8",
+                    "explanation": "10 = 1010, toggle bit 1 → 1000 = 8"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "5 0",
+                    "output": "4"
+                },
+                {
+                    "input": "7 3",
+                    "output": "15"
+                }
+            ],
+            "points": 10,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, k;\n    cin >> n >> k;\n    \n    // Toggle kth bit using XOR\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Check Kth Bit",
+            "difficulty": "easy",
+            "description": "Check if the kth bit of a number is set (1) or not (0-indexed from right).",
+            "inputFormat": "Two space-separated integers: n (number) and k (bit position)",
+            "outputFormat": "Print 'Set' if kth bit is 1, else 'Not Set'",
+            "constraints": "0 ≤ n ≤ 10000\n0 ≤ k ≤ 15",
+            "sampleTestCases": [
+                {
+                    "input": "10 1",
+                    "output": "Set",
+                    "explanation": "10 = 1010, bit 1 is 1"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "8 0",
+                    "output": "Not Set"
+                },
+                {
+                    "input": "15 2",
+                    "output": "Set"
+                }
+            ],
+            "points": 10,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, k;\n    cin >> n >> k;\n    \n    // Check kth bit using AND\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Multiply by 2",
+            "difficulty": "easy",
+            "description": "Multiply a number by 2 using left shift operator.",
+            "inputFormat": "Single integer n",
+            "outputFormat": "Print n * 2",
+            "constraints": "0 ≤ n ≤ 5000",
+            "sampleTestCases": [
+                {
+                    "input": "5",
+                    "output": "10",
+                    "explanation": "5 << 1 = 10"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "7",
+                    "output": "14"
+                },
+                {
+                    "input": "100",
+                    "output": "200"
+                }
+            ],
+            "points": 10,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    // Multiply by 2 using left shift\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Divide by 2",
+            "difficulty": "easy",
+            "description": "Divide a number by 2 using right shift operator.",
+            "inputFormat": "Single integer n",
+            "outputFormat": "Print n / 2 (integer division)",
+            "constraints": "0 ≤ n ≤ 10000",
+            "sampleTestCases": [
+                {
+                    "input": "10",
+                    "output": "5",
+                    "explanation": "10 >> 1 = 5"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "7",
+                    "output": "3"
+                },
+                {
+                    "input": "100",
+                    "output": "50"
+                }
+            ],
+            "points": 10,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    // Divide by 2 using right shift\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Swap Two Numbers",
+            "difficulty": "easy",
+            "description": "Swap two numbers using XOR without using a temporary variable.",
+            "inputFormat": "Two space-separated integers a and b",
+            "outputFormat": "Print swapped values: a b",
+            "constraints": "1 ≤ a, b ≤ 10000",
+            "sampleTestCases": [
+                {
+                    "input": "5 10",
+                    "output": "10 5",
+                    "explanation": "Using XOR: a^=b, b^=a, a^=b"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "25 75",
+                    "output": "75 25"
+                },
+                {
+                    "input": "100 200",
+                    "output": "200 100"
+                }
+            ],
+            "points": 10,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int a, b;\n    cin >> a >> b;\n    \n    // Swap using XOR\n    \n    cout << a << \" \" << b;\n    return 0;\n}"
+        }
+    ]
+}

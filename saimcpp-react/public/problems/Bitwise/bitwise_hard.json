@@ -1,0 +1,140 @@
+{
+    "category": "Bitwise - Hard",
+    "problems": [
+        {
+            "title": "Find Two Non-Repeating Numbers",
+            "difficulty": "hard",
+            "description": "In an array where every element appears twice except two elements, find those two elements using XOR.",
+            "inputFormat": "First line: n (array size, always even)\nSecond line: n space-separated integers",
+            "outputFormat": "Print the two non-repeating numbers in ascending order, space-separated",
+            "constraints": "2 ≤ n ≤ 100 (n is even)\n1 ≤ array[i] ≤ 1000",
+            "sampleTestCases": [
+                {
+                    "input": "6\n2 3 7 9 2 3",
+                    "output": "7 9",
+                    "explanation": "7 and 9 appear only once"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "8\n1 2 3 4 1 2 5 6",
+                    "output": "3 4"
+                },
+                {
+                    "input": "4\n10 20 30 40",
+                    "output": "10 20"
+                }
+            ],
+            "points": 30,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int arr[100];\n    for(int i = 0; i < n; i++) {\n        cin >> arr[i];\n    }\n    \n    // Find two non-repeating numbers using XOR\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Maximum XOR of Two Numbers",
+            "difficulty": "hard",
+            "description": "Find the maximum XOR of any two numbers in an array.",
+            "inputFormat": "First line: n (array size)\nSecond line: n space-separated integers",
+            "outputFormat": "Print the maximum XOR value",
+            "constraints": "2 ≤ n ≤ 100\n0 ≤ array[i] ≤ 1000",
+            "sampleTestCases": [
+                {
+                    "input": "4\n3 10 5 25",
+                    "output": "28",
+                    "explanation": "Max XOR is 5 ^ 25 = 28"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "5\n1 2 3 4 5",
+                    "output": "7"
+                },
+                {
+                    "input": "3\n8 1 2",
+                    "output": "10"
+                }
+            ],
+            "points": 30,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int arr[100];\n    for(int i = 0; i < n; i++) {\n        cin >> arr[i];\n    }\n    \n    // Find maximum XOR\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Count Total Set Bits",
+            "difficulty": "hard",
+            "description": "Count total number of set bits in all numbers from 1 to n.",
+            "inputFormat": "Single integer n",
+            "outputFormat": "Print total count of set bits",
+            "constraints": "1 ≤ n ≤ 1000",
+            "sampleTestCases": [
+                {
+                    "input": "3",
+                    "output": "4",
+                    "explanation": "1(1), 2(10), 3(11) → total 4 set bits"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "7",
+                    "output": "12"
+                },
+                {
+                    "input": "15",
+                    "output": "32"
+                }
+            ],
+            "points": 30,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    // Count total set bits from 1 to n\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Minimum XOR Pair",
+            "difficulty": "hard",
+            "description": "Find the minimum XOR value of any pair of elements in an array.",
+            "inputFormat": "First line: n (array size)\nSecond line: n space-separated integers",
+            "outputFormat": "Print the minimum XOR value",
+            "constraints": "2 ≤ n ≤ 100\n0 ≤ array[i] ≤ 1000",
+            "sampleTestCases": [
+                {
+                    "input": "4\n9 5 3 1",
+                    "output": "2",
+                    "explanation": "Min XOR is 1 ^ 3 = 2"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "5\n12 4 6 2 8",
+                    "output": "2"
+                },
+                {
+                    "input": "3\n7 7 15",
+                    "output": "0"
+                }
+            ],
+            "points": 30,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int arr[100];\n    for(int i = 0; i < n; i++) {\n        cin >> arr[i];\n    }\n    \n    // Find minimum XOR\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Swap All Odd and Even Bits",
+            "difficulty": "hard",
+            "description": "Swap all odd and even bits of a number (bit 0 with bit 1, bit 2 with bit 3, etc.).",
+            "inputFormat": "Single integer n",
+            "outputFormat": "Print the number after swapping odd and even bits",
+            "constraints": "0 ≤ n ≤ 10000",
+            "sampleTestCases": [
+                {
+                    "input": "23",
+                    "output": "43",
+                    "explanation": "23 = 10111, swap odd/even → 101011 = 43"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "5",
+                    "output": "10"
+                },
+                {
+                    "input": "10",
+                    "output": "5"
+                }
+            ],
+            "points": 30,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    // Swap odd and even bits using masks\n    \n    return 0;\n}"
+        }
+    ]
+}

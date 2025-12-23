@@ -1,0 +1,275 @@
+{
+    "category": "Bitwise - Medium",
+    "problems": [
+        {
+            "title": "Reverse Bits",
+            "difficulty": "medium",
+            "description": "Reverse the bits of a 32-bit unsigned integer.",
+            "inputFormat": "Single integer n",
+            "outputFormat": "Print the number with reversed bits",
+            "constraints": "0 ≤ n ≤ 1000000",
+            "sampleTestCases": [
+                {
+                    "input": "5",
+                    "output": "2684354560",
+                    "explanation": "5 in binary (32-bit): 00000000000000000000000000000101, reversed: 10100000000000000000000000000000"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "1",
+                    "output": "2147483648"
+                },
+                {
+                    "input": "0",
+                    "output": "0"
+                }
+            ],
+            "points": 20,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    unsigned int n;\n    cin >> n;\n    \n    // Reverse all 32 bits\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Find Single Number",
+            "difficulty": "medium",
+            "description": "In an array where every element appears twice except one, find that single element using XOR.",
+            "inputFormat": "First line: n (array size, always odd)\nSecond line: n space-separated integers",
+            "outputFormat": "Print the single number",
+            "constraints": "1 ≤ n ≤ 99 (n is odd)\n1 ≤ array[i] ≤ 1000",
+            "sampleTestCases": [
+                {
+                    "input": "5\n2 3 2 4 4",
+                    "output": "3",
+                    "explanation": "XOR all elements: 2^3^2^4^4 = 3"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "7\n1 2 3 1 2 3 5",
+                    "output": "5"
+                },
+                {
+                    "input": "3\n10 20 10",
+                    "output": "20"
+                }
+            ],
+            "points": 20,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int arr[100];\n    for(int i = 0; i < n; i++) {\n        cin >> arr[i];\n    }\n    \n    // Find single number using XOR\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Count Bits to Flip",
+            "difficulty": "medium",
+            "description": "Count the number of bits needed to flip to convert number A to number B.",
+            "inputFormat": "Two space-separated integers a and b",
+            "outputFormat": "Print count of bits to flip",
+            "constraints": "0 ≤ a, b ≤ 10000",
+            "sampleTestCases": [
+                {
+                    "input": "10 20",
+                    "output": "4",
+                    "explanation": "10 = 01010, 20 = 10100, XOR = 11110 (4 bits different)"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "7 15",
+                    "output": "1"
+                },
+                {
+                    "input": "0 15",
+                    "output": "4"
+                }
+            ],
+            "points": 20,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int a, b;\n    cin >> a >> b;\n    \n    // XOR and count set bits\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Position of Rightmost Set Bit",
+            "difficulty": "medium",
+            "description": "Find the position of the rightmost set bit (1-indexed from right).",
+            "inputFormat": "Single integer n",
+            "outputFormat": "Print position of rightmost set bit",
+            "constraints": "1 ≤ n ≤ 10000",
+            "sampleTestCases": [
+                {
+                    "input": "18",
+                    "output": "2",
+                    "explanation": "18 = 10010, rightmost set bit is at position 2"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "5",
+                    "output": "1"
+                },
+                {
+                    "input": "8",
+                    "output": "4"
+                }
+            ],
+            "points": 20,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    // Find rightmost set bit using n & -n\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Clear All Bits from MSB to i",
+            "difficulty": "medium",
+            "description": "Clear all bits from the most significant bit through i (inclusive, 0-indexed from right).",
+            "inputFormat": "Two space-separated integers: n (number) and i (bit position)",
+            "outputFormat": "Print the number after clearing bits",
+            "constraints": "0 ≤ n ≤ 10000\n0 ≤ i ≤ 15",
+            "sampleTestCases": [
+                {
+                    "input": "15 2",
+                    "output": "3",
+                    "explanation": "15 = 1111, clear from MSB to bit 2 → 0011 = 3"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "31 3",
+                    "output": "7"
+                },
+                {
+                    "input": "255 4",
+                    "output": "15"
+                }
+            ],
+            "points": 20,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, i;\n    cin >> n >> i;\n    \n    // Clear bits from MSB to i\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Power of 4 Check",
+            "difficulty": "medium",
+            "description": "Check if a number is a power of 4 using bitwise operations.",
+            "inputFormat": "Single integer n",
+            "outputFormat": "Print 'Yes' if power of 4, else 'No'",
+            "constraints": "1 ≤ n ≤ 10000",
+            "sampleTestCases": [
+                {
+                    "input": "16",
+                    "output": "Yes",
+                    "explanation": "16 = 4^2"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "8",
+                    "output": "No"
+                },
+                {
+                    "input": "64",
+                    "output": "Yes"
+                }
+            ],
+            "points": 20,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    // Check if power of 4\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Next Power of 2",
+            "difficulty": "medium",
+            "description": "Find the next power of 2 greater than or equal to a given number.",
+            "inputFormat": "Single integer n",
+            "outputFormat": "Print the next power of 2",
+            "constraints": "1 ≤ n ≤ 5000",
+            "sampleTestCases": [
+                {
+                    "input": "5",
+                    "output": "8",
+                    "explanation": "Next power of 2 after 5 is 8"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "16",
+                    "output": "16"
+                },
+                {
+                    "input": "17",
+                    "output": "32"
+                }
+            ],
+            "points": 20,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    // Find next power of 2\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Binary to Gray Code",
+            "difficulty": "medium",
+            "description": "Convert a binary number to its Gray code equivalent.",
+            "inputFormat": "Single integer n (in decimal)",
+            "outputFormat": "Print Gray code equivalent (in decimal)",
+            "constraints": "0 ≤ n ≤ 10000",
+            "sampleTestCases": [
+                {
+                    "input": "6",
+                    "output": "5",
+                    "explanation": "Binary 6 (110) to Gray code is 5 (101)"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "15",
+                    "output": "8"
+                },
+                {
+                    "input": "0",
+                    "output": "0"
+                }
+            ],
+            "points": 20,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    // Convert to Gray code: n ^ (n >> 1)\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Gray Code to Binary",
+            "difficulty": "medium",
+            "description": "Convert a Gray code number to its binary equivalent.",
+            "inputFormat": "Single integer n (Gray code in decimal)",
+            "outputFormat": "Print binary equivalent (in decimal)",
+            "constraints": "0 ≤ n ≤ 10000",
+            "sampleTestCases": [
+                {
+                    "input": "5",
+                    "output": "6",
+                    "explanation": "Gray code 5 (101) to binary is 6 (110)"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "8",
+                    "output": "15"
+                },
+                {
+                    "input": "0",
+                    "output": "0"
+                }
+            ],
+            "points": 20,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n;\n    cin >> n;\n    \n    // Convert Gray to binary\n    \n    return 0;\n}"
+        },
+        {
+            "title": "Rotate Bits Left",
+            "difficulty": "medium",
+            "description": "Rotate the bits of a number to the left by k positions (considering 8-bit number).",
+            "inputFormat": "Two space-separated integers: n (number) and k (rotation count)",
+            "outputFormat": "Print the number after left rotation",
+            "constraints": "0 ≤ n ≤ 255\n1 ≤ k ≤ 8",
+            "sampleTestCases": [
+                {
+                    "input": "5 2",
+                    "output": "20",
+                    "explanation": "5 = 00000101, rotate left by 2 → 00010100 = 20"
+                }
+            ],
+            "hiddenTestCases": [
+                {
+                    "input": "7 3",
+                    "output": "56"
+                },
+                {
+                    "input": "128 1",
+                    "output": "1"
+                }
+            ],
+            "points": 20,
+            "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, k;\n    cin >> n >> k;\n    \n    // Rotate bits left (8-bit)\n    \n    return 0;\n}"
+        }
+    ]
+}

@@ -1,0 +1,6 @@
+__PREVIEW_BUILD_OUTPUT__
+node_modules
+dist
+*.log
+.env
+.env.local
