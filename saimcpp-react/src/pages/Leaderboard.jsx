@@ -17,7 +17,7 @@ export default function Leaderboard() {
                 .from('profiles')
                 .select('id, full_name, email, score, batch, department')
                 .order('score', { ascending: false })
-                .limit(50)
+                .limit(20)
 
             if (error) throw error
 
