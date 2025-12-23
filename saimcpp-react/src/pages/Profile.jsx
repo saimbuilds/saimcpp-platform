@@ -1,9 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
+import { Button } from '../components/ui/button'
 import { useAuthStore } from '../store/authStore'
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 import { Badge } from '../components/ui/badge'
+    const navigate = useNavigate()
 import { Target, Trophy, Flame, Calendar } from 'lucide-react'
 
 export default function Profile() {
