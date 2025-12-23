@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import { supabase } from '../lib/supabase'
@@ -10,6 +11,7 @@ import { Badge } from '../components/ui/badge'
 import { Trophy, Target, Flame, Calendar, Linkedin, Github, Twitter, Globe, Users, UserPlus, UserMinus } from 'lucide-react'
 
 export default function UserProfile() {
+    const navigate = useNavigate()
     const { username } = useParams()
     const { user: currentUser } = useAuthStore()
     const [isFollowing, setIsFollowing] = useState(false)
