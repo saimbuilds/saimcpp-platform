@@ -112,13 +112,13 @@ int main() {
                 // Update user score
                 const { data: profile } = await supabase
                     .from('profiles')
-                    .select('score')
+                    .select('total_score')
                     .eq('id', user.id)
                     .single()
 
                 await supabase
                     .from('profiles')
-                    .update({ score: (profile?.score || 0) + (problem.points || 10) })
+                    .update({ total_score: (profile?.total_score || 0) + (problem.points || 10) })
                     .eq('id', user.id)
 
                 setOutput(`✅ Accepted!\n\nYou earned ${problem.points || 10} points!`)

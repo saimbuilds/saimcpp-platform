@@ -84,7 +84,7 @@ export default function Header() {
                         </div>
                         <div className="flex items-center gap-1.5 rounded-lg bg-accent-blue/10 px-3 py-1.5">
                             <Trophy className="h-4 w-4 text-accent-blue" />
-                            <span className="font-semibold text-accent-blue">{profile?.score || 0}</span>
+                            <span className="font-semibold text-accent-blue">{profile?.total_score || 0}</span>
                         </div>
                         <span className="text-muted-foreground">
                             {profile?.full_name || user?.email?.split('@')[0]}

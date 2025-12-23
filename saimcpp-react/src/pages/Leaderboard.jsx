@@ -16,7 +16,7 @@ export default function Leaderboard() {
             const { data, error } = await supabase
                 .from('profiles')
                 .select('id, full_name, email, score, batch, department')
-                .order('score', { ascending: false })
+                .order('total_score', { ascending: false })
                 .limit(20)
 
             if (error) throw error
@@ -35,7 +35,7 @@ export default function Leaderboard() {
                     return {
                         ...profile,
                         solved: uniqueProblems.size,
-                        streak: profile.streak || 0,
+                        current_streak: profile.current_streak || 0,
                     }
                 })
             )
@@ -213,14 +213,14 @@ export default function Leaderboard() {
                                         </td>
                                         <td className="px-6 py-4 text-center">
                                             <span className="text-lg font-bold text-accent-blue">
-                                                {profile.score || 0}
+                                                {profile.total_score || 0}
                                             </span>
                                         </td>
                                         <td className="px-6 py-4 text-center">
                                             <span className="text-foreground">{profile.solved}</span>
                                         </td>
                                         <td className="px-6 py-4 text-center">
-                                            <span className="text-accent-green">{profile.streak}</span>
+                                            <span className="text-accent-green">{profile.current_streak}</span>
                                         </td>
                                         <td className="px-6 py-4">
                                             <span className="text-sm text-muted-foreground">

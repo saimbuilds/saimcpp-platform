@@ -33,7 +33,7 @@ export default function Profile() {
             const { data: allProfiles } = await supabase
                 .from('profiles')
                 .select('id, score')
-                .order('score', { ascending: false })
+                .order('total_score', { ascending: false })
 
             const rank =
                 allProfiles?.findIndex((p) => p.id === user.id) + 1 || 0
@@ -44,8 +44,8 @@ export default function Profile() {
                 submissions: submissions?.length || 0,
                 rank,
                 totalUsers,
-                score: profile?.score || 0,
-                streak: profile?.streak || 0,
+                total_score: profile?.total_score || 0,
+                current_streak: profile?.streak || 0,
             }
         },
         enabled: !!user,
@@ -157,7 +157,7 @@ export default function Profile() {
                                 <Trophy className="h-6 w-6 text-accent-blue" />
                             </div>
                             <CardTitle className="text-3xl font-bold text-accent-blue">
-                                {stats?.score || 0}
+                                {stats?.total_score || 0}
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
