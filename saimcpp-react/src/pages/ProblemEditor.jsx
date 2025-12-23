@@ -21,6 +21,8 @@ export default function ProblemEditor() {
     const [isRunning, setIsRunning] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [showSuccess, setShowSuccess] = useState(false)
+    const [showCopyToast, setShowCopyToast] = useState(false)
+    const [hasSubmitted, setHasSubmitted] = useState(false)
 
     // Load all problems to find this one
     const { data: problems = [] } = useQuery({
@@ -82,7 +84,7 @@ int main() {
 
     // Submit code
     const handleSubmit = async () => {
-        if (!user || !problem) return
+        if (!user || !problem || hasSubmitted) return
 
         setIsSubmitting(true)
         setOutput('Submitting...')
@@ -121,6 +123,7 @@ int main() {
 
                 setOutput(`✅ Accepted!\n\nYou earned ${problem.points || 10} points!`)
                 setShowSuccess(true)
+                setHasSubmitted(true)
                 setTimeout(() => setShowSuccess(false), 3000)
             } else {
                 setOutput(`❌ Wrong Answer\n\nExpected:\n${expectedOutput}\n\nGot:\n${actualOutput}`)
@@ -135,6 +138,8 @@ int main() {
     // Copy code
     const handleCopy = () => {
         navigator.clipboard.writeText(code)
+        setShowCopyToast(true)
+        setTimeout(() => setShowCopyToast(false), 2000)
     }
 
     // Clear output
@@ -168,6 +173,23 @@ int main() {
                             <div className="mb-2 text-4xl">🎉</div>
                             <p className="text-xl font-bold text-easy">Accepted!</p>
                             <p className="text-sm text-muted-foreground">Great work!</p>
+                        </div>
+                    </Card>
+                </motion.div>
+            )}
+
+            {/* Copy Toast */}
+            {showCopyToast && (
+                <motion.div
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 50 }}
+                    className="fixed bottom-8 left-1/2 z-50 -translate-x-1/2 transform"
+                >
+                    <Card className="border-accent-blue bg-card px-6 py-3 shadow-xl">
+                        <div className="flex items-center gap-2">
+                            <div className="text-accent-blue">✓</div>
+                            <p className="text-sm font-medium">Code copied to clipboard</p>
                         </div>
                     </Card>
                 </motion.div>
