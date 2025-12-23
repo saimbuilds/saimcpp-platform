@@ -13,16 +13,14 @@ export default function Header() {
     }
 
     return (
-        <header className="sticky top-0 z-50 border-b border-border/40 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
+        <header className="sticky top-0 z-50 border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80">
             <div className="container mx-auto flex h-16 items-center justify-between px-6">
                 {/* Logo */}
-                <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-brand-purple to-brand-blue shadow-lg shadow-brand-purple/20">
+                <div className="flex items-center gap-2">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-accent-blue to-accent-green">
                         <Code2 className="h-6 w-6 text-white" />
                     </div>
-                    <span className="bg-gradient-to-r from-brand-purple to-brand-blue bg-clip-text text-xl font-bold text-transparent">
-                        SaimCPP
-                    </span>
+                    <span className="text-xl font-bold">SaimCPP</span>
                 </div>
 
                 {/* Navigation */}
@@ -30,8 +28,8 @@ export default function Header() {
                     <NavLink
                         to="/problems"
                         className={({ isActive }) =>
-                            `flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition-all ${isActive
-                                ? 'bg-brand-purple/10 text-brand-purple shadow-sm'
+                            `flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${isActive
+                                ? 'bg-accent-blue/10 text-accent-blue'
                                 : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                             }`
                         }
@@ -42,8 +40,8 @@ export default function Header() {
                     <NavLink
                         to="/dry-run"
                         className={({ isActive }) =>
-                            `flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition-all ${isActive
-                                ? 'bg-brand-purple/10 text-brand-purple shadow-sm'
+                            `flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${isActive
+                                ? 'bg-accent-blue/10 text-accent-blue'
                                 : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                             }`
                         }
@@ -54,8 +52,8 @@ export default function Header() {
                     <NavLink
                         to="/leaderboard"
                         className={({ isActive }) =>
-                            `flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition-all ${isActive
-                                ? 'bg-brand-purple/10 text-brand-purple shadow-sm'
+                            `flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${isActive
+                                ? 'bg-accent-blue/10 text-accent-blue'
                                 : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                             }`
                         }
@@ -66,8 +64,8 @@ export default function Header() {
                     <NavLink
                         to="/profile"
                         className={({ isActive }) =>
-                            `flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition-all ${isActive
-                                ? 'bg-brand-purple/10 text-brand-purple shadow-sm'
+                            `flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${isActive
+                                ? 'bg-accent-blue/10 text-accent-blue'
                                 : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                             }`
                         }
@@ -80,24 +78,19 @@ export default function Header() {
                 {/* User Info */}
                 <div className="flex items-center gap-4">
                     <div className="hidden items-center gap-3 text-sm md:flex">
-                        <div className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-brand-green/10 to-brand-green/5 px-4 py-2 shadow-sm">
-                            <Flame className="h-4 w-4 text-brand-green" />
-                            <span className="font-semibold text-brand-green">{profile?.streak || 0}</span>
+                        <div className="flex items-center gap-1.5 rounded-lg bg-accent-green/10 px-3 py-1.5">
+                            <Flame className="h-4 w-4 text-accent-green" />
+                            <span className="font-semibold text-accent-green">{profile?.streak || 0}</span>
                         </div>
-                        <div className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-brand-purple/10 to-brand-blue/10 px-4 py-2 shadow-sm">
-                            <Trophy className="h-4 w-4 text-brand-purple" />
-                            <span className="font-semibold text-brand-purple">{profile?.score || 0}</span>
+                        <div className="flex items-center gap-1.5 rounded-lg bg-accent-blue/10 px-3 py-1.5">
+                            <Trophy className="h-4 w-4 text-accent-blue" />
+                            <span className="font-semibold text-accent-blue">{profile?.score || 0}</span>
                         </div>
                         <span className="text-muted-foreground">
                             {profile?.full_name || user?.email?.split('@')[0]}
                         </span>
                     </div>
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={handleLogout}
-                        className="hover:bg-destructive/10 hover:text-destructive"
-                    >
+                    <Button variant="ghost" size="sm" onClick={handleLogout}>
                         <LogOut className="h-4 w-4" />
                     </Button>
                 </div>
