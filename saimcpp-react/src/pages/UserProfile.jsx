@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { ArrowLeft } from 'lucide-react'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
@@ -139,6 +140,15 @@ export default function UserProfile() {
                     <div className="flex items-start justify-between">
                         <div className="flex gap-6">
                             {/* Avatar */}
+            {/* Back Button */}
+            <Button
+                variant="ghost"
+                onClick={() => navigate(-1)}
+                className="mb-4"
+            >
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back
+            </Button>
                             {profile?.avatar_url ? (
                                 <img
                                     src={profile?.avatar_url}
