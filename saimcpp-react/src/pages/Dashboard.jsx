@@ -1,17 +1,11 @@
-import { Outlet } from 'react-router-dom'
-import Header from '../components/layout/Header'
-import Footer from '../components/layout/Footer'
+import { useNavigate } from 'react-router-dom'
 
 export default function Dashboard() {
     return (
-        <div className="flex min-h-screen flex-col bg-background">
-            <Header />
-            <main className="flex-1">
-                <div className="container mx-auto max-w-7xl px-8 py-8">
-                    <Outlet />
-                </div>
-            </main>
-            <Footer />
+        <div className="flex min-h-screen flex-col bg-gradient-to-br from-background via-background to-muted">
+            <div className="flex-1">
+                <Outlet />
+            </div>
         </div>
     )
 }

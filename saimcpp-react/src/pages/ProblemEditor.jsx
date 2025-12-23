@@ -9,7 +9,7 @@ import { useAuthStore } from '../store/authStore'
 import { Button } from '../components/ui/button'
 import { Badge } from '../components/ui/badge'
 import { Card } from '../components/ui/card'
-import { ArrowLeft, Play, Send, Copy, Trash2 } from 'lucide-react'
+import { ArrowLeft, Play, Send, Copy, Trash2, Target } from 'lucide-react'
 
 export default function ProblemEditor() {
     const { id } = useParams()
@@ -173,61 +173,66 @@ int main() {
                 </motion.div>
             )}
 
-            <div className="grid h-full grid-cols-2">
-                {/* Left Panel - Problem Description */}
-                <div className="flex flex-col border-r border-border bg-card">
-                    <div className="border-b border-border p-6">
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => navigate('/problems')}
-                            className="mb-4"
-                        >
-                            <ArrowLeft className="mr-2 h-4 w-4" />
-                            Back to Problems
-                        </Button>
+            {/* Header Bar */}
+            <div className="flex items-center justify-between border-b border-border bg-card px-6 py-3">
+                <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => navigate('/problems')}
+                    className="gap-2"
+                >
+                    <ArrowLeft className="h-4 w-4" />
+                    Back to Problems
+                </Button>
 
-                        <div className="flex items-start justify-between">
-                            <div>
-                                <h1 className="mb-2 text-2xl font-bold">{problem.title}</h1>
-                                <Badge variant={problem.difficulty}>{problem.difficulty}</Badge>
-                            </div>
-                            <div className="text-right text-sm text-muted-foreground">
-                                <div>📂 {problem.category}</div>
-                                <div>🎯 {problem.points || 10} points</div>
-                            </div>
-                        </div>
+                <div className="flex items-center gap-3">
+                    <div className="text-sm text-muted-foreground">
+                        {problem.category}
+                    </div>
+                    <Badge variant={problem.difficulty}>{problem.difficulty}</Badge>
+                    <div className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground">
+                        <Target className="h-4 w-4" />
+                        {problem.points || 10} points
+                    </div>
+                </div>
+            </div>
+
+            <div className="grid flex-1 grid-cols-2 overflow-hidden">
+                {/* Left Panel - Problem Description */}
+                <div className="flex flex-col overflow-hidden border-r border-border bg-muted/30">
+                    <div className="border-b border-border bg-card px-6 py-4">
+                        <h1 className="text-2xl font-bold">{problem.title}</h1>
                     </div>
 
-                    <div className="flex-1 overflow-y-auto p-6">
-                        <div className="space-y-6">
+                    <div className="flex-1 overflow-y-auto px-6 py-6">
+                        <div className="max-w-2xl space-y-6">
                             <section>
-                                <h3 className="mb-2 text-lg font-semibold">Description</h3>
-                                <p className="text-muted-foreground">{problem.description}</p>
+                                <h3 className="mb-3 text-base font-semibold">Description</h3>
+                                <p className="text-sm leading-relaxed text-muted-foreground">{problem.description}</p>
                             </section>
 
                             <section>
-                                <h3 className="mb-2 text-lg font-semibold">Input Format</h3>
-                                <p className="text-muted-foreground">{problem.inputFormat}</p>
+                                <h3 className="mb-3 text-base font-semibold">Input Format</h3>
+                                <p className="text-sm leading-relaxed text-muted-foreground">{problem.inputFormat}</p>
                             </section>
 
                             <section>
-                                <h3 className="mb-2 text-lg font-semibold">Output Format</h3>
-                                <p className="text-muted-foreground">{problem.outputFormat}</p>
+                                <h3 className="mb-3 text-base font-semibold">Output Format</h3>
+                                <p className="text-sm leading-relaxed text-muted-foreground">{problem.outputFormat}</p>
                             </section>
 
                             <section>
-                                <h3 className="mb-2 text-lg font-semibold">Sample Test Case</h3>
-                                <div className="space-y-3 rounded-lg bg-secondary p-4">
+                                <h3 className="mb-3 text-base font-semibold">Sample Test Case</h3>
+                                <div className="space-y-3 rounded-lg border border-border bg-card p-4">
                                     <div>
-                                        <strong className="text-sm">Input:</strong>
-                                        <pre className="mt-1 rounded bg-background p-2 font-mono text-sm">
+                                        <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Input:</div>
+                                        <pre className="rounded-md bg-secondary p-3 font-mono text-sm">
                                             {problem.sampleInput}
                                         </pre>
                                     </div>
                                     <div>
-                                        <strong className="text-sm">Output:</strong>
-                                        <pre className="mt-1 rounded bg-background p-2 font-mono text-sm">
+                                        <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Output:</div>
+                                        <pre className="rounded-md bg-secondary p-3 font-mono text-sm">
                                             {problem.sampleOutput}
                                         </pre>
                                     </div>
@@ -236,8 +241,8 @@ int main() {
 
                             {problem.explanation && (
                                 <section>
-                                    <h3 className="mb-2 text-lg font-semibold">Explanation</h3>
-                                    <p className="text-muted-foreground">{problem.explanation}</p>
+                                    <h3 className="mb-3 text-base font-semibold">Explanation</h3>
+                                    <p className="text-sm leading-relaxed text-muted-foreground">{problem.explanation}</p>
                                 </section>
                             )}
                         </div>
@@ -245,9 +250,10 @@ int main() {
                 </div>
 
                 {/* Right Panel - Code Editor */}
-                <div className="flex flex-col bg-background">
-                    <div className="flex items-center justify-between border-b border-border bg-card px-6 py-3">
-                        <span className="text-sm font-medium">main.cpp</span>
+                <div className="flex flex-col overflow-hidden">
+                    {/* Editor Header */}
+                    <div className="flex items-center justify-between border-b border-border bg-card px-4 py-2.5">
+                        <span className="text-sm font-medium text-muted-foreground">main.cpp</span>
                         <div className="flex gap-2">
                             <Button variant="ghost" size="sm" onClick={handleCopy}>
                                 <Copy className="mr-2 h-4 w-4" />
@@ -267,6 +273,7 @@ int main() {
                                 size="sm"
                                 onClick={handleSubmit}
                                 disabled={isSubmitting}
+                                className="bg-accent-blue hover:bg-accent-blue/90"
                             >
                                 <Send className="mr-2 h-4 w-4" />
                                 {isSubmitting ? 'Submitting...' : 'Submit'}
@@ -274,37 +281,43 @@ int main() {
                         </div>
                     </div>
 
+                    {/* Monaco Editor - Full Height */}
                     <div className="flex-1">
                         <Editor
-                            height="65%"
+                            height="100%"
                             defaultLanguage="cpp"
                             value={code}
                             onChange={(value) => setCode(value || '')}
                             theme="vs-dark"
                             options={{
-                                fontSize: 14,
+                                fontSize: 15,
+                                lineHeight: 24,
                                 minimap: { enabled: false },
                                 scrollBeyondLastLine: false,
                                 wordWrap: 'on',
                                 automaticLayout: true,
+                                padding: { top: 16, bottom: 16 },
+                                fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
+                                fontLigatures: true,
                             }}
                         />
                     </div>
 
-                    <div className="flex h-[35%] flex-col border-t border-border">
-                        <div className="flex items-center justify-between border-b border-border bg-card px-6 py-2">
+                    {/* Output Panel */}
+                    <div className="flex h-48 flex-col border-t border-border bg-muted/30">
+                        <div className="flex items-center justify-between border-b border-border bg-card px-4 py-2">
                             <span className="text-sm font-medium">Output</span>
                             <Button variant="ghost" size="sm" onClick={handleClearOutput}>
                                 <Trash2 className="mr-2 h-3 w-3" />
                                 Clear
                             </Button>
                         </div>
-                        <div className="flex-1 overflow-y-auto bg-secondary p-4">
+                        <div className="flex-1 overflow-y-auto p-4">
                             {output ? (
-                                <pre className="font-mono text-sm text-foreground">{output}</pre>
+                                <pre className="font-mono text-sm leading-relaxed text-foreground">{output}</pre>
                             ) : (
                                 <p className="text-sm text-muted-foreground">
-                                    Run your code to see output here...
+                                    Click Run to test your code or Submit to check against all test cases
                                 </p>
                             )}
                         </div>
