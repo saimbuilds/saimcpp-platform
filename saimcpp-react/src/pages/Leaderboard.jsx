@@ -279,6 +279,8 @@ export default function Leaderboard() {
 
                                 return (
                                     <motion.tr
+                                        onClick={() => navigate(`/u/${profile.username}`)}
+                                        style={{ cursor: "pointer" }}
                                         key={profile.id}
                                         initial={{ opacity: 0, x: -20 }}
                                         animate={{ opacity: 1, x: 0 }}
