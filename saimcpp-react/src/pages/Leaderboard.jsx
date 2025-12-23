@@ -130,22 +130,22 @@ export default function Leaderboard() {
         <div className="container mx-auto max-w-7xl px-8 py-8">
             {/* Search and Filters */}
             <div className="mb-6 space-y-4">
-                {/* Search Bar */}
-                <div className="relative">
-                    <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
-                    <input
-                        type="text"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        placeholder="Search by name or username..."
-                        className="w-full rounded-lg border border-border bg-secondary py-2 pl-10 pr-4 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20"
-                    />
-                    {isSearching && (
-                        <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                            <div className="h-4 w-4 animate-spin rounded-full border-2 border-purple-500 border-t-transparent"></div>
-                        </div>
-                    )}
-                </div>
+                {/* Search Bar + Founder Button */}
+                <div className="flex gap-3">
+                    <div className="relative flex-1">
+                        <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
+                        <input
+                            type="text"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            placeholder="Search by name or username..."
+                            className="w-full rounded-lg border border-border bg-secondary py-2 pl-10 pr-4 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20"
+                        />
+                        {isSearching && (
+                            <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                                <div className="h-4 w-4 animate-spin rounded-full border-2 border-purple-500 border-t-transparent"></div>
+                            </div>
+                        )}
                 {/* Meet the Founder Button */}
                 <div className="mb-6 flex justify-center">
                     <FounderButton />
