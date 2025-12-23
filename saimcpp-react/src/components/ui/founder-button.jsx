@@ -12,7 +12,7 @@ export default function FounderButton() {
 
             {/* Button */}
             <Button
-                onClick={() => navigate('/u/saimkhan')}
+                onClick={() => navigate('/u/saimbuilds')}
                 className="relative flex items-center gap-2 bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 text-white hover:from-purple-700 hover:via-pink-700 hover:to-purple-700"
                 size="sm"
             >

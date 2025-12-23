@@ -9,6 +9,7 @@ import { Badge } from '../components/ui/badge'
 import { Button } from '../components/ui/button'
 import { Trophy, Medal, Award, Search, Users } from 'lucide-react'
 import { CreatorBadge, isCreator, CreatorGlow } from '../components/ui/creator-badge'
+import FounderButton from '../components/ui/founder-button'
 
 // Debounce hook
 function useDebounce(value, delay) {
@@ -144,6 +145,10 @@ export default function Leaderboard() {
                             <div className="h-4 w-4 animate-spin rounded-full border-2 border-purple-500 border-t-transparent"></div>
                         </div>
                     )}
+                </div>
+                {/* Meet the Founder Button */}
+                <div className="mb-6 flex justify-center">
+                    <FounderButton />
                 </div>
 
                 {/* University Filter Pills */}

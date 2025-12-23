@@ -1,6 +1,5 @@
 import { useNavigate, NavLink } from 'react-router-dom'
 import { useAuthStore } from '../../store/authStore'
-import FounderButton from '../ui/founder-button'
 import { Button } from '../ui/button'
 import { LogOut, Code2, Zap, Trophy, User, Flame } from 'lucide-react'
 
@@ -75,7 +74,6 @@ export default function Header() {
                         Profile
                     </NavLink>
                 </nav>
-                    <FounderButton />
 
                 {/* User Info */}
                 <div className="flex items-center gap-4">
