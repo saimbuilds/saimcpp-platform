@@ -7,7 +7,11 @@
         "dev": "vite",
         "build": "vite build",
         "preview": "vite preview",
-        "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0"
+        "lint": "eslint .",
+        "db:migrate": "node scripts/run-migration.js",
+        "db:import": "node scripts/import-problems.js",
+        "db:export": "node scripts/export-problems.js",
+        "db:import-exams": "node scripts/import-exam-questions.js"
     },
     "dependencies": {
         "@monaco-editor/react": "^4.6.0",
@@ -15,11 +19,14 @@
         "@supabase/supabase-js": "^2.39.0",
         "@tanstack/react-query": "^5.17.0",
         "clsx": "^2.1.0",
+        "dotenv": "^17.2.3",
         "framer-motion": "^10.16.16",
         "lucide-react": "^0.303.0",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
+        "react-markdown": "^10.1.0",
         "react-router-dom": "^6.21.0",
+        "react-syntax-highlighter": "^16.1.0",
         "tailwind-merge": "^2.2.0",
         "zustand": "^4.4.7"
     },

@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { Card } from '../components/ui/card'
 import { Button } from '../components/ui/button'
-import { Code2, Zap, BookOpen, Trophy, Rocket } from 'lucide-react'
+import { Code2, Zap, BookOpen, Trophy, Rocket, FileText } from 'lucide-react'
 
 const tracks = [
     {
@@ -19,8 +19,7 @@ const tracks = [
         description: 'Hands-on lab exercises for Programming Fundamentals. Practice problems designed for lab sessions.',
         icon: '🧪',
         color: 'from-cyan-600 to-cyan-400',
-        stats: { problems: 0, dryRuns: 0 },
-        comingSoon: true
+        stats: { problems: 40, dryRuns: 0 }
     },
     {
         id: 'op',
@@ -99,35 +98,52 @@ export default function LearningHub() {
                                             <span className="font-medium">{track.stats.problems}</span>
                                             <span className="text-muted-foreground">Problems</span>
                                         </div>
-                                        <div className="flex items-center gap-1.5">
-                                            <Zap className="h-4 w-4 text-accent-green" />
-                                            <span className="font-medium">{track.stats.dryRuns}</span>
-                                            <span className="text-muted-foreground">Dry Runs</span>
-                                        </div>
+                                        {track.id !== 'pf-lab' && (
+                                            <div className="flex items-center gap-1.5">
+                                                <Zap className="h-4 w-4 text-accent-green" />
+                                                <span className="font-medium">{track.stats.dryRuns}</span>
+                                                <span className="text-muted-foreground">Dry Runs</span>
+                                            </div>
+                                        )}
                                     </div>
                                 )}
 
                                 {/* Action Buttons */}
                                 {!track.comingSoon && (
-                                    <div className="flex gap-2">
-                                        <Button
-                                            variant="default"
-                                            size="sm"
-                                            onClick={() => navigate(`/learning/${track.id}/problems`)}
-                                            className="flex-1"
-                                        >
-                                            <Code2 className="mr-1.5 h-4 w-4" />
-                                            Problems
-                                        </Button>
-                                        <Button
-                                            variant="outline"
-                                            size="sm"
-                                            onClick={() => navigate(`/learning/${track.id}/dry-runs`)}
-                                            className="flex-1"
-                                        >
-                                            <Zap className="mr-1.5 h-4 w-4" />
-                                            Dry Runs
-                                        </Button>
+                                    <div className="space-y-2">
+                                        <div className="flex gap-2">
+                                            <Button
+                                                variant="default"
+                                                size="sm"
+                                                onClick={() => navigate(`/learning/${track.id}/problems`)}
+                                                className={track.id === 'pf-lab' ? 'flex-1' : 'flex-1'}
+                                            >
+                                                <Code2 className="mr-1.5 h-4 w-4" />
+                                                Problems
+                                            </Button>
+                                            {track.id !== 'pf-lab' && (
+                                                <Button
+                                                    variant="outline"
+                                                    size="sm"
+                                                    onClick={() => navigate(`/learning/${track.id}/dry-runs`)}
+                                                    className="flex-1"
+                                                >
+                                                    <Zap className="mr-1.5 h-4 w-4" />
+                                                    Dry Runs
+                                                </Button>
+                                            )}
+                                        </div>
+                                        {track.id === 'pf-lab' && (
+                                            <Button
+                                                variant="outline"
+                                                size="sm"
+                                                onClick={() => navigate('/mock-exams')}
+                                                className="w-full border-accent-purple text-accent-purple hover:bg-accent-purple/10"
+                                            >
+                                                <FileText className="mr-1.5 h-4 w-4" />
+                                                Take Mock Exam
+                                            </Button>
+                                        )}
                                     </div>
                                 )}
                             </div>

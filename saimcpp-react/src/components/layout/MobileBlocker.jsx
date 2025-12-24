@@ -16,72 +16,94 @@ export default function MobileBlocker() {
     if (!isMobile) return null
 
     return (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-gradient-to-br from-purple-900 via-background to-purple-900 p-6">
-            <div className="max-w-2xl text-center">
+        <div className="fixed inset-0 z-[9999] overflow-y-auto bg-background">
+            <style>{`
+                @keyframes fade-in {
+                    from { opacity: 0; transform: translateY(20px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                .animate-fade-in {
+                    animation: fade-in 0.5s ease-out forwards;
+                }
+                .feature-card {
+                    transition: all 0.2s ease;
+                }
+                .feature-card:hover {
+                    transform: translateY(-2px);
+                    border-color: hsl(262 83% 58% / 0.4);
+                }
+            `}</style>
 
-                {/* Main Heading */}
-                <div className="mb-4">
-                    <h1 className="mb-3 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-4xl font-bold text-transparent">
-                        Vexilot
-                    </h1>
-                    <p className="text-xl font-semibold text-white">
-                        Competitive C++ Platform
-                    </p>
-                </div>
+            <div className="min-h-screen flex items-center justify-center p-6 py-12">
+                <div className="w-full max-w-lg space-y-12">
+                    {/* Main Heading */}
+                    <div className="text-center space-y-3 animate-fade-in" style={{ animationDelay: '0.1s', opacity: 0 }}>
+                        <h1 className="text-4xl font-semibold text-foreground tracking-tight sm:text-5xl">
+                            Vexilot
+                        </h1>
+                        <p className="text-lg text-muted-foreground">
+                            Competitive C++ Platform
+                        </p>
+                    </div>
 
-                {/* Desktop Only Message */}
-                <div className="mb-8 rounded-2xl border border-purple-500/30 bg-purple-500/10 p-6 backdrop-blur-sm">
-                    <Monitor className="mx-auto mb-4 h-16 w-16 text-purple-400" />
-                    <h2 className="mb-3 text-2xl font-bold text-white">Desktop Only</h2>
-                    <p className="text-base text-gray-300">
-                        Vexilot is designed exclusively for desktop use. Serious coding requires a proper keyboard, large screen, and focused environment.
-                    </p>
-                    <p className="mt-3 text-sm italic text-purple-300">
-                        💻 Coding can't be done effectively on a phone!
-                    </p>
-                </div>
-
-                {/* Features Grid */}
-                <div className="mb-8">
-                    <h3 className="mb-6 text-xl font-semibold text-white">Platform Features</h3>
-                    <div className="grid grid-cols-2 gap-4">
-                        <div className="rounded-xl border border-purple-500/20 bg-card/50 p-4 backdrop-blur-sm">
-                            <Code2 className="mx-auto mb-2 h-8 w-8 text-accent-blue" />
-                            <p className="text-sm font-medium text-foreground">Practice Problems</p>
-                        </div>
-                        <div className="rounded-xl border border-purple-500/20 bg-card/50 p-4 backdrop-blur-sm">
-                            <Zap className="mx-auto mb-2 h-8 w-8 text-accent-yellow" />
-                            <p className="text-sm font-medium text-foreground">Dry Run Challenges</p>
-                        </div>
-                        <div className="rounded-xl border border-purple-500/20 bg-card/50 p-4 backdrop-blur-sm">
-                            <Trophy className="mx-auto mb-2 h-8 w-8 text-accent-green" />
-                            <p className="text-sm font-medium text-foreground">Live Leaderboard</p>
-                        </div>
-                        <div className="rounded-xl border border-purple-500/20 bg-card/50 p-4 backdrop-blur-sm">
-                            <Users className="mx-auto mb-2 h-8 w-8 text-purple-400" />
-                            <p className="text-sm font-medium text-foreground">Social Features</p>
-                        </div>
-                        <div className="rounded-xl border border-purple-500/20 bg-card/50 p-4 backdrop-blur-sm">
-                            <BookOpen className="mx-auto mb-2 h-8 w-8 text-pink-400" />
-                            <p className="text-sm font-medium text-foreground">Learning Hub</p>
-                        </div>
-                        <div className="rounded-xl border border-purple-500/20 bg-card/50 p-4 backdrop-blur-sm">
-                            <Target className="mx-auto mb-2 h-8 w-8 text-orange-400" />
-                            <p className="text-sm font-medium text-foreground">Real-time Scoring</p>
+                    {/* Desktop Only Message */}
+                    <div className="space-y-6 animate-fade-in" style={{ animationDelay: '0.2s', opacity: 0 }}>
+                        <div className="flex flex-col items-center text-center space-y-4 rounded-2xl border border-border bg-card/50 p-8 backdrop-blur-sm">
+                            <Monitor className="h-14 w-14 text-brand-purple sm:h-16 sm:w-16" />
+                            <div className="space-y-2">
+                                <h2 className="text-2xl font-semibold text-foreground">Desktop Only</h2>
+                                <p className="text-base text-muted-foreground leading-relaxed max-w-md">
+                                    Vexilot is designed exclusively for desktop use. Serious coding requires a proper keyboard, large screen, and focused environment.
+                                </p>
+                            </div>
+                            <p className="text-sm text-brand-purple/80">
+                                💻 Coding can't be done effectively on a phone
+                            </p>
                         </div>
                     </div>
-                </div>
 
-                {/* Call to Action */}
-                <div className="rounded-xl border border-purple-500/30 bg-gradient-to-r from-purple-600/20 to-pink-600/20 p-6 backdrop-blur-sm">
-                    <p className="mb-2 text-lg font-semibold text-white">
-                        Ready to level up your C++ skills?
-                    </p>
-                    <p className="text-sm text-gray-300">
-                        Visit Vexilot on your desktop or laptop to start your competitive programming journey!
-                    </p>
-                    <div className="mt-4 text-xs text-purple-300">
-                        Learn • Practice • Compete
+                    {/* Features Grid */}
+                    <div className="space-y-6 animate-fade-in" style={{ animationDelay: '0.3s', opacity: 0 }}>
+                        <h3 className="text-center text-lg font-medium text-foreground">Platform Features</h3>
+                        <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                            <div className="feature-card rounded-xl border border-border bg-card/30 p-4 text-center space-y-2">
+                                <Code2 className="mx-auto h-7 w-7 text-brand-blue" />
+                                <p className="text-sm font-medium text-foreground">Practice Problems</p>
+                            </div>
+                            <div className="feature-card rounded-xl border border-border bg-card/30 p-4 text-center space-y-2">
+                                <Zap className="mx-auto h-7 w-7 text-brand-orange" />
+                                <p className="text-sm font-medium text-foreground">Dry Run Challenges</p>
+                            </div>
+                            <div className="feature-card rounded-xl border border-border bg-card/30 p-4 text-center space-y-2">
+                                <Trophy className="mx-auto h-7 w-7 text-brand-green" />
+                                <p className="text-sm font-medium text-foreground">Live Leaderboard</p>
+                            </div>
+                            <div className="feature-card rounded-xl border border-border bg-card/30 p-4 text-center space-y-2">
+                                <Users className="mx-auto h-7 w-7 text-brand-purple" />
+                                <p className="text-sm font-medium text-foreground">Social Features</p>
+                            </div>
+                            <div className="feature-card rounded-xl border border-border bg-card/30 p-4 text-center space-y-2">
+                                <BookOpen className="mx-auto h-7 w-7 text-brand-pink" />
+                                <p className="text-sm font-medium text-foreground">Learning Hub</p>
+                            </div>
+                            <div className="feature-card rounded-xl border border-border bg-card/30 p-4 text-center space-y-2">
+                                <Target className="mx-auto h-7 w-7 text-brand-cyan" />
+                                <p className="text-sm font-medium text-foreground">Real-time Scoring</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Call to Action */}
+                    <div className="text-center space-y-3 rounded-2xl border border-brand-purple/20 bg-brand-purple/5 p-8 animate-fade-in" style={{ animationDelay: '0.4s', opacity: 0 }}>
+                        <p className="text-lg font-medium text-foreground">
+                            Ready to level up your C++ skills?
+                        </p>
+                        <p className="text-sm text-muted-foreground max-w-md mx-auto">
+                            Visit Vexilot on your desktop or laptop to start your competitive programming journey!
+                        </p>
+                        <div className="text-sm text-brand-purple pt-2">
+                            Learn • Practice • Compete
+                        </div>
                     </div>
                 </div>
             </div>

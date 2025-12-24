@@ -3,7 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import Editor from '@monaco-editor/react'
-import { loadAllProblems, executeCode } from '../lib/api'
+import { executeCode } from '../lib/api'
+import { useProblem } from '../hooks/useProblems'
 import { supabase } from '../lib/supabase'
 import { useAuthStore } from '../store/authStore'
 import { Button } from '../components/ui/button'
@@ -24,13 +25,8 @@ export default function ProblemEditor() {
     const [showCopyToast, setShowCopyToast] = useState(false)
     const [hasSubmitted, setHasSubmitted] = useState(false)
 
-    // Load all problems to find this one
-    const { data: problems = [] } = useQuery({
-        queryKey: ['problems'],
-        queryFn: loadAllProblems,
-    })
-
-    const problem = problems.find((p) => p.id === parseInt(id))
+    // Load problem from database
+    const { data: problem, isLoading } = useProblem(id)
 
     // Load saved code from localStorage
     useEffect(() => {
@@ -38,8 +34,8 @@ export default function ProblemEditor() {
             const savedCode = localStorage.getItem(`problem-${id}-code`)
             if (savedCode) {
                 setCode(savedCode)
-            } else if (problem.starterCode) {
-                setCode(problem.starterCode)
+            } else if (problem.starter_code_cpp) {
+                setCode(problem.starter_code_cpp)
             } else {
                 setCode(`#include <iostream>
 using namespace std;
@@ -66,7 +62,7 @@ int main() {
         setOutput('Running...')
 
         try {
-            const result = await executeCode(code, problem?.sampleInput || '')
+            const result = await executeCode(code, problem?.sample_test_cases?.[0]?.input || '')
 
             if (result.run && result.run.output) {
                 setOutput(result.run.output)
@@ -91,9 +87,9 @@ int main() {
 
         try {
             // Run code with sample test case
-            const result = await executeCode(code, problem.sampleInput || '')
+            const result = await executeCode(code, problem.sample_test_cases?.[0]?.input || '')
 
-            const expectedOutput = (problem.sampleOutput || '').trim()
+            const expectedOutput = (problem.sample_test_cases?.[0]?.output || '').trim()
             const actualOutput = (result.run?.output || '').trim()
             const passed = actualOutput === expectedOutput
 
@@ -200,7 +196,7 @@ int main() {
                 <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => navigate('/problems')}
+                    onClick={() => navigate(`/learning/${problem?.track || 'pf'}/problems`)}
                     className="gap-2"
                 >
                     <ArrowLeft className="h-4 w-4" />
@@ -235,12 +231,12 @@ int main() {
 
                             <section>
                                 <h3 className="mb-3 text-base font-semibold">Input Format</h3>
-                                <p className="text-sm leading-relaxed text-muted-foreground">{problem.inputFormat}</p>
+                                <p className="text-sm leading-relaxed text-muted-foreground">{problem.input_format}</p>
                             </section>
 
                             <section>
                                 <h3 className="mb-3 text-base font-semibold">Output Format</h3>
-                                <p className="text-sm leading-relaxed text-muted-foreground">{problem.outputFormat}</p>
+                                <p className="text-sm leading-relaxed text-muted-foreground">{problem.output_format}</p>
                             </section>
 
                             <section>
@@ -249,22 +245,22 @@ int main() {
                                     <div>
                                         <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Input:</div>
                                         <pre className="rounded-md bg-secondary p-3 font-mono text-sm">
-                                            {problem.sampleInput}
+                                            {problem.sample_test_cases?.[0]?.input}
                                         </pre>
                                     </div>
                                     <div>
                                         <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Output:</div>
                                         <pre className="rounded-md bg-secondary p-3 font-mono text-sm">
-                                            {problem.sampleOutput}
+                                            {problem.sample_test_cases?.[0]?.output}
                                         </pre>
                                     </div>
                                 </div>
                             </section>
 
-                            {problem.explanation && (
+                            {problem.sample_test_cases?.[0]?.explanation && (
                                 <section>
                                     <h3 className="mb-3 text-base font-semibold">Explanation</h3>
-                                    <p className="text-sm leading-relaxed text-muted-foreground">{problem.explanation}</p>
+                                    <p className="text-sm leading-relaxed text-muted-foreground">{problem.sample_test_cases?.[0]?.explanation}</p>
                                 </section>
                             )}
                         </div>

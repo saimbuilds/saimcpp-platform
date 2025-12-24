@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { loadAllProblems } from '../lib/api'
+import { useProblems } from '../hooks/useProblems'
 import { supabase } from '../lib/supabase'
 import { useAuthStore } from '../store/authStore'
 import { Card } from '../components/ui/card'
@@ -33,13 +33,16 @@ export default function Problems() {
         favoritesOnly: false,
     })
 
-    // Load problems
-    const { data: problems = [], isLoading, error } = useQuery({
-        queryKey: ['problems'],
-        queryFn: loadAllProblems,
-        retry: false,
-        staleTime: Infinity,
+    // Load problems from database
+    const { data: problemsData, isLoading, error } = useProblems({
+        track,
+        category: filters.category !== 'all' ? filters.category : null,
+        difficulty: filters.difficulty !== 'all' ? filters.difficulty : null,
+        page: 1,
+        limit: 500, // Load all for now, can add pagination later
     })
+
+    const problems = problemsData?.problems || []
 
     // Load solved problems
     const { data: solvedProblems = [] } = useQuery({
@@ -94,10 +97,8 @@ export default function Problems() {
         queryClient.invalidateQueries(['favorites', user?.id])
     }
 
-    // Filter problems
+    // Filter problems (category and difficulty already filtered by database)
     const filteredProblems = problems.filter((problem) => {
-        if (filters.category !== 'all' && problem.category !== filters.category) return false
-        if (filters.difficulty !== 'all' && problem.difficulty !== filters.difficulty) return false
         if (filters.status === 'solved' && !solvedProblems.includes(problem.id)) return false
         if (filters.status === 'unsolved' && solvedProblems.includes(problem.id)) return false
         if (filters.favoritesOnly && !favorites.includes(problem.id)) return false
@@ -127,7 +128,7 @@ export default function Problems() {
             {/* Track Header with Navigation */}
             <div className="mb-6 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-purple-600 to-purple-400 text-sm font-bold text-white">
+                    <div className="flex h-10 min-w-[2.5rem] items-center justify-center rounded-lg bg-gradient-to-br from-purple-600 to-purple-400 px-2 text-xs font-bold text-white">
                         {track.toUpperCase()}
                     </div>
                     <div>
@@ -135,14 +136,16 @@ export default function Problems() {
                         <p className="text-sm text-muted-foreground">Practice Problems</p>
                     </div>
                 </div>
-                <Button
-                    variant="outline"
-                    onClick={() => navigate(`/learning/${track}/dry-runs`)}
-                    className="flex items-center gap-2"
-                >
-                    <Zap className="h-4 w-4" />
-                    Switch to Dry Runs
-                </Button>
+                {track !== 'pf-lab' && (
+                    <Button
+                        variant="outline"
+                        onClick={() => navigate(`/learning/${track}/dry-runs`)}
+                        className="flex items-center gap-2"
+                    >
+                        <Zap className="h-4 w-4" />
+                        Switch to Dry Runs
+                    </Button>
+                )}
             </div>
 
             {/* Compact Filters */}
@@ -154,12 +157,26 @@ export default function Problems() {
                     className="w-48"
                 >
                     <option value="all">All Categories</option>
-                    <option value="Arrays">Arrays</option>
-                    <option value="Functions">Functions</option>
-                    <option value="Pointers">Pointers</option>
-                    <option value="Bitwise">Bitwise Operations</option>
-                    <option value="DynamicMemory">Dynamic Memory</option>
-                    <option value="Recursion">Recursion</option>
+                    {track === 'pf-lab' ? (
+                        <>
+                            <option value="Arrays & Dynamic Memory">Arrays & Dynamic Memory</option>
+                            <option value="Pointers & Arrays">Pointers & Arrays</option>
+                            <option value="Recursion">Recursion</option>
+                            <option value="2D Arrays">2D Arrays</option>
+                            <option value="Dynamic Memory & Pointers">Dynamic Memory & Pointers</option>
+                            <option value="Recursion & Backtracking">Recursion & Backtracking</option>
+                            <option value="Dynamic Programming">Dynamic Programming</option>
+                            <option value="Graph Algorithms">Graph Algorithms</option>
+                        </>
+                    ) : (
+                        <>
+                            <option value="Arrays">Arrays</option>
+                            <option value="Functions">Functions</option>
+                            <option value="Pointers">Pointers</option>
+                            <option value="Bitwise">Bitwise Operations</option>
+                            <option value="DynamicMemory">Dynamic Memory</option>
+                        </>
+                    )}
                 </Select>
 
                 {/* Difficulty Buttons */}
@@ -221,9 +238,9 @@ export default function Problems() {
                                 }`}
                             onClick={() => navigate(`/problem/${problem.id}`)}
                         >
-                            <div className="mb-4 flex items-start justify-between">
-                                <div className="flex-1">
-                                    <h3 className="mb-1 text-xl font-semibold">{problem.title}</h3>
+                            <div className="mb-4 flex items-start justify-between gap-3">
+                                <div className="flex-1 min-w-0">
+                                    <h3 className="mb-1 text-lg font-semibold leading-tight line-clamp-2">{problem.title}</h3>
                                     <Badge variant={problem.difficulty} className="mt-2">
                                         {problem.difficulty}
                                     </Badge>

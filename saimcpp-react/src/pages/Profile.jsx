@@ -121,7 +121,14 @@ export default function Profile() {
                             </p>
 
                             {/* Rank Badge - Prominent Display */}
-                            {stats?.rank && (
+                            {profile?.badge === 'FOUNDER' ? (
+                                <div className="mt-3 inline-flex items-center gap-2 rounded-xl px-4 py-2 shadow-lg bg-gradient-to-r from-purple-600 to-purple-500 shadow-purple-500/40">
+                                    <Trophy className="h-5 w-5 text-white" />
+                                    <span className="text-2xl font-bold text-white">
+                                        ∞
+                                    </span>
+                                </div>
+                            ) : stats?.rank && (
                                 <div className={`mt-3 inline-flex items-center gap-2 rounded-xl px-4 py-2 shadow-lg ${stats.rank === 1
                                     ? 'bg-gradient-to-r from-yellow-600 to-yellow-500 shadow-yellow-500/40'
                                     : stats.rank === 2
@@ -212,88 +219,90 @@ export default function Profile() {
                 </Card>
             </motion.div>
 
-            {/* Stats Grid */}
-            <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.1 }}
-                >
-                    <Card className="text-center">
-                        <CardHeader>
-                            <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-easy/10">
-                                <Target className="h-6 w-6 text-easy" />
-                            </div>
-                            <CardTitle className="text-3xl font-bold text-accent-blue">
-                                {stats?.solved || 0}
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <p className="text-sm text-muted-foreground">Problems Solved</p>
-                        </CardContent>
-                    </Card>
-                </motion.div>
+            {/* Stats Grid - Hidden for Founder */}
+            {profile?.badge !== 'FOUNDER' && (
+                <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.1 }}
+                    >
+                        <Card className="text-center">
+                            <CardHeader>
+                                <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-easy/10">
+                                    <Target className="h-6 w-6 text-easy" />
+                                </div>
+                                <CardTitle className="text-3xl font-bold text-accent-blue">
+                                    {stats?.solved || 0}
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-sm text-muted-foreground">Problems Solved</p>
+                            </CardContent>
+                        </Card>
+                    </motion.div>
 
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
-                >
-                    <Card className="text-center">
-                        <CardHeader>
-                            <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-accent-blue/10">
-                                <Trophy className="h-6 w-6 text-accent-blue" />
-                            </div>
-                            <CardTitle className="text-3xl font-bold text-accent-blue">
-                                {stats?.total_score || 0}
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <p className="text-sm text-muted-foreground">Total Score</p>
-                        </CardContent>
-                    </Card>
-                </motion.div>
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+                    >
+                        <Card className="text-center">
+                            <CardHeader>
+                                <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-accent-blue/10">
+                                    <Trophy className="h-6 w-6 text-accent-blue" />
+                                </div>
+                                <CardTitle className="text-3xl font-bold text-accent-blue">
+                                    {stats?.total_score || 0}
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-sm text-muted-foreground">Total Score</p>
+                            </CardContent>
+                        </Card>
+                    </motion.div>
 
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 }}
-                >
-                    <Card className="text-center">
-                        <CardHeader>
-                            <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-accent-green/10">
-                                <Flame className="h-6 w-6 text-accent-green" />
-                            </div>
-                            <CardTitle className="text-3xl font-bold text-accent-green">
-                                {stats?.current_streak || 0}
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <p className="text-sm text-muted-foreground">Day Streak</p>
-                        </CardContent>
-                    </Card>
-                </motion.div>
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                    >
+                        <Card className="text-center">
+                            <CardHeader>
+                                <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-accent-green/10">
+                                    <Flame className="h-6 w-6 text-accent-green" />
+                                </div>
+                                <CardTitle className="text-3xl font-bold text-accent-green">
+                                    {stats?.current_streak || 0}
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-sm text-muted-foreground">Day Streak</p>
+                            </CardContent>
+                        </Card>
+                    </motion.div>
 
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 }}
-                >
-                    <Card className="text-center">
-                        <CardHeader>
-                            <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-accent-yellow/10">
-                                <Calendar className="h-6 w-6 text-accent-yellow" />
-                            </div>
-                            <CardTitle className="text-3xl font-bold text-accent-yellow">
-                                {stats?.submissions || 0}
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <p className="text-sm text-muted-foreground">Total Submissions</p>
-                        </CardContent>
-                    </Card>
-                </motion.div>
-            </div>
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.4 }}
+                    >
+                        <Card className="text-center">
+                            <CardHeader>
+                                <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-accent-yellow/10">
+                                    <Calendar className="h-6 w-6 text-accent-yellow" />
+                                </div>
+                                <CardTitle className="text-3xl font-bold text-accent-yellow">
+                                    {stats?.submissions || 0}
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-sm text-muted-foreground">Total Submissions</p>
+                            </CardContent>
+                        </Card>
+                    </motion.div>
+                </div>
+            )}
 
             {/* Recent Activity */}
             <motion.div

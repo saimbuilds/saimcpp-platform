@@ -18,6 +18,9 @@ import UserDiscovery from './pages/UserDiscovery'
 import EditProfile from './pages/EditProfile'
 import FollowersPage from './pages/FollowersPage'
 import LearningHub from './pages/LearningHub'
+import MockExams from './pages/MockExams'
+import ExamInstructions from './pages/ExamInstructions'
+import ExamInterface from './pages/ExamInterface'
 
 // Components
 import MobileBlocker from './components/layout/MobileBlocker'
@@ -98,6 +101,9 @@ function App() {
                         <Route path="dry-run" element={<Navigate to="/learning/pf/dry-runs" replace />} />
                         <Route path="leaderboard" element={<Leaderboard />} />
                         <Route path="profile" element={<Profile />} />
+                        <Route path="mock-exams" element={<MockExams />} />
+                        <Route path="mock-exam/:examId/instructions" element={<ExamInstructions />} />
+                        <Route path="mock-exam/:examId/exam" element={<ExamInterface />} />
                     </Route>
                     <Route path="/discover" element={<UserDiscovery />} />
                     <Route path="/edit-profile" element={<ProtectedRoute><EditProfile /></ProtectedRoute>} />
