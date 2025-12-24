@@ -19,7 +19,7 @@ export default function UserProfile() {
     const [followLoading, setFollowLoading] = useState(false)
 
     // Load user profile
-    const { data: profile, isLoading, refetch } = useQuery({
+    const { data: profile, isLoading, error, refetch } = useQuery({
         queryKey: ['user-profile', username],
         queryFn: async () => {
             // Get user by username
@@ -45,13 +45,25 @@ export default function UserProfile() {
                 submissions?.filter(s => s.status === 'accepted').map(s => s.problem_id) || []
             )
 
+            // Get all profiles to calculate rank
+            const { data: allProfiles } = await supabase
+                .from('profiles')
+                .select('id, total_score')
+                .order('total_score', { ascending: false })
+
+            const rank = allProfiles.findIndex(p => p.id === profileData.id) + 1
+            const totalUsers = allProfiles.length
+
             return {
                 ...profileData,
                 solved: solvedProblems.size,
-                submissions: submissions?.length || 0
+                submissions: submissions?.length || 0,
+                rank,
+                totalUsers
             }
         },
-        staleTime: 1000 * 60 * 5, // Cache for 5 minutes to prevent loading on page reload
+        staleTime: 1000 * 60 * 5, // Cache for 5 minutes
+        retry: 1,
         enabled: !!username
     })
 
@@ -110,7 +122,7 @@ export default function UserProfile() {
         return (
             <div className="flex min-h-screen items-center justify-center">
                 <div className="text-center">
-                    <div className="mb-4 text-4xl">⚡</div>
+                    <div className="mb-4 animate-bounce text-4xl">⚡</div>
                     <p className="text-muted-foreground">Loading profile...</p>
                 </div>
             </div>
@@ -224,6 +236,31 @@ export default function UserProfile() {
                                         }
                                     }
                                 `}</style>
+
+                                <p className="text-sm text-muted-foreground">
+                                    @{profile?.username}
+                                </p>
+
+                                {/* Rank Badge - Prominent Display */}
+                                {(!isFounder || isOwnProfile) && profile.rank && (
+                                    <div className={`mt-3 inline-flex items-center gap-2 rounded-xl px-4 py-2 shadow-lg ${profile.rank === 1
+                                        ? 'bg-gradient-to-r from-yellow-600 to-yellow-500 shadow-yellow-500/40'
+                                        : profile.rank === 2
+                                            ? 'bg-gradient-to-r from-gray-300 to-gray-400 shadow-gray-400/40'
+                                            : profile.rank === 3
+                                                ? 'bg-gradient-to-r from-orange-600 to-orange-500 shadow-orange-500/40'
+                                                : 'bg-gradient-to-r from-purple-600 to-purple-500 shadow-purple-500/40'
+                                        }`}>
+                                        <Trophy className="h-5 w-5 text-white" />
+                                        <span className="text-lg font-bold text-white">
+                                            #{profile.rank}
+                                        </span>
+                                        <span className={`text-sm ${profile.rank <= 3 ? 'text-white/90' : 'text-purple-100'
+                                            }`}>
+                                            / {profile.totalUsers}
+                                        </span>
+                                    </div>
+                                )}
 
                                 {profile.bio && (
                                     <p className="mb-3 max-w-2xl text-foreground">{profile.bio}</p>

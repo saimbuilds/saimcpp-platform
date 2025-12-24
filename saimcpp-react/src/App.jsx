@@ -21,6 +21,7 @@ import LearningHub from './pages/LearningHub'
 
 // Components
 import MobileBlocker from './components/layout/MobileBlocker'
+import OnboardingGuard from './components/OnboardingGuard'
 
 // Query client
 const queryClient = new QueryClient({
@@ -77,11 +78,14 @@ function App() {
                             )
                         }
                     />
+                    <Route path="/onboarding" element={<UniversityOnboarding />} />
                     <Route
                         path="/"
                         element={
                             <ProtectedRoute>
-                                <Dashboard />
+                                <OnboardingGuard>
+                                    <Dashboard />
+                                </OnboardingGuard>
                             </ProtectedRoute>
                         }
                     >

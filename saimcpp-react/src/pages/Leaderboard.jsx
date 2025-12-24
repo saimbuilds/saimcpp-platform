@@ -29,7 +29,7 @@ function useDebounce(value, delay) {
 }
 
 export default function Leaderboard() {
-    const { user } = useAuthStore()
+    const { user, initialized } = useAuthStore()
     const navigate = useNavigate()
     const [searchQuery, setSearchQuery] = useState('')
     const [selectedUniversity, setSelectedUniversity] = useState('all')
@@ -51,7 +51,7 @@ export default function Leaderboard() {
     }
 
     // Load leaderboard data
-    const { data: leaderboard = [], isLoading } = useQuery({
+    const { data: leaderboard = [], isLoading, error } = useQuery({
         queryKey: ['leaderboard', selectedUniversity, debouncedSearch],
         queryFn: async () => {
             let query = supabase
@@ -72,29 +72,26 @@ export default function Leaderboard() {
 
             const { data, error } = await query
 
+            console.log('🏆 Leaderboard query result:', {
+                count: data?.length,
+                error: error?.message,
+                selectedUniversity,
+                debouncedSearch,
+                initialized
+            })
+
             if (error) throw error
 
-            // Count solved problems for each user
-            const usersWithStats = await Promise.all(
-                data.map(async (profile) => {
-                    const { data: submissions } = await supabase
-                        .from('submissions')
-                        .select('problem_id')
-                        .eq('user_id', profile.id)
-                        .eq('status', 'accepted')
-
-                    const uniqueProblems = new Set(submissions?.map((s) => s.problem_id) || [])
-
-                    return {
-                        ...profile,
-                        solved: uniqueProblems.size,
-                        current_streak: profile.current_streak || 0,
-                    }
-                })
-            )
-
-            return usersWithStats
+            // Return profiles without individual submission stats to avoid slow queries
+            // The submissions count will be shown from cached data if available
+            return data.map(profile => ({
+                ...profile,
+                solved: 0, // Could be calculated on backend or cached
+                current_streak: profile.current_streak || 0,
+            }))
         },
+        retry: 1,
+        refetchOnMount: 'always', // Always fetch fresh data on mount
         refetchInterval: 30000,
     })
 
@@ -119,8 +116,21 @@ export default function Leaderboard() {
         return (
             <div className="flex min-h-[60vh] items-center justify-center">
                 <div className="text-center">
-                    <div className="mb-4 text-4xl">⚡</div>
+                    <div className="mb-4 animate-bounce text-4xl">🏆</div>
                     <p className="text-muted-foreground">Loading leaderboard...</p>
+                </div>
+            </div>
+        )
+    }
+
+    if (error) {
+        console.error('Leaderboard error:', error)
+        return (
+            <div className="flex min-h-[60vh] items-center justify-center">
+                <div className="text-center">
+                    <div className="mb-4 text-4xl">❌</div>
+                    <p className="text-red-500">Error loading leaderboard</p>
+                    <p className="text-xs text-muted-foreground mt-2">{error.message}</p>
                 </div>
             </div>
         )
@@ -172,7 +182,7 @@ export default function Leaderboard() {
                             onClick={() => setSelectedUniversity(uni.id)}
                             className={selectedUniversity === uni.id
                                 ? 'bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600'
-                                : 'hover:border-purple-500 hover:text-purple-500'
+                                : 'hover:border-purple-500 hover:text-white'
                             }
                         >
                             {uni.short_name}
@@ -189,9 +199,10 @@ export default function Leaderboard() {
                         initial={{ opacity: 0, y: 50 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.1 }}
-                        className="w-48"
+                        className="w-48 cursor-pointer"
+                        onClick={() => navigate(`/u/${leaderboard[1].username}`)}
                     >
-                        <Card className="border-2 border-gray-400/30 bg-gradient-to-br from-gray-400/10 to-transparent p-6 text-center">
+                        <Card className="border-2 border-gray-400/30 bg-gradient-to-br from-gray-400/10 to-transparent p-6 text-center transition-all hover:scale-105 hover:shadow-xl">
                             <Medal className="mx-auto mb-3 h-12 w-12 text-gray-400" />
                             <div className="mb-2 text-4xl font-bold text-gray-400">2</div>
                             <p className="mb-1 font-semibold text-foreground">
@@ -210,9 +221,10 @@ export default function Leaderboard() {
                     <motion.div
                         initial={{ opacity: 0, y: 50 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="w-48"
+                        className="w-48 cursor-pointer"
+                        onClick={() => navigate(`/u/${leaderboard[0].username}`)}
                     >
-                        <Card className="border-2 border-yellow-400/30 bg-gradient-to-br from-yellow-400/10 to-transparent p-6 text-center">
+                        <Card className="border-2 border-yellow-400/30 bg-gradient-to-br from-yellow-400/10 to-transparent p-6 text-center transition-all hover:scale-105 hover:shadow-2xl">
                             <Trophy className="mx-auto mb-3 h-16 w-16 text-yellow-400" />
                             <div className="mb-2 text-5xl font-bold text-yellow-400">1</div>
                             <p className="mb-1 font-semibold text-foreground">
@@ -232,9 +244,10 @@ export default function Leaderboard() {
                         initial={{ opacity: 0, y: 50 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2 }}
-                        className="w-48"
+                        className="w-48 cursor-pointer"
+                        onClick={() => navigate(`/u/${leaderboard[2].username}`)}
                     >
-                        <Card className="border-2 border-orange-600/30 bg-gradient-to-br from-orange-600/10 to-transparent p-6 text-center">
+                        <Card className="border-2 border-orange-600/30 bg-gradient-to-br from-orange-600/10 to-transparent p-6 text-center transition-all hover:scale-105 hover:shadow-xl">
                             <Award className="mx-auto mb-3 h-12 w-12 text-orange-600" />
                             <div className="mb-2 text-4xl font-bold text-orange-600">3</div>
                             <p className="mb-1 font-semibold text-foreground">

@@ -10,10 +10,10 @@ import { Target, Trophy, Flame, Calendar, Linkedin, Github, Twitter, Globe } fro
 
 export default function Profile() {
     const navigate = useNavigate()
-    const { user, profile } = useAuthStore()
+    const { user, profile, initialized } = useAuthStore()
 
     // Get user stats
-    const { data: stats, isLoading } = useQuery({
+    const { data: stats, isLoading, error } = useQuery({
         queryKey: ['user-stats', user?.id],
         queryFn: async () => {
             if (!user) return null
@@ -53,15 +53,30 @@ export default function Profile() {
                 current_streak: profile?.current_streak || 0,
             }
         },
-        enabled: !!user,
+        enabled: !!user && initialized,
+        retry: 1,
+        staleTime: 1000 * 60 * 5
     })
 
     if (isLoading) {
         return (
             <div className="flex min-h-[60vh] items-center justify-center">
                 <div className="text-center">
-                    <div className="mb-4 text-4xl">⚡</div>
+                    <div className="mb-4 animate-bounce text-4xl">⚡</div>
                     <p className="text-muted-foreground">Loading profile...</p>
+                </div>
+            </div>
+        )
+    }
+
+    if (error) {
+        console.error('Profile error:', error)
+        return (
+            <div className="flex min-h-[60vh] items-center justify-center">
+                <div className="text-center">
+                    <div className="mb-4 text-4xl">❌</div>
+                    <p className="text-red-500">Error loading profile</p>
+                    <p className="text-xs text-muted-foreground mt-2">{error.message}</p>
                 </div>
             </div>
         )
@@ -104,6 +119,28 @@ export default function Profile() {
                             <p className="text-sm text-muted-foreground">
                                 @{profile?.username}
                             </p>
+
+                            {/* Rank Badge - Prominent Display */}
+                            {stats?.rank && (
+                                <div className={`mt-3 inline-flex items-center gap-2 rounded-xl px-4 py-2 shadow-lg ${stats.rank === 1
+                                    ? 'bg-gradient-to-r from-yellow-600 to-yellow-500 shadow-yellow-500/40'
+                                    : stats.rank === 2
+                                        ? 'bg-gradient-to-r from-gray-300 to-gray-400 shadow-gray-400/40'
+                                        : stats.rank === 3
+                                            ? 'bg-gradient-to-r from-orange-600 to-orange-500 shadow-orange-500/40'
+                                            : 'bg-gradient-to-r from-purple-600 to-purple-500 shadow-purple-500/40'
+                                    }`}>
+                                    <Trophy className="h-5 w-5 text-white" />
+                                    <span className="text-lg font-bold text-white">
+                                        #{stats.rank}
+                                    </span>
+                                    <span className={`text-sm ${stats.rank <= 3 ? 'text-white/90' : 'text-purple-100'
+                                        }`}>
+                                        / {stats.totalUsers}
+                                    </span>
+                                </div>
+                            )}
+
                             <div className="mt-2 flex gap-4 text-sm">
                                 <span
                                     className="cursor-pointer hover:underline"

@@ -28,7 +28,7 @@ export const useAuthStore = create((set, get) => ({
                 console.log('🔐 [AUTH] User found:', session.user.email)
                 set({ user: session.user, loading: false, initialized: true })
 
-                // Fetch profile without blocking
+                // Fetch profile without blocking initialization
                 getProfile(session.user.id)
                     .then(({ data: profile }) => {
                         console.log('🔐 [AUTH] Profile loaded:', profile)

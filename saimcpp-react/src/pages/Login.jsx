@@ -70,7 +70,7 @@ export default function Login() {
                     transition={{ delay: 0.2, duration: 0.5 }}
                 >
                     <motion.div
-                        className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-3xl bg-gradient-to-br from-accent-blue via-accent-green to-accent-blue shadow-2xl shadow-accent-blue/20"
+                        className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-3xl bg-gradient-to-br from-purple-600 via-purple-500 to-purple-600 shadow-2xl shadow-purple-500/30"
                         whileHover={{ scale: 1.05, rotate: 5 }}
                         transition={{ type: "spring", stiffness: 400, damping: 10 }}
                     >
@@ -78,7 +78,7 @@ export default function Login() {
                     </motion.div>
 
                     <motion.h1
-                        className="mb-3 bg-gradient-to-r from-accent-blue via-accent-green to-accent-blue bg-clip-text text-5xl font-bold text-transparent"
+                        className="mb-3 bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-5xl font-bold text-transparent"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.3 }}
