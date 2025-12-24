@@ -158,7 +158,7 @@ export default function Profile() {
                         <div className="flex flex-col gap-2">
                             <Button
                                 variant="outline"
-                                onClick={() => navigate('/edit-profile')}
+                                onClick={() => navigate('/edit-profile', { replace: true })}
                                 className="whitespace-nowrap bg-gradient-to-r from-purple-600 to-purple-500 text-white hover:from-purple-700 hover:to-purple-600"
                             >
                                 Edit Profile

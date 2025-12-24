@@ -17,9 +17,7 @@ import UserProfile from './pages/UserProfile'
 import UserDiscovery from './pages/UserDiscovery'
 import EditProfile from './pages/EditProfile'
 import FollowersPage from './pages/FollowersPage'
-
-// Components
-import MobileBlocker from './components/layout/MobileBlocker'
+import LearningHub from './pages/LearningHub'
 
 // Query client
 const queryClient = new QueryClient({
@@ -64,13 +62,12 @@ function App() {
     return (
         <QueryClientProvider client={queryClient}>
             <BrowserRouter>
-                <MobileBlocker />
                 <Routes>
                     <Route
                         path="/login"
                         element={
                             useAuthStore.getState().user ? (
-                                <Navigate to="/problems" replace />
+                                <Navigate to="/learning" replace />
                             ) : (
                                 <Login />
                             )
@@ -84,9 +81,13 @@ function App() {
                             </ProtectedRoute>
                         }
                     >
-                        <Route index element={<Navigate to="/problems" replace />} />
-                        <Route path="problems" element={<Problems />} />
-                        <Route path="dry-run" element={<DryRun />} />
+                        <Route index element={<Navigate to="/learning" replace />} />
+                        <Route path="learning" element={<LearningHub />} />
+                        <Route path="learning/:track/problems" element={<Problems />} />
+                        <Route path="learning/:track/dry-runs" element={<DryRun />} />
+                        {/* Redirects from old routes */}
+                        <Route path="problems" element={<Navigate to="/learning/pf/problems" replace />} />
+                        <Route path="dry-run" element={<Navigate to="/learning/pf/dry-runs" replace />} />
                         <Route path="leaderboard" element={<Leaderboard />} />
                         <Route path="profile" element={<Profile />} />
                     </Route>

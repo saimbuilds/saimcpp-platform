@@ -30,6 +30,18 @@
     @apply border-border;
   }
 
+  /* Increased base font size for better readability */
+  html {
+    font-size: 18px;
+  }
+
+  /* Slightly smaller on mobile for better fit */
+  @media (max-width: 768px) {
+    html {
+      font-size: 17px;
+    }
+  }
+
   body {
     @apply bg-background text-foreground antialiased;
     font-feature-settings: 'cv11', 'ss01';

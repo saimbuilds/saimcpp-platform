@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useQuery } from '@tanstack/react-query'
 import { loadDryRunProblems } from '../lib/api'
@@ -8,10 +8,21 @@ import { useAuthStore } from '../store/authStore'
 import { Card } from '../components/ui/card'
 import { Badge } from '../components/ui/badge'
 import { Button } from '../components/ui/button'
+import { Code2 } from 'lucide-react'
+
+const TRACK_NAMES = {
+    pf: 'Programming Fundamentals',
+    'pf-lab': 'PF Lab Practice',
+    op: 'Object-Oriented Programming',
+    dsa: 'Data Structures & Algorithms'
+}
 
 export default function DryRun() {
     const navigate = useNavigate()
+    const { track = 'pf' } = useParams()
     const { user } = useAuthStore()
+
+    const trackName = TRACK_NAMES[track] || 'Unknown Track'
 
     const [filters, setFilters] = useState({
         difficulty: 'all',
@@ -61,6 +72,27 @@ export default function DryRun() {
 
     return (
         <div className="container mx-auto max-w-7xl px-8 py-8">
+            {/* Track Header with Navigation */}
+            <div className="mb-6 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-purple-600 to-purple-400 text-sm font-bold text-white">
+                        {track.toUpperCase()}
+                    </div>
+                    <div>
+                        <h1 className="text-2xl font-bold">{trackName}</h1>
+                        <p className="text-sm text-muted-foreground">Dry Run Challenges</p>
+                    </div>
+                </div>
+                <Button
+                    variant="outline"
+                    onClick={() => navigate(`/learning/${track}/problems`)}
+                    className="flex items-center gap-2"
+                >
+                    <Code2 className="h-4 w-4" />
+                    Switch to Problems
+                </Button>
+            </div>
+
             {/* Compact Filters */}
             <div className="mb-6 flex flex-wrap items-center gap-4 rounded-lg border border-border bg-card p-4">
                 {/* Difficulty Buttons */}

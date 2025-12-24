@@ -54,8 +54,8 @@ export default function EditProfile() {
             // Show success message
             alert('✅ Profile updated successfully!')
 
-            // Navigate back to public profile
-            navigate(`/u/${profile.username}`)
+            // Navigate back to Learning Hub
+            navigate('/learning', { replace: true })
         } catch (error) {
             console.error('Update error:', error)
             alert('❌ Failed to update profile: ' + error.message)
@@ -201,7 +201,7 @@ export default function EditProfile() {
                                 <Button
                                     type="button"
                                     variant="outline"
-                                    onClick={() => navigate(`/u/${profile.username}`)}
+                                    onClick={() => navigate('/learning', { replace: true })}
                                     className="hover:border-purple-500"
                                 >
                                     <X className="mr-2 h-4 w-4" />

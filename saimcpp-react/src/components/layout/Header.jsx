@@ -1,10 +1,11 @@
-import { useNavigate, NavLink } from 'react-router-dom'
+import { useNavigate, NavLink, useLocation } from 'react-router-dom'
 import { useAuthStore } from '../../store/authStore'
 import { Button } from '../ui/button'
-import { LogOut, Code2, Zap, Trophy, User, Flame } from 'lucide-react'
+import { LogOut, Code2, Trophy, User, Flame, BookOpen } from 'lucide-react'
 
 export default function Header() {
     const navigate = useNavigate()
+    const location = useLocation()
     const { user, profile, signOut } = useAuthStore()
 
     const handleLogout = async () => {
@@ -26,28 +27,16 @@ export default function Header() {
                 {/* Navigation */}
                 <nav className="flex gap-1">
                     <NavLink
-                        to="/problems"
+                        to="/learning"
                         className={({ isActive }) =>
-                            `flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${isActive
+                            `flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${isActive || location.pathname.startsWith('/learning')
                                 ? 'bg-accent-blue/10 text-accent-blue'
                                 : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                             }`
                         }
                     >
-                        <Code2 className="h-4 w-4" />
-                        Problems
-                    </NavLink>
-                    <NavLink
-                        to="/dry-run"
-                        className={({ isActive }) =>
-                            `flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors ${isActive
-                                ? 'bg-accent-blue/10 text-accent-blue'
-                                : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-                            }`
-                        }
-                    >
-                        <Zap className="h-4 w-4" />
-                        Dry Run
+                        <BookOpen className="h-4 w-4" />
+                        Learning
                     </NavLink>
                     <NavLink
                         to="/leaderboard"
