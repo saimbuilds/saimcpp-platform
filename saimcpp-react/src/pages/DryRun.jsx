@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { loadDryRunProblems } from '../lib/api'
 import { supabase } from '../lib/supabase'
 import { useAuthStore } from '../store/authStore'
 import { Card } from '../components/ui/card'
 import { Badge } from '../components/ui/badge'
 import { Button } from '../components/ui/button'
-import { Code2 } from 'lucide-react'
+import { Code2, Heart } from 'lucide-react'
 
 const TRACK_NAMES = {
     pf: 'Programming Fundamentals',
@@ -21,12 +21,14 @@ export default function DryRun() {
     const navigate = useNavigate()
     const { track = 'pf' } = useParams()
     const { user } = useAuthStore()
+    const queryClient = useQueryClient()
 
     const trackName = TRACK_NAMES[track] || 'Unknown Track'
 
     const [filters, setFilters] = useState({
         difficulty: 'all',
         status: 'all',
+        favoritesOnly: false,
     })
 
     // Load dry run problems
@@ -51,11 +53,49 @@ export default function DryRun() {
         enabled: !!user && dryRuns.length > 0,
     })
 
+    // Load favorites
+    const { data: favorites = [] } = useQuery({
+        queryKey: ['favorites-dryruns', user?.id],
+        queryFn: async () => {
+            if (!user) return []
+            const { data } = await supabase
+                .from('favorites')
+                .select('problem_id')
+                .eq('user_id', user.id)
+            return data?.map((f) => f.problem_id) || []
+        },
+        enabled: !!user,
+        retry: false,
+    })
+
+    // Toggle favorite
+    const toggleFavorite = async (dryRunId) => {
+        if (!user) return
+
+        const isFavorite = favorites.includes(dryRunId)
+
+        if (isFavorite) {
+            await supabase
+                .from('favorites')
+                .delete()
+                .eq('user_id', user.id)
+                .eq('problem_id', dryRunId)
+        } else {
+            await supabase
+                .from('favorites')
+                .insert([{ user_id: user.id, problem_id: dryRunId }])
+        }
+
+        // Refresh favorites data
+        queryClient.invalidateQueries(['favorites-dryruns', user?.id])
+    }
+
     // Filter dry runs
     const filteredDryRuns = dryRuns.filter((dryRun) => {
         if (filters.difficulty !== 'all' && dryRun.difficulty !== filters.difficulty) return false
         if (filters.status === 'solved' && !solvedDryRuns.includes(dryRun.id)) return false
         if (filters.status === 'unsolved' && solvedDryRuns.includes(dryRun.id)) return false
+        if (filters.favoritesOnly && !favorites.includes(dryRun.id)) return false
         return true
     })
 
@@ -124,6 +164,17 @@ export default function DryRun() {
                         </Button>
                     ))}
                 </div>
+
+                {/* Favorites Toggle */}
+                <Button
+                    variant={filters.favoritesOnly ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => setFilters({ ...filters, favoritesOnly: !filters.favoritesOnly })}
+                    className="flex items-center gap-2"
+                >
+                    <Heart className={`h-4 w-4 ${filters.favoritesOnly ? 'fill-current' : ''}`} />
+                    Favorites
+                </Button>
             </div>
 
             {/* Dry Runs Grid */}
@@ -143,20 +194,36 @@ export default function DryRun() {
                                 }`}
                             onClick={() => navigate(`/dry-run/${dryRun.id}`)}
                         >
-                            <div className="mb-4">
-                                <h3 className="mb-2 text-lg font-semibold">{dryRun.title}</h3>
-                                <Badge variant={dryRun.difficulty} className="mt-2">
-                                    {dryRun.difficulty}
-                                </Badge>
+                            <div className="mb-4 flex items-start justify-between">
+                                <div className="flex-1">
+                                    <h3 className="mb-2 text-xl font-semibold">{dryRun.title}</h3>
+                                    <Badge variant={dryRun.difficulty} className="mt-2">
+                                        {dryRun.difficulty}
+                                    </Badge>
+                                </div>
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        toggleFavorite(dryRun.id)
+                                    }}
+                                    className="transition-all hover:scale-110"
+                                >
+                                    <Heart
+                                        className={`h-5 w-5 ${favorites.includes(dryRun.id)
+                                            ? 'fill-red-500 text-red-500'
+                                            : 'text-muted-foreground hover:text-red-500'
+                                            }`}
+                                    />
+                                </button>
                             </div>
 
-                            <div className="mt-4 flex items-center gap-4 text-sm text-muted-foreground">
+                            <div className="mt-4 flex items-center gap-4 text-base text-muted-foreground">
                                 <span>📝 Dry Run</span>
                                 <span>🎯 {dryRun.points || 5} points</span>
                             </div>
 
                             {solvedDryRuns.includes(dryRun.id) && (
-                                <div className="mt-3 text-sm font-medium text-easy">✓ Solved</div>
+                                <div className="mt-3 text-base font-medium text-easy">✓ Solved</div>
                             )}
                         </Card>
                     </motion.div>

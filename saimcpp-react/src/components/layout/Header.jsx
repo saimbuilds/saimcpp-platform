@@ -18,9 +18,6 @@ export default function Header() {
             <div className="container mx-auto flex h-16 items-center justify-between px-6">
                 {/* Logo */}
                 <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-purple-600 to-purple-400 shadow-lg shadow-purple-500/30">
-                        <Code2 className="h-6 w-6 text-white" />
-                    </div>
                     <span className="bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-xl font-bold text-transparent">Vexilot</span>
                 </div>
 

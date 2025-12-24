@@ -1,53 +1,88 @@
 import { useEffect, useState } from 'react'
+import { Monitor, Code2, Trophy, Users, Zap, BookOpen, Target } from 'lucide-react'
 
 export default function MobileBlocker() {
     const [isMobile, setIsMobile] = useState(false)
 
     useEffect(() => {
-        const checkScreenSize = () => {
+        const handleResize = () => {
             setIsMobile(window.innerWidth < 1024)
         }
-
-        checkScreenSize()
-        window.addEventListener('resize', checkScreenSize)
-
-        return () => window.removeEventListener('resize', checkScreenSize)
+        handleResize()
+        window.addEventListener('resize', handleResize)
+        return () => window.removeEventListener('resize', handleResize)
     }, [])
 
     if (!isMobile) return null
 
     return (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-gradient-to-br from-background to-card p-6">
-            <div className="w-full max-w-md rounded-2xl border border-border bg-card p-8 text-center shadow-2xl">
-                <div className="mb-4 animate-bounce text-5xl">💻</div>
-                <h1 className="mb-2 bg-gradient-to-r from-purple-600 to-purple-400 bg-clip-text text-3xl font-bold text-transparent">
-                    Desktop Only, Please!
-                </h1>
-                <p className="mb-6 text-sm text-muted-foreground">
-                    Vexilot requires a larger screen for the best coding experience
-                </p>
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-gradient-to-br from-purple-900 via-background to-purple-900 p-6">
+            <div className="max-w-2xl text-center">
 
-                <div className="mb-6 space-y-3 rounded-xl bg-secondary p-4 text-left">
-                    <div className="flex items-center gap-3 border-b border-border pb-3 text-sm">
-                        <span className="text-xl">⌨️</span>
-                        <span>Full keyboard needed for coding</span>
-                    </div>
-                    <div className="flex items-center gap-3 border-b border-border pb-3 text-sm">
-                        <span className="text-xl">🖥️</span>
-                        <span>Monaco editor requires desktop</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-sm">
-                        <span className="text-xl">🎯</span>
-                        <span>Better focus on larger screens</span>
+                {/* Main Heading */}
+                <div className="mb-4">
+                    <h1 className="mb-3 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-4xl font-bold text-transparent">
+                        Vexilot
+                    </h1>
+                    <p className="text-xl font-semibold text-white">
+                        Competitive C++ Platform
+                    </p>
+                </div>
+
+                {/* Desktop Only Message */}
+                <div className="mb-8 rounded-2xl border border-purple-500/30 bg-purple-500/10 p-6 backdrop-blur-sm">
+                    <Monitor className="mx-auto mb-4 h-16 w-16 text-purple-400" />
+                    <h2 className="mb-3 text-2xl font-bold text-white">Desktop Only</h2>
+                    <p className="text-base text-gray-300">
+                        Vexilot is designed exclusively for desktop use. Serious coding requires a proper keyboard, large screen, and focused environment.
+                    </p>
+                    <p className="mt-3 text-sm italic text-purple-300">
+                        💻 Coding can't be done effectively on a phone!
+                    </p>
+                </div>
+
+                {/* Features Grid */}
+                <div className="mb-8">
+                    <h3 className="mb-6 text-xl font-semibold text-white">Platform Features</h3>
+                    <div className="grid grid-cols-2 gap-4">
+                        <div className="rounded-xl border border-purple-500/20 bg-card/50 p-4 backdrop-blur-sm">
+                            <Code2 className="mx-auto mb-2 h-8 w-8 text-accent-blue" />
+                            <p className="text-sm font-medium text-foreground">Practice Problems</p>
+                        </div>
+                        <div className="rounded-xl border border-purple-500/20 bg-card/50 p-4 backdrop-blur-sm">
+                            <Zap className="mx-auto mb-2 h-8 w-8 text-accent-yellow" />
+                            <p className="text-sm font-medium text-foreground">Dry Run Challenges</p>
+                        </div>
+                        <div className="rounded-xl border border-purple-500/20 bg-card/50 p-4 backdrop-blur-sm">
+                            <Trophy className="mx-auto mb-2 h-8 w-8 text-accent-green" />
+                            <p className="text-sm font-medium text-foreground">Live Leaderboard</p>
+                        </div>
+                        <div className="rounded-xl border border-purple-500/20 bg-card/50 p-4 backdrop-blur-sm">
+                            <Users className="mx-auto mb-2 h-8 w-8 text-purple-400" />
+                            <p className="text-sm font-medium text-foreground">Social Features</p>
+                        </div>
+                        <div className="rounded-xl border border-purple-500/20 bg-card/50 p-4 backdrop-blur-sm">
+                            <BookOpen className="mx-auto mb-2 h-8 w-8 text-pink-400" />
+                            <p className="text-sm font-medium text-foreground">Learning Hub</p>
+                        </div>
+                        <div className="rounded-xl border border-purple-500/20 bg-card/50 p-4 backdrop-blur-sm">
+                            <Target className="mx-auto mb-2 h-8 w-8 text-orange-400" />
+                            <p className="text-sm font-medium text-foreground">Real-time Scoring</p>
+                        </div>
                     </div>
                 </div>
 
-                <p className="mb-6 text-base font-semibold text-purple-500">
-                    Switch to your laptop or desktop to start grinding! 🚀
-                </p>
-
-                <div className="border-t border-border pt-4 text-xs text-muted">
-                    Minimum screen width: <strong className="text-purple-500">1024px</strong>
+                {/* Call to Action */}
+                <div className="rounded-xl border border-purple-500/30 bg-gradient-to-r from-purple-600/20 to-pink-600/20 p-6 backdrop-blur-sm">
+                    <p className="mb-2 text-lg font-semibold text-white">
+                        Ready to level up your C++ skills?
+                    </p>
+                    <p className="text-sm text-gray-300">
+                        Visit Vexilot on your desktop or laptop to start your competitive programming journey!
+                    </p>
+                    <div className="mt-4 text-xs text-purple-300">
+                        Learn • Practice • Compete
+                    </div>
                 </div>
             </div>
         </div>

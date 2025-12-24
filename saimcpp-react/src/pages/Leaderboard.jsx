@@ -82,13 +82,27 @@ export default function Leaderboard() {
 
             if (error) throw error
 
-            // Return profiles without individual submission stats to avoid slow queries
-            // The submissions count will be shown from cached data if available
-            return data.map(profile => ({
-                ...profile,
-                solved: 0, // Could be calculated on backend or cached
-                current_streak: profile.current_streak || 0,
-            }))
+            // Fetch solved problems count for each user
+            const profilesWithSolved = await Promise.all(
+                data.map(async (profile) => {
+                    const { data: submissions } = await supabase
+                        .from('submissions')
+                        .select('problem_id')
+                        .eq('user_id', profile.id)
+                        .eq('status', 'accepted')
+
+                    // Count unique solved problems
+                    const solvedCount = new Set(submissions?.map(s => s.problem_id) || []).size
+
+                    return {
+                        ...profile,
+                        solved: solvedCount,
+                        current_streak: profile.current_streak || 0,
+                    }
+                })
+            )
+
+            return profilesWithSolved
         },
         retry: 1,
         refetchOnMount: 'always', // Always fetch fresh data on mount

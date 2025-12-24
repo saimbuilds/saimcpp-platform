@@ -312,7 +312,7 @@ int main() {
                             onChange={(value) => setCode(value || '')}
                             theme="vs-dark"
                             options={{
-                                fontSize: 15,
+                                fontSize: 17,
                                 lineHeight: 24,
                                 minimap: { enabled: false },
                                 scrollBeyondLastLine: false,

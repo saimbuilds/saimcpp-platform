@@ -56,6 +56,7 @@ export default function DryRunEditor() {
         setShowExplanation(!showExplanation)
     }
 
+
     // Submit answer
     const handleSubmit = async () => {
         if (!user || !problem) return
@@ -187,7 +188,7 @@ export default function DryRunEditor() {
                                         theme="vs-dark"
                                         options={{
                                             readOnly: true,
-                                            fontSize: 14,
+                                            fontSize: 16,
                                             minimap: { enabled: false },
                                             scrollBeyondLastLine: false,
                                             wordWrap: 'on',
@@ -196,28 +197,6 @@ export default function DryRunEditor() {
                                     />
                                 </div>
                             </section>
-
-                            {showExplanation && problem.explanation && (
-                                <motion.section
-                                    initial={{ opacity: 0, height: 0 }}
-                                    animate={{ opacity: 1, height: 'auto' }}
-                                    className="overflow-hidden rounded-lg border border-border bg-card p-6"
-                                >
-                                    <h3 className="mb-4 text-lg font-semibold">
-                                        📖 Explanation
-                                    </h3>
-                                    <pre className="whitespace-pre-wrap rounded-lg bg-secondary p-4 font-mono text-sm text-foreground">
-                                        {problem.explanation}
-                                    </pre>
-                                    {!hasViewedExplanation && (
-                                        <div className="mt-4 rounded-lg border border-destructive/50 bg-destructive/10 p-4">
-                                            <p className="text-sm font-medium text-destructive">
-                                                ⚠️ Note: You viewed the explanation before submitting. You will receive 0 points even if your answer is correct.
-                                            </p>
-                                        </div>
-                                    )}
-                                </motion.section>
-                            )}
                         </div>
                     </div>
                 </div>
@@ -256,29 +235,55 @@ export default function DryRunEditor() {
                         </div>
                     </div>
 
-                    <div className="flex-1 p-6">
-                        <label className="mb-2 block text-sm font-medium text-muted-foreground">
-                            Enter the exact output (including spaces and newlines):
-                        </label>
-                        <textarea
-                            value={answer}
-                            onChange={(e) => setAnswer(e.target.value)}
-                            placeholder="Type your predicted output here..."
-                            className="h-48 w-full rounded-lg border border-border bg-secondary p-4 font-mono text-base text-foreground placeholder:text-muted focus:border-accent-blue focus:outline-none focus:ring-2 focus:ring-accent-blue/20"
-                        />
-                    </div>
+                    <div className="flex-1 overflow-y-auto p-6">
+                        <div className="space-y-4">
+                            <div>
+                                <label className="mb-2 block text-sm font-medium text-muted-foreground">
+                                    Enter the exact output (including spaces and newlines):
+                                </label>
+                                <textarea
+                                    value={answer}
+                                    onChange={(e) => setAnswer(e.target.value)}
+                                    placeholder="Type your predicted output here..."
+                                    className="h-32 w-full rounded-lg border border-border bg-secondary p-4 font-mono text-base text-foreground placeholder:text-muted focus:border-accent-blue focus:outline-none focus:ring-2 focus:ring-accent-blue/20"
+                                />
+                            </div>
 
-                    <div className="flex h-48 flex-col border-t border-border">
-                        <div className="border-b border-border bg-card px-6 py-2">
-                            <span className="text-sm font-medium">Result</span>
-                        </div>
-                        <div className="flex-1 overflow-y-auto bg-secondary p-4">
-                            {output ? (
-                                <pre className="font-mono text-sm text-foreground">{output}</pre>
-                            ) : (
-                                <p className="text-sm text-muted-foreground">
-                                    Submit your answer to see the result...
-                                </p>
+                            <div className="flex flex-col border-t border-border pt-4">
+                                <div className="mb-2 flex items-center gap-2">
+                                    <span className="text-sm font-medium">Result</span>
+                                </div>
+                                <div className="rounded-lg border border-border bg-secondary p-4">
+                                    {output ? (
+                                        <pre className="font-mono text-sm text-foreground">{output}</pre>
+                                    ) : (
+                                        <p className="text-sm text-muted-foreground">
+                                            Submit your answer to see the result...
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+
+                            {showExplanation && problem.explanation && (
+                                <div className="border-t border-border pt-4">
+                                    <div className="mb-3 flex items-center justify-between">
+                                        <h3 className="text-sm font-semibold">
+                                            📖 Explanation
+                                        </h3>
+                                    </div>
+                                    <div className="rounded-lg border border-border bg-secondary p-4">
+                                        <pre className="whitespace-pre-wrap font-mono text-sm text-foreground">
+                                            {problem.explanation}
+                                        </pre>
+                                    </div>
+                                    {!hasViewedExplanation && (
+                                        <div className="mt-3 rounded-lg border border-destructive/50 bg-destructive/10 p-3">
+                                            <p className="text-xs font-medium text-destructive">
+                                                ⚠️ Note: You viewed the explanation before submitting. You will receive 0 points even if your answer is correct.
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
                             )}
                         </div>
                     </div>

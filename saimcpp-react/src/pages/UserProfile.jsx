@@ -202,11 +202,11 @@ export default function UserProfile() {
                                 <div className="flex items-center gap-3">
                                     <h1
                                         className={`mb-1 text-3xl font-bold ${isFounder
-                                            ? 'text-purple-600'
+                                            ? 'text-white'
                                             : ''
                                             }`}
                                         style={isFounder ? {
-                                            textShadow: '0 0 20px rgba(147, 51, 234, 0.5), 0 0 35px rgba(147, 51, 234, 0.3)',
+                                            textShadow: '0 0 20px rgba(168, 85, 247, 0.8), 0 0 35px rgba(168, 85, 247, 0.5)',
                                             animation: 'gentleGlow 3s ease-in-out infinite'
                                         } : {}}
                                     >
@@ -266,32 +266,42 @@ export default function UserProfile() {
                                     <p className="mb-3 max-w-2xl text-foreground">{profile.bio}</p>
                                 )}
 
+                                {/* Inspirational Quote for Founder */}
+                                {isFounder && (
+                                    <div className="mb-4 mt-4 max-w-2xl rounded-lg border-l-4 border-purple-500 bg-gradient-to-r from-purple-500/10 to-transparent p-4">
+                                        <p className="text-sm italic text-muted-foreground">
+                                            "Code is poetry written in logic, and every bug is a lesson in disguise."
+                                        </p>
+                                        <p className="mt-1 text-xs font-semibold text-purple-400">— Platform Founder</p>
+                                    </div>
+                                )}
+
                                 {/* Social Links */}
                                 <div className="flex gap-2">
                                     {profile.linkedin_url && (
                                         <a href={profile.linkedin_url} target="_blank" rel="noopener noreferrer">
-                                            <Button variant="ghost" size="sm" className="hover:bg-[#0A66C2] hover:text-white transition-colors">
+                                            <Button variant="ghost" size="sm" className="hover:bg-[#0A66C2] hover:text-white hover:scale-110 transition-all">
                                                 <Linkedin className="h-4 w-4" fill="currentColor" />
                                             </Button>
                                         </a>
                                     )}
                                     {profile.github_url && (
                                         <a href={profile.github_url} target="_blank" rel="noopener noreferrer">
-                                            <Button variant="ghost" size="sm">
+                                            <Button variant="ghost" size="sm" className="hover:bg-white hover:text-black hover:scale-110 transition-all">
                                                 <Github className="h-4 w-4" />
                                             </Button>
                                         </a>
                                     )}
                                     {profile.twitter_url && (
                                         <a href={profile.twitter_url} target="_blank" rel="noopener noreferrer">
-                                            <Button variant="ghost" size="sm">
+                                            <Button variant="ghost" size="sm" className="hover:bg-[#1DA1F2] hover:text-white hover:scale-110 transition-all">
                                                 <Twitter className="h-4 w-4" />
                                             </Button>
                                         </a>
                                     )}
                                     {profile.portfolio_url && (
                                         <a href={profile.portfolio_url} target="_blank" rel="noopener noreferrer">
-                                            <Button variant="ghost" size="sm">
+                                            <Button variant="ghost" size="sm" className="hover:bg-purple-600 hover:text-white hover:scale-110 transition-all">
                                                 <Globe className="h-4 w-4" />
                                             </Button>
                                         </a>

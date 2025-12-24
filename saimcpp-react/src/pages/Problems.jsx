@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { loadAllProblems } from '../lib/api'
 import { supabase } from '../lib/supabase'
 import { useAuthStore } from '../store/authStore'
@@ -9,7 +9,7 @@ import { Card } from '../components/ui/card'
 import { Badge } from '../components/ui/badge'
 import { Button } from '../components/ui/button'
 import { Select } from '../components/ui/select'
-import { Star, Code2, FolderOpen, Target, CheckCircle2, Zap } from 'lucide-react'
+import { Heart, Code2, FolderOpen, Target, CheckCircle2, Zap } from 'lucide-react'
 
 const TRACK_NAMES = {
     pf: 'Programming Fundamentals',
@@ -22,6 +22,7 @@ export default function Problems() {
     const navigate = useNavigate()
     const { track = 'pf' } = useParams()
     const { user } = useAuthStore()
+    const queryClient = useQueryClient()
 
     const trackName = TRACK_NAMES[track] || 'Unknown Track'
 
@@ -88,6 +89,9 @@ export default function Problems() {
                 .from('favorites')
                 .insert([{ user_id: user.id, problem_id: problemId }])
         }
+
+        // Refresh favorites data
+        queryClient.invalidateQueries(['favorites', user?.id])
     }
 
     // Filter problems
@@ -188,16 +192,16 @@ export default function Problems() {
                     ))}
                 </div>
 
-                {/* Favorites Checkbox */}
-                <label className="flex items-center gap-2 text-sm font-medium">
-                    <input
-                        type="checkbox"
-                        checked={filters.favoritesOnly}
-                        onChange={(e) => setFilters({ ...filters, favoritesOnly: e.target.checked })}
-                        className="h-4 w-4 rounded border-border"
-                    />
-                    ⭐ Favorites
-                </label>
+                {/* Favorites Toggle */}
+                <Button
+                    variant={filters.favoritesOnly ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={() => setFilters({ ...filters, favoritesOnly: !filters.favoritesOnly })}
+                    className="flex items-center gap-2"
+                >
+                    <Heart className={`h-4 w-4 ${filters.favoritesOnly ? 'fill-current' : ''}`} />
+                    Favorites
+                </Button>
             </div>
 
             {/* Problems Grid */}
@@ -219,7 +223,7 @@ export default function Problems() {
                         >
                             <div className="mb-4 flex items-start justify-between">
                                 <div className="flex-1">
-                                    <h3 className="mb-1 text-lg font-semibold">{problem.title}</h3>
+                                    <h3 className="mb-1 text-xl font-semibold">{problem.title}</h3>
                                     <Badge variant={problem.difficulty} className="mt-2">
                                         {problem.difficulty}
                                     </Badge>
@@ -229,14 +233,18 @@ export default function Problems() {
                                         e.stopPropagation()
                                         toggleFavorite(problem.id)
                                     }}
-                                    className={`text-2xl transition-transform hover:scale-125 ${favorites.includes(problem.id) ? '' : 'grayscale'
-                                        }`}
+                                    className="transition-all hover:scale-110"
                                 >
-                                    ⭐
+                                    <Heart
+                                        className={`h-5 w-5 ${favorites.includes(problem.id)
+                                            ? 'fill-red-500 text-red-500'
+                                            : 'text-muted-foreground hover:text-red-500'
+                                            }`}
+                                    />
                                 </button>
                             </div>
 
-                            <div className="mt-4 flex items-center gap-4 text-sm text-muted-foreground">
+                            <div className="mt-4 flex items-center gap-4 text-base text-muted-foreground">
                                 <div className="flex items-center gap-1.5">
                                     <FolderOpen className="h-4 w-4" />
                                     <span>{problem.category}</span>
@@ -248,7 +256,7 @@ export default function Problems() {
                             </div>
 
                             {solvedProblems.includes(problem.id) && (
-                                <div className="mt-3 flex items-center gap-1.5 text-sm font-medium text-easy">
+                                <div className="mt-3 flex items-center gap-1.5 text-base font-medium text-easy">
                                     <CheckCircle2 className="h-4 w-4" />
                                     Solved
                                 </div>
