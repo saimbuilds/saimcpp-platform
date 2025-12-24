@@ -83,7 +83,7 @@ export default function Login() {
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.3 }}
                     >
-                        SaimCPP
+                        Vexilot
                     </motion.h1>
 
                     <motion.p

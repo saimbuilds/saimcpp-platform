@@ -19,6 +19,9 @@ import EditProfile from './pages/EditProfile'
 import FollowersPage from './pages/FollowersPage'
 import LearningHub from './pages/LearningHub'
 
+// Components
+import MobileBlocker from './components/layout/MobileBlocker'
+
 // Query client
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -62,6 +65,7 @@ function App() {
     return (
         <QueryClientProvider client={queryClient}>
             <BrowserRouter>
+                <MobileBlocker />
                 <Routes>
                     <Route
                         path="/login"

@@ -72,7 +72,7 @@ export default function UniversityOnboarding() {
             >
                 <Card className="p-8">
                     <div className="mb-6 text-center">
-                        <h1 className="mb-2 text-3xl font-bold">Welcome to SaimCPP! 🎉</h1>
+                        <h1 className="mb-2 text-3xl font-bold">Welcome to Vexilot! 🎉</h1>
                         <p className="text-muted-foreground">
                             Let's set up your profile
                         </p>
