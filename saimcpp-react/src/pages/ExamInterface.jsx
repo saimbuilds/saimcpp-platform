@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import Editor from '@monaco-editor/react';
 import { executeCode } from '../lib/api';
+import { logger } from '../lib/logger';
 
 export default function ExamInterface() {
     const { examId } = useParams();
@@ -229,20 +230,20 @@ export default function ExamInterface() {
         try {
             // Validate user and examId
             if (!user || !user.id) {
-                console.error('User not authenticated:', user);
+                logger.error('User not authenticated:', user);
                 alert('You must be logged in to start the exam. Please sign in and try again.');
                 navigate('/login');
                 return;
             }
 
             if (!examId) {
-                console.error('Exam ID is missing');
+                logger.error('Exam ID is missing');
                 alert('Invalid exam. Please go back and select an exam.');
                 navigate('/mock-exams');
                 return;
             }
 
-            console.log('Creating attempt for user:', user.id, 'exam:', examId);
+            logger.log('Creating attempt for user:', user.id, 'exam:', examId);
 
             // Use upsert to handle existing attempts - will update if exists, insert if not
             const { data, error } = await supabase
@@ -262,8 +263,8 @@ export default function ExamInterface() {
                 .single();
 
             if (error) {
-                console.error('Failed to create attempt:', error);
-                console.error('Error details:', {
+                logger.error('Failed to create attempt:', error);
+                logger.error('Error details:', {
                     code: error.code,
                     message: error.message,
                     details: error.details,
@@ -273,10 +274,10 @@ export default function ExamInterface() {
                 return;
             }
 
-            console.log('✅ Exam attempt created successfully:', data.id);
+            logger.log('✅ Exam attempt created successfully:', data.id);
             setAttemptId(data.id);
         } catch (err) {
-            console.error('Error creating attempt:', err);
+            logger.error('Error creating attempt:', err);
             alert(`Failed to start exam: ${err.message}\n\nPlease refresh the page and try again.`);
         }
     }
@@ -356,7 +357,7 @@ export default function ExamInterface() {
 
     function handleWindowFocus() {
         // Window regained focus - could show a reminder
-        console.log('Window focused again');
+        logger.debug('Window focused again');
     }
 
     function preventCopyPaste(e) {
@@ -484,7 +485,7 @@ export default function ExamInterface() {
         setSubmitting(true);
 
         try {
-            console.log('Submit clicked:', { questionId, attemptId, hasCode: !!code[questionId] });
+            logger.log('Submit clicked:', { questionId, attemptId, hasCode: !!code[questionId] });
 
             // Validation
             if (!questionId) {
@@ -502,7 +503,7 @@ export default function ExamInterface() {
                 // Continue with submission
             }
 
-            console.log('Submitting code:', codeToSubmit.substring(0, 100));
+            logger.log('Submitting code:', codeToSubmit.substring(0, 100));
 
             // Insert submission (not upsert to avoid conflicts)
             const { data, error } = await supabase
@@ -526,12 +527,12 @@ export default function ExamInterface() {
                         .select();
 
                     if (updateError) throw updateError;
-                    console.log('Submission updated:', updateData);
+                    logger.log('Submission updated:', updateData);
                 } else {
                     throw error;
                 }
             } else {
-                console.log('Submission successful:', data);
+                logger.log('Submission successful:', data);
             }
 
             // Update local state
@@ -561,7 +562,7 @@ export default function ExamInterface() {
             }
 
         } catch (error) {
-            console.error('Submission error:', error);
+            logger.error('Submission error:', error);
             showToast('❌ Failed to submit: ' + error.message, 'error', 5000);
         } finally {
             setSubmitting(false);
@@ -571,12 +572,12 @@ export default function ExamInterface() {
     async function runCode(questionId) {
         const userCode = code[questionId] || '';
 
-        console.log('🚀 Running code for question:', questionId);
-        console.log('📝 Code length:', userCode.length);
+        logger.log('🚀 Running code for question:', questionId);
+        logger.log('📝 Code length:', userCode.length);
 
         if (!userCode.trim()) {
             const errorMsg = 'Error: No code to run. Please write some code first.';
-            console.log('❌', errorMsg);
+            logger.log('❌', errorMsg);
             setCodeOutput(prev => ({
                 ...prev,
                 [questionId]: errorMsg
@@ -585,13 +586,13 @@ export default function ExamInterface() {
         }
 
         // Show running status
-        console.log('⏳ Setting running status...');
+        logger.log('⏳ Setting running status...');
         setCodeOutput(prev => {
             const newOutput = {
                 ...prev,
                 [questionId]: '⏳ Running your code...'
             };
-            console.log('📊 New output state:', newOutput);
+            logger.log('📊 New output state:', newOutput);
             return newOutput;
         });
 
@@ -626,18 +627,18 @@ export default function ExamInterface() {
                 output = '⚠️ No output generated.';
             }
 
-            console.log('✅ Setting final output:', output.substring(0, 100));
+            logger.log('✅ Setting final output:', output.substring(0, 100));
             setCodeOutput(prev => {
                 const newOutput = {
                     ...prev,
                     [questionId]: output
                 };
-                console.log('📊 Final output state:', newOutput);
+                logger.log('📊 Final output state:', newOutput);
                 return newOutput;
             });
         } catch (error) {
             const errorMsg = `❌ Execution failed: ${error.message}\n\nPlease check your code and try again.`;
-            console.log('❌ Error:', errorMsg);
+            logger.log('❌ Error:', errorMsg);
             setCodeOutput(prev => ({
                 ...prev,
                 [questionId]: errorMsg
@@ -695,16 +696,16 @@ export default function ExamInterface() {
                 .eq('id', attemptId);
 
             if (updateError) {
-                console.error('Error updating attempt:', updateError);
+                logger.error('Error updating attempt:', updateError);
             }
 
             // ✅ REMOVED SLOW GRADING - Was taking 20+ seconds with 21 API calls
             // Grading can happen later as background job or on-demand
-            console.log('✅ Exam submitted successfully! Grading will happen in background.');
+            logger.log('✅ Exam submitted successfully! Grading will happen in background.');
 
             // Exit fullscreen
             if (document.fullscreenElement) {
-                await document.exitFullscreen().catch(err => console.log('Fullscreen exit error:', err));
+                await document.exitFullscreen().catch(err => logger.log('Fullscreen exit error:', err));
             }
 
             // Show Success Modal
@@ -712,7 +713,7 @@ export default function ExamInterface() {
             setShowSuccessModal(true);
 
         } catch (err) {
-            console.error('Error ending exam:', err);
+            logger.error('Error ending exam:', err);
             // Fallback
             setIsEndingExam(false);
             alert('Partial error ending exam. Redirecting to Learning Hub.');

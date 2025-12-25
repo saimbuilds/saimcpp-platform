@@ -143,9 +143,25 @@ async function updateUserExamStats(supabase, userId, newScore) {
 async function gradeQuestion(submission) {
     const { code, exam_questions: question } = submission;
     const maxMarks = question.marks;
+    const starterCode = question.starter_code || '';
+
+    // Step 0: Check if code is unchanged from starter code
+    const isUnchanged = isCodeUnchanged(code, starterCode);
+    if (isUnchanged) {
+        return {
+            score: 0,
+            maxMarks,
+            breakdown: {
+                effort: 0,
+                compilation: 0,
+                testCases: 0,
+                reason: 'No changes made to starter code'
+            }
+        };
+    }
 
     // Step 1: Analyze code quality and effort
-    const codeAnalysis = analyzeCodeQuality(code);
+    const codeAnalysis = analyzeCodeQuality(code, starterCode);
 
     // Step 2: If no meaningful code, give participation marks
     if (codeAnalysis.isEmpty) {
@@ -249,9 +265,32 @@ async function gradeQuestion(submission) {
 }
 
 /**
+ * Check if submitted code is essentially unchanged from starter code
+ */
+function isCodeUnchanged(submittedCode, starterCode) {
+    if (!starterCode || !submittedCode) return false;
+
+    // Normalize both codes: remove comments, whitespace, and newlines
+    const normalize = (code) => {
+        return code
+            .replace(/\/\*[\s\S]*?\*\//g, '') // Block comments
+            .replace(/\/\/.*/g, '')              // Line comments
+            .replace(/\s+/g, '')                 // All whitespace
+            .replace(/\\n/g, '')                 // Escaped newlines
+            .trim();
+    };
+
+    const normalizedSubmitted = normalize(submittedCode);
+    const normalizedStarter = normalize(starterCode);
+
+    // If they're identical or submitted is empty, code is unchanged
+    return normalizedSubmitted === normalizedStarter || normalizedSubmitted.length === 0;
+}
+
+/**
  * Analyze code quality and effort
  */
-function analyzeCodeQuality(code) {
+function analyzeCodeQuality(code, starterCode = '') {
     if (!code || code.trim().length === 0) {
         return { isEmpty: true };
     }

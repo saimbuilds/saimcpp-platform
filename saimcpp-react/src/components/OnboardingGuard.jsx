@@ -9,20 +9,22 @@ export default function OnboardingGuard({ children }) {
 
     useEffect(() => {
         if (initialized && user && profile) {
-            // Check if onboarding is needed (empty or null batch/department/campus)
-            const needsOnboarding = !profile.batch || !profile.department || !profile.campus ||
-                profile.batch === '' || profile.department === '' || profile.campus === '' ||
-                profile.batch === null || profile.department === null || profile.campus === null
+            // Check if profile is complete
+            // Required fields: full_name, department, campus
+            const isProfileComplete =
+                profile.full_name && profile.full_name.trim() !== '' &&
+                profile.department && profile.department.trim() !== '' &&
+                profile.campus && profile.campus.trim() !== '';
 
             const isOnOnboardingPage = location.pathname === '/onboarding'
 
-            // Only redirect if user needs onboarding AND is not already on the onboarding page
-            if (needsOnboarding && !isOnOnboardingPage) {
-                console.log('🔐 [ONBOARDING] User needs onboarding - redirecting')
+            // Redirect to onboarding if profile incomplete AND not already on onboarding page
+            if (!isProfileComplete && !isOnOnboardingPage) {
+                console.log('🔐 [ONBOARDING] Profile incomplete - redirecting to onboarding')
                 navigate('/onboarding', { replace: true })
-            } else if (!needsOnboarding && isOnOnboardingPage) {
-                // If user is already onboarded but somehow on onboarding page, redirect to learning
-                console.log('🔐 [ONBOARDING] User already onboarded - redirecting to learning')
+            } else if (isProfileComplete && isOnOnboardingPage) {
+                // If profile is complete but somehow on onboarding page, redirect to learning
+                console.log('🔐 [ONBOARDING] Profile complete - redirecting to learning')
                 navigate('/learning', { replace: true })
             }
         }

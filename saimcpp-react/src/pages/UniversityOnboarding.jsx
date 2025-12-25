@@ -59,6 +59,7 @@ export default function UniversityOnboarding() {
     const [country, setCountry] = useState('Detecting...')
     const [showCustomUniversity, setShowCustomUniversity] = useState(false)
     const [formData, setFormData] = useState({
+        fullName: '',
         university: '',
         customUniversity: '',
         campus: '',
@@ -72,6 +73,7 @@ export default function UniversityOnboarding() {
         if (profile) {
             setFormData(prev => ({
                 ...prev,
+                fullName: profile.full_name || '',
                 department: profile.department || '',
                 batch: profile.batch || '',
                 campus: profile.campus || ''
@@ -82,12 +84,13 @@ export default function UniversityOnboarding() {
     // Check if user is already onboarded - redirect if yes
     useEffect(() => {
         if (profile) {
-            const isOnboarded = profile.batch && profile.department && profile.campus &&
-                profile.batch !== '' && profile.department !== '' && profile.campus !== '' &&
-                profile.batch !== null && profile.department !== null && profile.campus !== null
+            const isProfileComplete =
+                profile.full_name && profile.full_name.trim() !== '' &&
+                profile.department && profile.department.trim() !== '' &&
+                profile.campus && profile.campus.trim() !== '';
 
-            if (isOnboarded) {
-                console.log('🔐 [ONBOARDING] User already onboarded - redirecting to learning')
+            if (isProfileComplete) {
+                console.log('🔐 [ONBOARDING] Profile complete - redirecting to learning')
                 navigate('/learning', { replace: true })
             }
         }
@@ -128,16 +131,17 @@ export default function UniversityOnboarding() {
         try {
             const finalUniversity = showCustomUniversity ? formData.customUniversity : formData.university
 
-            if (!finalUniversity || !formData.department || !formData.batch) {
-                alert('Please fill all fields')
+            if (!formData.fullName || !finalUniversity || !formData.department) {
+                alert('Please fill all required fields')
                 setLoading(false)
                 return
             }
 
-            // Update profile
+            // Update profile with all required fields
             const { error } = await supabase
                 .from('profiles')
                 .update({
+                    full_name: formData.fullName,
                     university_id: null, // You can map university to ID later
                     batch: formData.batch,
                     department: formData.department,
@@ -186,6 +190,22 @@ export default function UniversityOnboarding() {
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-6">
+                        {/* Full Name */}
+                        <div>
+                            <label className="mb-2 flex items-center gap-2 text-sm font-medium">
+                                <GraduationCap className="h-4 w-4 text-purple-500" />
+                                Full Name *
+                            </label>
+                            <input
+                                type="text"
+                                value={formData.fullName}
+                                onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                                placeholder="Enter your full name"
+                                className="flex h-12 w-full rounded-xl border-2 border-purple-500/20 bg-secondary px-4 py-2 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20"
+                                required
+                            />
+                        </div>
+
                         {/* Country (Auto-detected) */}
                         <div>
                             <label className="mb-2 flex items-center gap-2 text-sm font-medium">

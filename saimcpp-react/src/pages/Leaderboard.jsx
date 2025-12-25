@@ -62,6 +62,7 @@ export default function Leaderboard() {
                     .select('id, full_name, email, exam_score, exam_attempts, best_exam_score, batch, department, avatar_url, username, university_id, university:universities(short_name)')
                     .order('exam_score', { ascending: false })
                     .gt('exam_attempts', 0) // Only users with exam attempts
+                    .neq('email', 'saimkhanwah@gmail.com') // Hide founder from leaderboard
                     .limit(20)
 
                 if (selectedUniversity !== 'all') {
@@ -87,6 +88,7 @@ export default function Leaderboard() {
                     .from('profiles')
                     .select('id, full_name, email, total_score, current_streak, batch, department, avatar_url, username, university_id, university:universities(short_name)')
                     .order('total_score', { ascending: false })
+                    .neq('email', 'saimkhanwah@gmail.com') // Hide founder from leaderboard
                     .limit(20)
 
                 if (selectedUniversity !== 'all') {
@@ -100,24 +102,30 @@ export default function Leaderboard() {
                 const { data, error } = await query
                 if (error) throw error
 
-                // Fetch solved problems count
-                const profilesWithSolved = await Promise.all(
-                    data.map(async (profile) => {
-                        const { data: submissions } = await supabase
-                            .from('submissions')
-                            .select('problem_id')
-                            .eq('user_id', profile.id)
-                            .eq('status', 'accepted')
+                // Fetch solved problems count - OPTIMIZED (was N+1 query)
+                // Get all user IDs for batch query
+                const userIds = data.map(p => p.id);
 
-                        const solvedCount = new Set(submissions?.map(s => s.problem_id) || []).size
+                // Single query for all users' submissions
+                const { data: submissions } = await supabase
+                    .from('submissions')
+                    .select('user_id, problem_id')
+                    .in('user_id', userIds)
+                    .eq('status', 'accepted');
 
-                        return {
-                            ...profile,
-                            solved: solvedCount,
-                            current_streak: profile.current_streak || 0,
-                        }
-                    })
-                )
+                // Build map of user_id -> Set of unique problem_ids
+                const solvedMap = (submissions || []).reduce((acc, sub) => {
+                    if (!acc[sub.user_id]) acc[sub.user_id] = new Set();
+                    acc[sub.user_id].add(sub.problem_id);
+                    return acc;
+                }, {});
+
+                // Map solved counts to profiles
+                const profilesWithSolved = data.map(profile => ({
+                    ...profile,
+                    solved: solvedMap[profile.id]?.size || 0,
+                    current_streak: profile.current_streak || 0,
+                }));
 
                 return profilesWithSolved
             }
@@ -340,11 +348,14 @@ export default function Leaderboard() {
                                 <th className="px-6 py-4 text-center text-xs font-semibold uppercase text-muted-foreground">
                                     {selectedCategory === 'exams' ? 'Attempts' : 'Solved'}
                                 </th>
-                                <th className="px-6 py-4 text-center text-xs font-semibold uppercase text-muted-foreground">
+                                <th className="px-6 py-4 text-left text-xs font-semibold uppercase text-muted-foreground">
                                     {selectedCategory === 'exams' ? 'Best Score' : 'Streak'}
                                 </th>
                                 <th className="px-6 py-4 text-left text-xs font-semibold uppercase text-muted-foreground">
-                                    Batch
+                                    Department
+                                </th>
+                                <th className="px-6 py-4 text-left text-xs font-semibold uppercase text-muted-foreground">
+                                    University
                                 </th>
                             </tr>
                         </thead>
@@ -421,8 +432,13 @@ export default function Leaderboard() {
                                             <span className="text-accent-green">{profile.current_streak}</span>
                                         </td>
                                         <td className="px-6 py-4">
+                                            <span className="text-sm text-foreground">
+                                                {profile.department || 'N/A'}
+                                            </span>
+                                        </td>
+                                        <td className="px-6 py-4">
                                             <span className="text-sm text-muted-foreground">
-                                                {profile.batch || 'N/A'}
+                                                {profile.university?.short_name || 'N/A'}
                                             </span>
                                         </td>
                                     </motion.tr>
