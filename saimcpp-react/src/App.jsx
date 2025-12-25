@@ -67,6 +67,28 @@ function App() {
         initialize()
     }, [initialize])
 
+    // ✅ GLOBAL SECURITY - Disable right-click and DevTools across entire app
+    useEffect(() => {
+        const preventContextMenu = (e) => e.preventDefault();
+
+        const preventDevTools = (e) => {
+            if (e.key === 'F12' ||
+                (e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(e.key.toUpperCase())) ||
+                (e.metaKey && e.altKey && ['I', 'J', 'C'].includes(e.key.toUpperCase()))) {
+                e.preventDefault();
+                return false;
+            }
+        };
+
+        document.addEventListener('contextmenu', preventContextMenu);
+        document.addEventListener('keydown', preventDevTools);
+
+        return () => {
+            document.removeEventListener('contextmenu', preventContextMenu);
+            document.removeEventListener('keydown', preventDevTools);
+        };
+    }, []);
+
     return (
         <QueryClientProvider client={queryClient}>
             <BrowserRouter>

@@ -1,5 +1,5 @@
 import { supabase } from '../src/lib/supabase.js';
-import { gradeExamAttempt } from '../src/lib/grading.js';
+import { gradeExamSubmissions } from '../src/lib/grading.js';
 
 async function gradeAllPendingExams() {
     console.log('🔍 Finding ungraded exam attempts...');
@@ -22,7 +22,7 @@ async function gradeAllPendingExams() {
         console.log(`Grading attempt ${attempt.id}...`);
 
         try {
-            await gradeExamAttempt(attempt.id);
+            await gradeExamSubmissions(supabase, attempt.id);
             console.log(`✅ Graded successfully\n`);
         } catch (err) {
             console.error(`❌ Error grading attempt ${attempt.id}:`, err);

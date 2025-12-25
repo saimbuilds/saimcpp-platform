@@ -16,6 +16,7 @@ import {
 import Editor from '@monaco-editor/react';
 import { executeCode } from '../lib/api';
 import { logger } from '../lib/logger';
+import { gradeExamSubmissions } from '../lib/grading';
 
 export default function ExamInterface() {
     const { examId } = useParams();
@@ -31,6 +32,7 @@ export default function ExamInterface() {
     const [submissions, setSubmissions] = useState({});
     const [submitting, setSubmitting] = useState(false);
     const [codeOutput, setCodeOutput] = useState({});  // Store output for each question
+    const [customInput, setCustomInput] = useState({}); // Store custom input for each question
 
     // Auto-selection state
     const [isSelectingQuestions, setIsSelectingQuestions] = useState(true);
@@ -166,7 +168,7 @@ export default function ExamInterface() {
 
         // If pool is too small, reset and use all questions
         if (availableQuestions.length < count) {
-            console.log('Question pool exhausted, resetting history');
+            // Question pool exhausted, resetting history
             availableQuestions = allQuestions;
         }
 
@@ -204,17 +206,22 @@ export default function ExamInterface() {
         const allQuestions = questionsData || [];
         setQuestions(allQuestions);
 
-        // Select ALL question IDs
-        const allIds = allQuestions.map(q => q.id);
-        setSelectedQuestions(allIds);
+        // ✅ SELECT ONLY 3 RANDOM QUESTIONS
+        const selectedIds = selectRandomQuestions(allQuestions, 3);
+        setSelectedQuestions(selectedIds);
 
-        // Initialize code
+        // Initialize code for selected questions only
         const initialCode = {};
         allQuestions.forEach(q => {
-            const rawCode = q.starter_code || '';
-            initialCode[q.id] = rawCode.replace(/\\n/g, '\n');
+            if (selectedIds.includes(q.id)) {
+                const rawCode = q.starter_code || '';
+                initialCode[q.id] = rawCode.replace(/\\n/g, '\n');
+            }
         });
         setCode(initialCode);
+
+        // Simulate selection animation (1 second)
+        await new Promise(resolve => setTimeout(resolve, 1000));
 
         // Hide loading screen and start exam
         setIsSelectingQuestions(false);
@@ -283,6 +290,18 @@ export default function ExamInterface() {
     }
 
     function setupAntiCheating() {
+        // ✅ DISABLE CONSOLE - Prevent students from inspecting code/data
+        const noop = () => { };
+        window.console.log = noop;
+        window.console.warn = noop;
+        window.console.info = noop;
+        window.console.debug = noop;
+        window.console.table = noop;
+        window.console.dir = noop;
+        window.console.dirxml = noop;
+        window.console.trace = noop;
+        // Keep console.error for critical errors only
+
         // Tab switch detection (visibilitychange)
         document.addEventListener('visibilitychange', handleVisibilityChange);
 
@@ -304,11 +323,20 @@ export default function ExamInterface() {
         // Fullscreen exit detection
         document.addEventListener('fullscreenchange', handleFullscreenChange);
 
-        // DevTools detection (basic)
+        // ✅ ENHANCED DevTools detection
         const detectDevTools = setInterval(() => {
-            if (window.outerHeight - window.innerHeight > 200 ||
-                window.outerWidth - window.innerWidth > 200) {
-                recordViolation('devTools', 'Developer tools detected');
+            // Method 1: Window size difference
+            const widthThreshold = window.outerWidth - window.innerWidth > 160;
+            const heightThreshold = window.outerHeight - window.innerHeight > 160;
+
+            // Method 2: Debugger detection
+            const before = new Date();
+            debugger;
+            const after = new Date();
+            const isDebuggerOpen = after - before > 100;
+
+            if (widthThreshold || heightThreshold || isDebuggerOpen) {
+                recordViolation('devTools', 'Developer tools detected - exam integrity compromised');
             }
         }, 1000);
 
@@ -370,6 +398,15 @@ export default function ExamInterface() {
     }
 
     function preventScreenshot(e) {
+        // ✅ BLOCK DEVTOOLS SHORTCUTS
+        if (e.key === 'F12' ||
+            (e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(e.key.toUpperCase())) ||
+            (e.metaKey && e.altKey && ['I', 'J', 'C'].includes(e.key.toUpperCase()))) {
+            e.preventDefault();
+            recordViolation('devTools', 'Developer tools shortcuts are blocked!');
+            return;
+        }
+
         // Prevent PrintScreen, Cmd+Shift+3/4/5 (Mac), Win+PrintScreen
         if (e.key === 'PrintScreen' ||
             (e.metaKey && e.shiftKey && ['3', '4', '5'].includes(e.key)) ||
@@ -425,7 +462,7 @@ export default function ExamInterface() {
 
     function enterFullscreen() {
         document.documentElement.requestFullscreen().catch(err => {
-            console.log('Fullscreen request failed:', err);
+            // Fullscreen request failed silently
         });
     }
 
@@ -599,10 +636,13 @@ export default function ExamInterface() {
         try {
             // Get the current question to access test cases
             const question = questions.find(q => q.id === questionId);
-            const sampleInput = question?.visible_test_cases?.[0]?.input || '';
+            // Use custom input if available, otherwise fallback to first test case input
+            const runInput = customInput[questionId] !== undefined
+                ? customInput[questionId]
+                : (question?.visible_test_cases?.[0]?.input || '');
 
             // Execute code using Piston API
-            const result = await executeCode(userCode, sampleInput);
+            const result = await executeCode(userCode, runInput);
 
             // Format output
             let output = '';
@@ -662,6 +702,37 @@ export default function ExamInterface() {
             })
             .eq('id', attemptId);
 
+        // Update Profile Stats to show on Leaderboard immediately
+        try {
+            const { data: currentProfile } = await supabase
+                .from('profiles')
+                .select('exam_attempts')
+                .eq('id', user.id)
+                .single();
+
+            if (currentProfile) {
+                await supabase
+                    .from('profiles')
+                    .update({
+                        exam_attempts: (currentProfile.exam_attempts || 0) + 1,
+                        // Note: exam_score is pending grading
+                    })
+                    .eq('id', user.id);
+            }
+        } catch (err) {
+            console.error('Error updating profile stats:', err);
+        }
+
+        // ✅ AUTOMATIC GRADING (runs in background, non-blocking)
+        logger.log('🎓 Starting automatic grading for auto-submitted exam...');
+        gradeExamSubmissions(supabase, attemptId)
+            .then(result => {
+                logger.log('✅ Auto-submitted exam graded! Score:', result.totalScore);
+            })
+            .catch(err => {
+                logger.error('❌ Grading failed (non-critical):', err);
+            });
+
         navigate('/learning');
     }
 
@@ -699,9 +770,38 @@ export default function ExamInterface() {
                 logger.error('Error updating attempt:', updateError);
             }
 
-            // ✅ REMOVED SLOW GRADING - Was taking 20+ seconds with 21 API calls
-            // Grading can happen later as background job or on-demand
-            logger.log('✅ Exam submitted successfully! Grading will happen in background.');
+            // Update Profile Stats to show on Leaderboard immediately
+            try {
+                const { data: currentProfile } = await supabase
+                    .from('profiles')
+                    .select('exam_attempts')
+                    .eq('id', user.id)
+                    .single();
+
+                if (currentProfile) {
+                    await supabase
+                        .from('profiles')
+                        .update({
+                            exam_attempts: (currentProfile.exam_attempts || 0) + 1,
+                            // Note: exam_score is pending grading
+                        })
+                        .eq('id', user.id);
+                }
+            } catch (err) {
+                console.error('Error updating profile stats:', err);
+            }
+
+            // ✅ RE-ENABLED AUTOMATIC GRADING (runs in background, non-blocking)
+            // Grade the exam asynchronously - don't wait for it to complete
+            logger.log('🎓 Starting automatic grading in background...');
+            gradeExamSubmissions(supabase, attemptId)
+                .then(result => {
+                    logger.log('✅ Exam graded successfully! Score:', result.totalScore);
+                })
+                .catch(err => {
+                    logger.error('❌ Grading failed (non-critical):', err);
+                    // Grading failure doesn't prevent exam submission
+                });
 
             // Exit fullscreen
             if (document.fullscreenElement) {
@@ -782,10 +882,10 @@ export default function ExamInterface() {
                         </div>
                     </motion.div>
                     <h2 className="mb-3 text-center text-2xl font-semibold tracking-tight text-white">
-                        Preparing Your Exam
+                        Selecting 3 Random Questions
                     </h2>
                     <p className="mb-8 text-center text-sm text-gray-400">
-                        Carefully selecting questions for you...
+                        Preparing your personalized exam...
                     </p>
 
                     {/* Premium Progress Bar */}
@@ -1316,6 +1416,19 @@ export default function ExamInterface() {
                                 Submitted & Locked
                             </div>
                         )}
+                    </div>
+
+                    {/* Custom Input Section */}
+                    <div className="border-t border-border bg-gray-900/50">
+                        <div className="flex items-center justify-between px-4 py-1 bg-gray-800/50">
+                            <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Input</h4>
+                        </div>
+                        <textarea
+                            value={customInput[currentQuestion?.id] || ''}
+                            onChange={(e) => setCustomInput(prev => ({ ...prev, [currentQuestion?.id]: e.target.value }))}
+                            placeholder="Enter your input here (split lines with enter)"
+                            className="w-full h-24 bg-black/30 p-3 text-sm font-mono text-gray-300 resize-none focus:outline-none focus:bg-black/50 transition-colors"
+                        />
                     </div>
 
                     {/* Code Output Section */}

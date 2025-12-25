@@ -47,6 +47,7 @@ const DEPARTMENTS = [
     'Computer Engineering',
     'Information Technology',
     'Cyber Security',
+    'Gaming',
     'Other'
 ]
 

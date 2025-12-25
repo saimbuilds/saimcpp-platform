@@ -10,7 +10,7 @@
  * - All test cases pass: 100%
  */
 
-import { executeCode } from './api';
+import { executeCode } from './api.js';
 
 /**
  * Main grading function for an entire exam attempt

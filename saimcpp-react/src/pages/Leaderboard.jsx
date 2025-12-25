@@ -61,8 +61,9 @@ export default function Leaderboard() {
                 let query = supabase
                     .from('profiles')
                     .select('id, full_name, email, exam_score, exam_attempts, best_exam_score, batch, department, avatar_url, username, university_id, university:universities(short_name)')
+                    .gt('exam_attempts', 0) // Only show users who have submitted at least 1 exam
                     .order('exam_score', { ascending: false })
-                    .gt('exam_attempts', 0) // Only users with exam attempts
+                    .order('exam_attempts', { ascending: false }) // Secondary sort by attempts
                     .neq('email', 'saimkhanwah@gmail.com') // Hide founder from leaderboard
                     .limit(20)
 
