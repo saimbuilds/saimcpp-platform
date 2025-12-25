@@ -59,6 +59,37 @@ export default function LearningHub() {
                 </p>
             </div>
 
+            {/* Ambassador Program Banner */}
+            <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-8"
+            >
+                <a
+                    href="/ambassadors"
+                    className="group block overflow-hidden rounded-lg border border-purple-500/20 bg-gradient-to-r from-purple-600/5 to-purple-400/5 p-4 transition-all hover:border-purple-500/40 hover:from-purple-600/10 hover:to-purple-400/10"
+                >
+                    <div className="flex items-center justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-purple-600 to-purple-400">
+                                <Rocket className="h-5 w-5 text-white" />
+                            </div>
+                            <div>
+                                <p className="text-sm font-semibold text-foreground">
+                                    Campus Ambassador Program
+                                </p>
+                                <p className="text-xs text-muted-foreground">
+                                    Earn 25% commission • Free premium access • Build your brand
+                                </p>
+                            </div>
+                        </div>
+                        <div className="hidden sm:block rounded-full border border-purple-500/30 bg-purple-600/10 px-4 py-1.5 text-xs font-medium text-purple-400 transition-colors group-hover:bg-purple-600/20">
+                            Apply Now →
+                        </div>
+                    </div>
+                </a>
+            </motion.div>
+
             {/* Tracks Grid */}
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {tracks.map((track, index) => (
@@ -66,7 +97,7 @@ export default function LearningHub() {
                         key={track.id}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.1 }}
+                        transition={{ duration: 0.3 }}
                     >
                         <Card className={`group relative overflow-hidden p-6 transition-all hover:shadow-xl ${track.comingSoon ? 'opacity-60' : ''}`}>
                             {/* Background Gradient */}

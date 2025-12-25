@@ -264,17 +264,7 @@ export default function UserProfile() {
                                 )}
 
                                 {profile.bio && (
-                                    <p className="mb-3 max-w-2xl text-foreground">{profile.bio}</p>
-                                )}
-
-                                {/* Inspirational Quote for Founder */}
-                                {isFounder && (
-                                    <div className="mb-6 mt-6 max-w-3xl">
-                                        <p className="text-3xl font-light italic text-white/90 leading-relaxed">
-                                            "Work like hell."
-                                        </p>
-                                        <p className="mt-3 text-lg font-medium text-purple-400">— Elon Musk</p>
-                                    </div>
+                                    <p className="mt-4 max-w-2xl text-sm font-light text-muted-foreground">{profile.bio}</p>
                                 )}
 
                                 {/* Social Links */}
@@ -435,24 +425,24 @@ export default function UserProfile() {
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
                 <Card>
                     <CardHeader>
-                        <CardTitle className={isFounder ? 'text-4xl font-bold' : ''}>
-                            {isFounder ? 'Platform Vision' : 'Recent Activity'}
+                        <CardTitle className={isFounder ? 'text-2xl font-semibold tracking-tight' : ''}>
+                            {isFounder ? 'What We\'re Building' : 'Recent Activity'}
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
                         {isFounder ? (
-                            <div className="space-y-6">
+                            <div className="space-y-8" style={{ fontFamily: "'Inter', 'Outfit', sans-serif" }}>
                                 <div className="grid gap-6 md:grid-cols-2">
-                                    <div className="rounded-xl border-2 border-purple-500/30 bg-gradient-to-br from-purple-500/10 to-transparent p-6">
-                                        <h4 className="mb-3 text-2xl font-bold text-accent-blue">Mission</h4>
-                                        <p className="text-base text-foreground leading-relaxed">
-                                            Onboard students from Pakistan and around the globe to competitive programming.
+                                    <div className="rounded-lg border border-border/50 bg-card/50 p-6">
+                                        <h4 className="mb-3 text-lg font-semibold tracking-tight">Mission</h4>
+                                        <p className="text-sm font-light leading-relaxed text-muted-foreground">
+                                            Make competitive programming accessible to every student in Pakistan.
                                         </p>
                                     </div>
-                                    <div className="rounded-xl border-2 border-purple-500/30 bg-gradient-to-br from-purple-500/10 to-transparent p-6">
-                                        <h4 className="mb-3 text-2xl font-bold text-accent-green">Vision</h4>
-                                        <p className="text-base text-foreground leading-relaxed">
-                                            Build a worldwide platform that transforms how students learn, compete, and master programming languages.
+                                    <div className="rounded-lg border border-border/50 bg-card/50 p-6">
+                                        <h4 className="mb-3 text-lg font-semibold tracking-tight">Vision</h4>
+                                        <p className="text-sm font-light leading-relaxed text-muted-foreground">
+                                            Build the platform that produces Pakistan's next generation of world-class engineers.
                                         </p>
                                     </div>
                                 </div>

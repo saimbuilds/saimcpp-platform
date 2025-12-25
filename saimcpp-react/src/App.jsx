@@ -22,6 +22,7 @@ import MockExams from './pages/MockExams'
 import ExamInstructions from './pages/ExamInstructions'
 import ExamInterface from './pages/ExamInterface'
 import Pricing from './pages/Pricing'
+import AmbassadorProgram from './pages/AmbassadorProgram'
 
 // Components
 import MobileBlocker from './components/layout/MobileBlocker'
@@ -157,6 +158,7 @@ function App() {
                     <Route path="/edit-profile" element={<ProtectedRoute><EditProfile /></ProtectedRoute>} />
                     <Route path="/u/:username/:type" element={<FollowersPage />} />
                     <Route path="/u/:username" element={<UserProfile />} />
+                    <Route path="/ambassadors" element={<AmbassadorProgram />} />
                     <Route
                         path="/problem/:id"
                         element={

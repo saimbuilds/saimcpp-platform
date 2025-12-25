@@ -55,7 +55,7 @@ export default function MockExams() {
                         key={exam.id}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.4, delay: index * 0.1 }}
+                        transition={{ duration: 0.3 }}
                     >
                         <Card className="p-6 transition-all hover:shadow-lg">
                             <div className="flex items-start justify-between">

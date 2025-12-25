@@ -32,6 +32,16 @@ export default function Footer() {
                     If you find this helpful, show some support!
                 </p>
 
+                {/* Ambassador Program Link */}
+                <div className="mb-6">
+                    <a
+                        href="/ambassadors"
+                        className="inline-flex items-center gap-2 rounded-lg border border-purple-500/30 bg-gradient-to-r from-purple-600/10 to-purple-400/10 px-6 py-2.5 text-sm font-semibold text-purple-400 transition-all hover:border-purple-500/50 hover:from-purple-600/20 hover:to-purple-400/20"
+                    >
+                        🚀 Become a Campus Ambassador
+                    </a>
+                </div>
+
                 <div className="flex items-center justify-center gap-4">
                     {socialLinks.map(({ name, url, icon: Icon, label }) => (
                         <a

@@ -215,7 +215,7 @@ export default function Leaderboard() {
                         onClick={() => setSelectedCategory('problems')}
                         className={selectedCategory === 'problems'
                             ? 'bg-gradient-to-r from-blue-600 to-blue-500'
-                            : 'hover:border-blue-500 hover:text-blue-400'
+                            : 'hover:border-blue-500 hover:bg-blue-600 hover:text-white'
                         }
                     >
                         📊 PF Problems
@@ -226,7 +226,7 @@ export default function Leaderboard() {
                         onClick={() => setSelectedCategory('exams')}
                         className={selectedCategory === 'exams'
                             ? 'bg-gradient-to-r from-purple-600 to-purple-500'
-                            : 'hover:border-purple-500 hover:text-purple-400'
+                            : 'hover:border-purple-500 hover:bg-purple-600 hover:text-white'
                         }
                     >
                         🎓 Mock Exams
@@ -241,7 +241,7 @@ export default function Leaderboard() {
                         onClick={() => setSelectedUniversity('all')}
                         className={selectedUniversity === 'all'
                             ? 'bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600'
-                            : 'hover:border-purple-500 hover:text-purple-500'
+                            : 'hover:border-purple-500 hover:bg-purple-600 hover:text-white'
                         }
                     >
                         <Users className="mr-2 h-4 w-4" />
@@ -277,7 +277,7 @@ export default function Leaderboard() {
                                 initial={{ opacity: 0, scale: 0.8, x: -10 }}
                                 animate={{ opacity: 1, scale: 1, x: 0 }}
                                 exit={{ opacity: 0, scale: 0.8, x: -10 }}
-                                transition={{ delay: index * 0.05 }}
+                                transition={{ duration: 0.2 }}
                             >
                                 <Button
                                     variant={selectedUniversity === uni.id ? 'default' : 'outline'}
@@ -422,7 +422,7 @@ export default function Leaderboard() {
                                         key={profile.id}
                                         initial={{ opacity: 0, x: -20 }}
                                         animate={{ opacity: 1, x: 0 }}
-                                        transition={{ delay: index * 0.03 }}
+                                        transition={{ duration: 0.2 }}
                                         className={`border-b border-border transition-colors hover:bg-muted ${isCurrentUser ? 'bg-purple-500/10' : ''
                                             }`}
                                     >
