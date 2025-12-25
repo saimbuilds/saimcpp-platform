@@ -200,16 +200,7 @@ export default function UserProfile() {
                             {/* Info */}
                             <div>
                                 <div className="flex items-center gap-3">
-                                    <h1
-                                        className={`mb-1 text-3xl font-bold ${isFounder
-                                            ? 'text-white'
-                                            : ''
-                                            }`}
-                                        style={isFounder ? {
-                                            textShadow: '0 0 20px rgba(168, 85, 247, 0.8), 0 0 35px rgba(168, 85, 247, 0.5)',
-                                            animation: 'gentleGlow 3s ease-in-out infinite'
-                                        } : {}}
-                                    >
+                                    <h1 className={`mb-1 font-bold ${isFounder ? 'text-6xl' : 'text-3xl'}`}>
                                         {profile?.full_name || profile.email?.split('@')[0]}
                                     </h1>
                                     {isFounder && (
@@ -278,11 +269,11 @@ export default function UserProfile() {
 
                                 {/* Inspirational Quote for Founder */}
                                 {isFounder && (
-                                    <div className="mb-4 mt-4 max-w-2xl rounded-lg border-l-4 border-purple-500 bg-gradient-to-r from-purple-500/10 to-transparent p-4">
-                                        <p className="text-sm italic text-muted-foreground">
-                                            "Code is poetry written in logic, and every bug is a lesson in disguise."
+                                    <div className="mb-6 mt-6 max-w-3xl">
+                                        <p className="text-3xl font-light italic text-white/90 leading-relaxed">
+                                            "Work like hell."
                                         </p>
-                                        <p className="mt-1 text-xs font-semibold text-purple-400">— Platform Founder</p>
+                                        <p className="mt-3 text-lg font-medium text-purple-400">— Elon Musk</p>
                                     </div>
                                 )}
 
@@ -291,28 +282,28 @@ export default function UserProfile() {
                                     {profile.linkedin_url && (
                                         <a href={profile.linkedin_url} target="_blank" rel="noopener noreferrer">
                                             <Button variant="ghost" size="sm" className="hover:bg-[#0A66C2] hover:text-white hover:scale-110 transition-all">
-                                                <Linkedin className="h-4 w-4" fill="currentColor" />
+                                                <Linkedin className="h-5 w-5" fill="currentColor" />
                                             </Button>
                                         </a>
                                     )}
                                     {profile.github_url && (
                                         <a href={profile.github_url} target="_blank" rel="noopener noreferrer">
                                             <Button variant="ghost" size="sm" className="hover:bg-white hover:text-black hover:scale-110 transition-all">
-                                                <Github className="h-4 w-4" />
+                                                <Github className="h-5 w-5" />
                                             </Button>
                                         </a>
                                     )}
                                     {profile.twitter_url && (
                                         <a href={profile.twitter_url} target="_blank" rel="noopener noreferrer">
                                             <Button variant="ghost" size="sm" className="hover:bg-[#1DA1F2] hover:text-white hover:scale-110 transition-all">
-                                                <Twitter className="h-4 w-4" />
+                                                <Twitter className="h-5 w-5" />
                                             </Button>
                                         </a>
                                     )}
                                     {profile.portfolio_url && (
                                         <a href={profile.portfolio_url} target="_blank" rel="noopener noreferrer">
                                             <Button variant="ghost" size="sm" className="hover:bg-purple-600 hover:text-white hover:scale-110 transition-all">
-                                                <Globe className="h-4 w-4" />
+                                                <Globe className="h-5 w-5" />
                                             </Button>
                                         </a>
                                     )}
@@ -444,26 +435,24 @@ export default function UserProfile() {
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
                 <Card>
                     <CardHeader>
-                        <CardTitle>{isFounder ? 'Platform Vision' : 'Recent Activity'}</CardTitle>
+                        <CardTitle className={isFounder ? 'text-4xl font-bold' : ''}>
+                            {isFounder ? 'Platform Vision' : 'Recent Activity'}
+                        </CardTitle>
                     </CardHeader>
                     <CardContent>
                         {isFounder ? (
-                            <div className="space-y-4">
-                                <p className="text-muted-foreground leading-relaxed">
-                                    Building a platform where students don't just solve problems—they master the art of thinking like engineers.
-                                    Every feature, every line of code, every design decision is crafted to transform learners into problem solvers.
-                                </p>
-                                <div className="grid gap-4 md:grid-cols-2">
-                                    <div className="rounded-lg border border-border bg-muted/50 p-4">
-                                        <h4 className="mb-2 font-semibold text-accent-blue">🎯 Mission</h4>
-                                        <p className="text-sm text-muted-foreground">
-                                            Make competitive programming accessible, engaging, and rewarding for every student.
+                            <div className="space-y-6">
+                                <div className="grid gap-6 md:grid-cols-2">
+                                    <div className="rounded-xl border-2 border-purple-500/30 bg-gradient-to-br from-purple-500/10 to-transparent p-6">
+                                        <h4 className="mb-3 text-2xl font-bold text-accent-blue">Mission</h4>
+                                        <p className="text-base text-foreground leading-relaxed">
+                                            Onboard students from Pakistan and around the globe to competitive programming.
                                         </p>
                                     </div>
-                                    <div className="rounded-lg border border-border bg-muted/50 p-4">
-                                        <h4 className="mb-2 font-semibold text-accent-green">🚀 Vision</h4>
-                                        <p className="text-sm text-muted-foreground">
-                                            Create the ultimate learning platform that bridges theory and real-world problem solving.
+                                    <div className="rounded-xl border-2 border-purple-500/30 bg-gradient-to-br from-purple-500/10 to-transparent p-6">
+                                        <h4 className="mb-3 text-2xl font-bold text-accent-green">Vision</h4>
+                                        <p className="text-base text-foreground leading-relaxed">
+                                            Build a worldwide platform that transforms how students learn, compete, and master programming languages.
                                         </p>
                                     </div>
                                 </div>

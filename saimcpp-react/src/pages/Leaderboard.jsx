@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '../lib/supabase'
 import { useAuthStore } from '../store/authStore'
 import { Card } from '../components/ui/card'
@@ -35,6 +35,7 @@ export default function Leaderboard() {
     const [selectedUniversity, setSelectedUniversity] = useState('all')
     const [selectedCategory, setSelectedCategory] = useState('problems') // 'problems' or 'exams'
     const [universities, setUniversities] = useState([])
+    const [showAllUniversities, setShowAllUniversities] = useState(false)
 
     // Debounce search by 500ms
     const debouncedSearch = useDebounce(searchQuery, 500)
@@ -197,7 +198,12 @@ export default function Leaderboard() {
                             </div>
                         )}
                     </div>
-                    <FounderButton />
+                    <Button
+                        onClick={() => navigate('/u/saimbuilds')}
+                        className="bg-purple-600 hover:bg-purple-700"
+                    >
+                        Meet the Founder
+                    </Button>
                 </div>
 
                 {/* Category Filter */}
@@ -240,20 +246,64 @@ export default function Leaderboard() {
                         <Users className="mr-2 h-4 w-4" />
                         All Universities
                     </Button>
-                    {universities.slice(0, 8).map((uni) => (
-                        <Button
+
+                    {/* Show first 4 universities */}
+                    {universities.slice(0, 4).map((uni) => (
+                        <motion.div
                             key={uni.id}
-                            variant={selectedUniversity === uni.id ? 'default' : 'outline'}
-                            size="sm"
-                            onClick={() => setSelectedUniversity(uni.id)}
-                            className={selectedUniversity === uni.id
-                                ? 'bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600'
-                                : 'hover:border-purple-500 hover:text-white'
-                            }
+                            initial={{ opacity: 1, scale: 1 }}
+                            animate={{ opacity: 1, scale: 1 }}
                         >
-                            {uni.short_name}
-                        </Button>
+                            <Button
+                                variant={selectedUniversity === uni.id ? 'default' : 'outline'}
+                                size="sm"
+                                onClick={() => setSelectedUniversity(uni.id)}
+                                className={selectedUniversity === uni.id
+                                    ? 'bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600'
+                                    : 'hover:border-purple-500 hover:text-white'
+                                }
+                            >
+                                {uni.short_name}
+                            </Button>
+                        </motion.div>
                     ))}
+
+                    {/* Expandable universities */}
+                    <AnimatePresence>
+                        {showAllUniversities && universities.slice(4).map((uni, index) => (
+                            <motion.div
+                                key={uni.id}
+                                initial={{ opacity: 0, scale: 0.8, x: -10 }}
+                                animate={{ opacity: 1, scale: 1, x: 0 }}
+                                exit={{ opacity: 0, scale: 0.8, x: -10 }}
+                                transition={{ delay: index * 0.05 }}
+                            >
+                                <Button
+                                    variant={selectedUniversity === uni.id ? 'default' : 'outline'}
+                                    size="sm"
+                                    onClick={() => setSelectedUniversity(uni.id)}
+                                    className={selectedUniversity === uni.id
+                                        ? 'bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600'
+                                        : 'hover:border-purple-500 hover:text-white'
+                                    }
+                                >
+                                    {uni.short_name}
+                                </Button>
+                            </motion.div>
+                        ))}
+                    </AnimatePresence>
+
+                    {/* Show More/Less Button */}
+                    {universities.length > 4 && (
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setShowAllUniversities(!showAllUniversities)}
+                            className="border border-dashed border-purple-500/50 hover:border-purple-500 hover:bg-purple-500/10"
+                        >
+                            {showAllUniversities ? '− Show Less' : `+ ${universities.length - 4} More`}
+                        </Button>
+                    )}
                 </div>
             </div>
 
