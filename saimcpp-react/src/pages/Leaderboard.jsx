@@ -33,6 +33,7 @@ export default function Leaderboard() {
     const navigate = useNavigate()
     const [searchQuery, setSearchQuery] = useState('')
     const [selectedUniversity, setSelectedUniversity] = useState('all')
+    const [selectedCategory, setSelectedCategory] = useState('problems') // 'problems' or 'exams'
     const [universities, setUniversities] = useState([])
 
     // Debounce search by 500ms
@@ -52,60 +53,77 @@ export default function Leaderboard() {
 
     // Load leaderboard data
     const { data: leaderboard = [], isLoading, error } = useQuery({
-        queryKey: ['leaderboard', selectedUniversity, debouncedSearch],
+        queryKey: ['leaderboard', selectedCategory, selectedUniversity, debouncedSearch],
         queryFn: async () => {
-            let query = supabase
-                .from('profiles')
-                .select('id, full_name, email, total_score, current_streak, batch, department, avatar_url, username, university_id, university:universities(short_name)')
-                .order('total_score', { ascending: false })
-                .limit(20)
+            if (selectedCategory === 'exams') {
+                // Mock Exam Leaderboard
+                let query = supabase
+                    .from('profiles')
+                    .select('id, full_name, email, exam_score, exam_attempts, best_exam_score, batch, department, avatar_url, username, university_id, university:universities(short_name)')
+                    .order('exam_score', { ascending: false })
+                    .gt('exam_attempts', 0) // Only users with exam attempts
+                    .limit(20)
 
-            // Filter by university
-            if (selectedUniversity !== 'all') {
-                query = query.eq('university_id', selectedUniversity)
+                if (selectedUniversity !== 'all') {
+                    query = query.eq('university_id', selectedUniversity)
+                }
+
+                if (debouncedSearch.trim()) {
+                    query = query.or(`full_name.ilike.%${debouncedSearch}%,username.ilike.%${debouncedSearch}%,email.ilike.%${debouncedSearch}%`)
+                }
+
+                const { data, error } = await query
+                if (error) throw error
+
+                return data.map(profile => ({
+                    ...profile,
+                    total_score: profile.exam_score || 0,
+                    solved: profile.exam_attempts || 0, // Display attempts in solved column
+                    current_streak: profile.best_exam_score || 0 // Display best score in streak column
+                }))
+            } else {
+                // Regular Problem Leaderboard
+                let query = supabase
+                    .from('profiles')
+                    .select('id, full_name, email, total_score, current_streak, batch, department, avatar_url, username, university_id, university:universities(short_name)')
+                    .order('total_score', { ascending: false })
+                    .limit(20)
+
+                if (selectedUniversity !== 'all') {
+                    query = query.eq('university_id', selectedUniversity)
+                }
+
+                if (debouncedSearch.trim()) {
+                    query = query.or(`full_name.ilike.%${debouncedSearch}%,username.ilike.%${debouncedSearch}%,email.ilike.%${debouncedSearch}%`)
+                }
+
+                const { data, error } = await query
+                if (error) throw error
+
+                // Fetch solved problems count
+                const profilesWithSolved = await Promise.all(
+                    data.map(async (profile) => {
+                        const { data: submissions } = await supabase
+                            .from('submissions')
+                            .select('problem_id')
+                            .eq('user_id', profile.id)
+                            .eq('status', 'accepted')
+
+                        const solvedCount = new Set(submissions?.map(s => s.problem_id) || []).size
+
+                        return {
+                            ...profile,
+                            solved: solvedCount,
+                            current_streak: profile.current_streak || 0,
+                        }
+                    })
+                )
+
+                return profilesWithSolved
             }
-
-            // Search by name or username (only if debouncedSearch has value)
-            if (debouncedSearch.trim()) {
-                query = query.or(`full_name.ilike.%${debouncedSearch}%,username.ilike.%${debouncedSearch}%,email.ilike.%${debouncedSearch}%`)
-            }
-
-            const { data, error } = await query
-
-            console.log('🏆 Leaderboard query result:', {
-                count: data?.length,
-                error: error?.message,
-                selectedUniversity,
-                debouncedSearch,
-                initialized
-            })
-
-            if (error) throw error
-
-            // Fetch solved problems count for each user
-            const profilesWithSolved = await Promise.all(
-                data.map(async (profile) => {
-                    const { data: submissions } = await supabase
-                        .from('submissions')
-                        .select('problem_id')
-                        .eq('user_id', profile.id)
-                        .eq('status', 'accepted')
-
-                    // Count unique solved problems
-                    const solvedCount = new Set(submissions?.map(s => s.problem_id) || []).size
-
-                    return {
-                        ...profile,
-                        solved: solvedCount,
-                        current_streak: profile.current_streak || 0,
-                    }
-                })
-            )
-
-            return profilesWithSolved
         },
         retry: 1,
-        refetchOnMount: 'always', // Always fetch fresh data on mount
+        refetchOnMount: 'always',
         refetchInterval: 30000,
     })
 
@@ -172,6 +190,32 @@ export default function Leaderboard() {
                         )}
                     </div>
                     <FounderButton />
+                </div>
+
+                {/* Category Filter */}
+                <div className="flex gap-2 mb-3">
+                    <Button
+                        variant={selectedCategory === 'problems' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setSelectedCategory('problems')}
+                        className={selectedCategory === 'problems'
+                            ? 'bg-gradient-to-r from-blue-600 to-blue-500'
+                            : 'hover:border-blue-500 hover:text-blue-400'
+                        }
+                    >
+                        📊 PF Problems
+                    </Button>
+                    <Button
+                        variant={selectedCategory === 'exams' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setSelectedCategory('exams')}
+                        className={selectedCategory === 'exams'
+                            ? 'bg-gradient-to-r from-purple-600 to-purple-500'
+                            : 'hover:border-purple-500 hover:text-purple-400'
+                        }
+                    >
+                        🎓 Mock Exams
+                    </Button>
                 </div>
 
                 {/* University Filter Pills */}
@@ -291,13 +335,13 @@ export default function Leaderboard() {
                                     User
                                 </th>
                                 <th className="px-6 py-4 text-center text-xs font-semibold uppercase text-muted-foreground">
-                                    Score
+                                    {selectedCategory === 'exams' ? 'Exam Score' : 'Score'}
                                 </th>
                                 <th className="px-6 py-4 text-center text-xs font-semibold uppercase text-muted-foreground">
-                                    Solved
+                                    {selectedCategory === 'exams' ? 'Attempts' : 'Solved'}
                                 </th>
                                 <th className="px-6 py-4 text-center text-xs font-semibold uppercase text-muted-foreground">
-                                    Streak
+                                    {selectedCategory === 'exams' ? 'Best Score' : 'Streak'}
                                 </th>
                                 <th className="px-6 py-4 text-left text-xs font-semibold uppercase text-muted-foreground">
                                     Batch

@@ -30,7 +30,8 @@ export default function MobileBlocker() {
                 }
                 .feature-card:hover {
                     transform: translateY(-2px);
-                    border-color: hsl(262 83% 58% / 0.4);
+                    border-color: hsl(262 83% 58% / 0.5);
+                    background-color: hsl(262 83% 58% / 0.05);
                 }
             `}</style>
 

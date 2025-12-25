@@ -1,151 +1,117 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Card } from '../components/ui/card';
 import { Button } from '../components/ui/button';
-import { AlertTriangle, Clock, Shield, Ban, Eye } from 'lucide-react';
+import { Clock, Shield, AlertTriangle, Monitor, CheckCircle2 } from 'lucide-react';
 
 export default function ExamInstructions() {
     const { examId } = useParams();
     const navigate = useNavigate();
-    const [countdown, setCountdown] = useState(5);
-    const [canStart, setCanStart] = useState(false);
+    const [canStart, setCanStart] = useState(true); // Changed to true - no delay
 
-    useEffect(() => {
-        if (countdown > 0) {
-            const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
-            return () => clearTimeout(timer);
-        } else {
-            setCanStart(true);
-        }
-    }, [countdown]);
+    // Removed countdown logic - users can start immediately
 
     const handleStart = () => {
-        // Request fullscreen
         document.documentElement.requestFullscreen().catch(err => {
             console.log('Fullscreen request failed:', err);
         });
-
         navigate(`/mock-exam/${examId}/exam`);
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-background p-8">
+        <div className="min-h-screen bg-[#0a0a0f] text-gray-200 flex flex-col items-center justify-center p-6 relative overflow-hidden">
+            {/* Background Accents */}
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-purple-500 to-transparent opacity-50"></div>
+            <div className="absolute -top-40 -right-40 w-96 h-96 bg-purple-600/10 rounded-full blur-[100px]"></div>
+            <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-600/10 rounded-full blur-[100px]"></div>
+
             <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.3 }}
-                className="w-full max-w-3xl"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="w-full max-w-4xl"
             >
-                <Card className="p-8">
-                    {/* Header */}
-                    <div className="mb-8 text-center">
-                        <div className="mb-4 text-6xl">📝</div>
-                        <h1 className="mb-2 text-3xl font-bold">Mock Exam Instructions</h1>
-                        <p className="text-muted-foreground">Read carefully before starting</p>
-                    </div>
+                <div className="text-center mb-12">
+                    <h1 className="text-4xl font-bold text-white mb-2 tracking-tight">Final Examination</h1>
+                    <p className="text-gray-400">PF Lab Fall 2024 • Proctored Session</p>
+                </div>
 
-                    {/* Instructions */}
-                    <div className="mb-8 space-y-6">
-                        {/* Exam Details */}
-                        <div className="rounded-lg border border-border bg-card p-4">
-                            <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold">
-                                <Clock className="h-5 w-5 text-accent-blue" />
-                                Exam Details
-                            </h2>
-                            <ul className="space-y-2 text-sm text-muted-foreground">
-                                <li>• Duration: <span className="font-semibold text-foreground">3 hours (180 minutes)</span></li>
-                                <li>• Total Questions: <span className="font-semibold text-foreground">10 available</span></li>
-                                <li>• Choose: <span className="font-semibold text-foreground">Any 3 questions</span></li>
-                                <li>• Marks: <span className="font-semibold text-foreground">25 marks each (75 total)</span></li>
-                                <li>• Timer starts immediately and <span className="font-semibold text-warning">cannot be paused</span></li>
-                            </ul>
-                        </div>
-
-                        {/* Anti-Cheating Rules */}
-                        <div className="rounded-lg border border-warning bg-warning/10 p-4">
-                            <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold text-warning">
-                                <Shield className="h-5 w-5" />
-                                Anti-Cheating Measures (STRICTLY ENFORCED)
-                            </h2>
-                            <ul className="space-y-2 text-sm">
-                                <li className="flex items-start gap-2">
-                                    <Ban className="mt-0.5 h-4 w-4 text-warning" />
-                                    <span><strong>No Tab Switching:</strong> Switching tabs will be detected. 3 violations = automatic submission</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <Ban className="mt-0.5 h-4 w-4 text-warning" />
-                                    <span><strong>No Copy-Paste:</strong> Copy and paste functions are disabled</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <Eye className="mt-0.5 h-4 w-4 text-warning" />
-                                    <span><strong>Fullscreen Required:</strong> Must stay in fullscreen mode throughout</span>
-                                </li>
-                                <li className="flex items-start gap-2">
-                                    <Ban className="mt-0.5 h-4 w-4 text-warning" />
-                                    <span><strong>No Developer Tools:</strong> Opening DevTools will be flagged</span>
-                                </li>
-                            </ul>
-                        </div>
-
-                        {/* Important Notes */}
-                        <div className="rounded-lg border border-accent-blue bg-accent-blue/10 p-4">
-                            <h2 className="mb-3 text-lg font-semibold text-accent-blue">Important Notes</h2>
-                            <ul className="space-y-2 text-sm text-muted-foreground">
-                                <li>• You can submit individual questions as you complete them</li>
-                                <li>• Code will be tested against hidden test cases</li>
-                                <li>• Partial marks awarded for passing some test cases</li>
-                                <li>• You can review and edit your code before final submission</li>
-                                <li>• Exam auto-submits when timer reaches 0</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    {/* Warning Banner */}
-                    <div className="mb-6 rounded-lg border-2 border-warning bg-warning/5 p-4">
-                        <div className="flex items-start gap-3">
-                            <AlertTriangle className="mt-0.5 h-6 w-6 text-warning" />
-                            <div>
-                                <p className="mb-1 font-semibold text-warning">Final Warning</p>
-                                <p className="text-sm text-muted-foreground">
-                                    Once you start, the timer begins immediately. Any violation of anti-cheating rules
-                                    will result in penalties or automatic submission. Make sure you're ready.
-                                </p>
+                <div className="grid md:grid-cols-2 gap-6 mb-8">
+                    {/* Exam Config */}
+                    <div className="bg-gray-900/50 border border-t-purple-500/50 border-gray-800 rounded-xl p-6 backdrop-blur-sm">
+                        <div className="flex items-center gap-3 mb-6">
+                            <div className="p-2 bg-purple-500/10 rounded-lg">
+                                <Clock className="w-6 h-6 text-purple-400" />
                             </div>
+                            <h2 className="text-xl font-semibold text-white">Parameters</h2>
                         </div>
+                        <ul className="space-y-4">
+                            <li className="flex justify-between items-center border-b border-gray-800 pb-3 last:border-0 last:pb-0">
+                                <span className="text-gray-400">Duration</span>
+                                <span className="font-mono text-white bg-gray-800 px-3 py-1 rounded">180 Mins</span>
+                            </li>
+                            <li className="flex justify-between items-center border-b border-gray-800 pb-3 last:border-0 last:pb-0">
+                                <span className="text-gray-400">Questions</span>
+                                <span className="font-mono text-white bg-gray-800 px-3 py-1 rounded">3 Random</span>
+                            </li>
+                            <li className="flex justify-between items-center border-b border-gray-800 pb-3 last:border-0 last:pb-0">
+                                <span className="text-gray-400">Max Score</span>
+                                <span className="font-mono text-white bg-gray-800 px-3 py-1 rounded">75 Marks</span>
+                            </li>
+                            <li className="flex justify-between items-center border-b border-gray-800 pb-3 last:border-0 last:pb-0">
+                                <span className="text-gray-400">Mode</span>
+                                <span className="font-mono text-red-400 bg-red-900/20 px-3 py-1 rounded">Strict Mode</span>
+                            </li>
+                        </ul>
                     </div>
 
-                    {/* Start Button */}
-                    <div className="text-center">
-                        {!canStart ? (
-                            <div>
-                                <div className="mb-4 text-6xl font-bold text-accent-blue">
-                                    {countdown}
+                    {/* Rules */}
+                    <div className="bg-gray-900/50 border border-t-red-500/50 border-gray-800 rounded-xl p-6 backdrop-blur-sm">
+                        <div className="flex items-center gap-3 mb-6">
+                            <div className="p-2 bg-red-500/10 rounded-lg">
+                                <Shield className="w-6 h-6 text-red-400" />
+                            </div>
+                            <h2 className="text-xl font-semibold text-white">Protocol</h2>
+                        </div>
+                        <ul className="space-y-3 text-sm text-gray-300">
+                            <li className="flex items-start gap-3 bg-red-500/5 p-3 rounded border border-red-500/10">
+                                <Monitor className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+                                <div>
+                                    <strong className="block text-red-300">Fullscreen Enforcement</strong>
+                                    Exit fullscreen = Violation recorded.
                                 </div>
-                                <p className="text-sm text-muted-foreground">
-                                    Please read all instructions carefully...
-                                </p>
-                            </div>
-                        ) : (
-                            <motion.div
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.3 }}
-                            >
-                                <Button
-                                    onClick={handleStart}
-                                    size="lg"
-                                    className="w-full text-lg"
-                                >
-                                    I Understand - Start Exam
-                                </Button>
-                                <p className="mt-3 text-xs text-muted-foreground">
-                                    By clicking start, you agree to follow all exam rules
-                                </p>
-                            </motion.div>
-                        )}
+                            </li>
+                            <li className="flex items-start gap-3 bg-red-500/5 p-3 rounded border border-red-500/10">
+                                <AlertTriangle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+                                <div>
+                                    <strong className="block text-red-300">Tab Focus Failure</strong>
+                                    Switching tabs/windows is strictly prohibited.
+                                </div>
+                            </li>
+                            <li className="text-xs text-center text-gray-500 pt-2">
+                                3 Violations = Immediate Automatic Submission
+                            </li>
+                        </ul>
                     </div>
-                </Card>
+                </div>
+
+                {/* Footer Action */}
+                <div className="text-center space-y-4">
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                    >
+                        <Button
+                            size="lg"
+                            onClick={handleStart}
+                            className="bg-white text-black hover:bg-gray-200 px-12 py-6 text-lg font-bold rounded-full shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all hover:shadow-[0_0_30px_rgba(255,255,255,0.4)]"
+                        >
+                            START EXAMINATION
+                        </Button>
+                        <p className="mt-4 text-xs text-gray-500">
+                            By proceeding, you confirm all background apps are closed.
+                        </p>
+                    </motion.div>
+                </div>
             </motion.div>
         </div>
     );

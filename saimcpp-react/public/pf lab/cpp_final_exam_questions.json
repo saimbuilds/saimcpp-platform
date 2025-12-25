@@ -2,65 +2,65 @@
   "exam_questions": [
     {
       "question_number": 1,
-      "title": "N-Queens Placement Visualizer with Backtracking",
+      "title": "N-Queens Placement Visualizer",
       "category": "2D Arrays & Recursion",
       "marks": 25,
       "time_estimate_minutes": 55,
-      "content": "# N-Queens Placement Visualizer (25 Marks)\n\nImplement the N-Queens problem with step-by-step visualization of the backtracking process.\n\n## Problem Statement:\n\nPlace N chess queens on an N\u00d7N chessboard so that no two queens threaten each other. A queen can attack horizontally, vertically, and diagonally.\n\n## Algorithm Visualization:\n\n**Initial Board (N=4):**\n\n| Col 0 | Col 1 | Col 2 | Col 3 |\n|:-----:|:-----:|:-----:|:-----:|\n|   .   |   .   |   .   |   .   |\n|   .   |   .   |   .   |   .   |\n|   .   |   .   |   .   |   .   |\n|   .   |   .   |   .   |   .   |\n\n**Step 1:** Place first queen in row 0, col 0:\n\n| Col 0 | Col 1 | Col 2 | Col 3 |\n|:-----:|:-----:|:-----:|:-----:|\n|   Q   |   X   |   X   |   X   |\n|   X   |   X   |   .   |   .   |\n|   X   |   .   |   X   |   .   |\n|   X   |   .   |   .   |   X   |\n\n**Step 2:** Try row 1, col 2 (safe position):\n\n| Col 0 | Col 1 | Col 2 | Col 3 |\n|:-----:|:-----:|:-----:|:-----:|\n|   Q   |   X   |   X   |   X   |\n|   X   |   X   |   Q   |   X   |\n|   X   |   X   |   X   |   X   |\n|   X   |   X   |   X   |   X   |\n\n**Step 3:** No safe position in row 2, BACKTRACK to row 1...\n\n**Final Solution:**\n\n| Col 0 | Col 1 | Col 2 | Col 3 |\n|:-----:|:-----:|:-----:|:-----:|\n|   .   |   Q   |   .   |   .   |\n|   .   |   .   |   .   |   Q   |\n|   Q   |   .   |   .   |   .   |\n|   .   |   .   |   Q   |   .   |\n\n## Requirements:\n\n- Implement `bool solveNQueens(int** board, int n, int row)`\n- Implement `bool isSafe(int** board, int n, int row, int col)`\n- Use dynamic 2D array allocation\n- Use ONLY pointer arithmetic (no [] operator)\n- Return one valid solution\n- Print board state using 'Q' for queens, '.' for empty\n\n## Constraints:\n\n- 4 \u2264 N \u2264 12\n- Time complexity: O(N!)\n- Space complexity: O(N\u00b2)\n- No global variables allowed\n\n## Function Signatures:\n\n```cpp\nbool isSafe(int** board, int n, int row, int col);\nbool solveNQueens(int** board, int n, int row);\nvoid printBoard(int** board, int n);\n```\n",
-      "starter_code": "#include <iostream>\nusing namespace std;\n\nbool isSafe(int** board, int n, int row, int col) {\n    // Check if placing queen at (row, col) is safe\n    // Check column\n    // Check upper-left diagonal\n    // Check upper-right diagonal\n    return true;\n}\n\nbool solveNQueens(int** board, int n, int row) {\n    // Base case: all queens placed\n    // Try placing queen in each column of current row\n    // Recursively solve for next row\n    // Backtrack if needed\n    return false;\n}\n\nvoid printBoard(int** board, int n) {\n    for (int i = 0; i < n; i++) {\n        for (int j = 0; j < n; j++) {\n            cout << (*(*(board + i) + j) ? \"Q \" : \". \");\n        }\n        cout << endl;\n    }\n}\n\nint main() {\n    int n;\n    cin >> n;\n    \n    // Allocate 2D board\n    int** board = new int*[n];\n    for (int i = 0; i < n; i++) {\n        *(board + i) = new int[n];\n        for (int j = 0; j < n; j++)\n            *(*(board + i) + j) = 0;\n    }\n    \n    if (solveNQueens(board, n, 0)) {\n        printBoard(board, n);\n    } else {\n        cout << \"NO SOLUTION\" << endl;\n    }\n    \n    // Cleanup\n    for (int i = 0; i < n; i++)\n        delete[] *(board + i);\n    delete[] board;\n    \n    return 0;\n}",
+      "content": "# N-Queens Placement (25 Marks)\\n\\nImplement the N-Queens problem with a focus on recursive backtracking and manual pointer manipulation.\\n\\n## Problem Statement:\\n\\nPlace N queens on an NxN chessboard such that no two queens threaten each other. A queen attacks horizontally, vertically, and diagonally. You must use a 2D dynamic array and avoid all `[]` indexing.\\n\\n## Initial Board (N=4):\\n\\n**Step 1: Start with empty board.**\\n| Col 0 | Col 1 | Col 2 | Col 3 |\\n|:-----:|:-----:|:-----:|:-----:|\\n|   .   |   .   |   .   |   .   |\\n|   .   |   .   |   .   |   .   |\\n|   .   |   .   |   .   |   .   |\\n|   .   |   .   |   .   |   .   |\\n\\n**Step 2: Place queen at (0,0).**\\n| Col 0 | Col 1 | Col 2 | Col 3 |\\n|:-----:|:-----:|:-----:|:-----:|\\n|   Q   |   .   |   .   |   .   |\\n|   .   |   .   |   .   |   .   |\\n|   .   |   .   |   .   |   .   |\\n|   .   |   .   |   .   |   .   |\\n\\n**Step 3: Try to place in row 1. (1,0) and (1,1) are blocked.**\\n| Col 0 | Col 1 | Col 2 | Col 3 |\\n|:-----:|:-----:|:-----:|:-----:|\\n|   Q   |   .   |   .   |   .   |\\n|   X   |   X   |   Q   |   .   |\\n|   .   |   .   |   .   |   .   |\\n|   .   |   .   |   .   |   .   |\\n\\n**Step 4: No safe spot in row 2. Backtrack! Move queen at row 1.**\\n\\n## Requirements:\\n- Implement `bool solveNQueens(int** board, int n, int col)`\\n- Implement `bool isSafe(int** board, int n, int row, int col)`\\n- Use ONLY pointer arithmetic for all array access\\n- No `struct`s or classes allowed\\n- Allocate and deallocate memory dynamically\\n\\n## Constraints:\\n- 4 \u2264 N \u2264 12\\n- Time complexity: O(N!)\\n- Space complexity: O(N^2)\\n\\n## Function Signatures:\\n```cpp\\nbool isSafe(int** board, int n, int row, int col);\\nbool solveNQueens(int** board, int n, int col);\\nvoid printBoard(int** board, int n);\\n```",
+      "starter_code": "#include <iostream>\\nusing namespace std;\\n\\nvoid printBoard(int** board, int n) {\\n    for (int i = 0; i < n; i++) {\\n        for (int j = 0; j < n; j++) {\\n            if (*(*(board + i) + j) == 1)\\n                cout << \"Q \";\\n            else\\n                cout << \". \";\\n        }\\n        cout << endl;\\n    }\\n}\\n\\nbool isSafe(int** board, int n, int row, int col) {\\n    // TODO: Check row on left side\\n    \\n    // TODO: Check upper diagonal on left side\\n    \\n    // TODO: Check lower diagonal on left side\\n    \\n    return true;\\n}\\n\\nbool solveNQueens(int** board, int n, int col) {\\n    // TODO: Base case: If all queens are placed\\n    \\n    // TODO: Consider this column and try placing queen in all rows one by one\\n    \\n    return false;\\n}\\n\\nint main() {\\n    int n;\\n    cin >> n;\\n    \\n    int** board = new int*[n];\\n    for (int i = 0; i < n; i++) {\\n        *(board + i) = new int[n];\\n        for (int j = 0; j < n; j++)\\n            *(*(board + i) + j) = 0;\\n    }\\n    \\n    if (solveNQueens(board, n, 0)) {\\n        printBoard(board, n);\\n    } else {\\n        cout << \"No solution exists\";\\n    }\\n    \\n    for (int i = 0; i < n; i++) delete[] *(board + i);\\n    delete[] board;\\n    \\n    return 0;\\n}",
       "visible_test_cases": [
         {
           "input": "4",
-          "output": ". Q . .\n. . . Q\nQ . . .\n. . Q .",
-          "explanation": "For N=4, queens placed at (0,1), (1,3), (2,0), (3,2). No two queens share row, column, or diagonal."
+          "output": ". . Q .\\nQ . . .\\n. . . Q\\n. Q . .",
+          "explanation": "Valid configuration for N=4."
         },
         {
-          "input": "8",
-          "output": "Q . . . . . . .\n. . . . Q . . .\n. . . . . . . Q\n. . . . . Q . .\n. . Q . . . . .\n. . . . . . Q .\n. Q . . . . . .\n. . . Q . . . .",
-          "explanation": "Classic 8-queens solution. One of 92 possible solutions."
+          "input": "5",
+          "output": "Q . . . .\\n. . Q . .\\n. . . . Q\\n. Q . . .\\n. . . Q .",
+          "explanation": "Valid configuration for N=5."
         }
       ],
       "hidden_test_cases": [
         {
-          "input": "5",
-          "output": "Q . . . .\n. . Q . .\n. . . . Q\n. Q . . .\n. . . Q ."
+          "input": "4",
+          "output": ". . Q .\\nQ . . .\\n. . . Q\\n. Q . ."
         },
         {
           "input": "6",
-          "output": ". Q . . . .\n. . . Q . .\n. . . . . Q\nQ . . . . .\n. . Q . . .\n. . . . Q ."
+          "output": ". . Q . . .\\n. . . . . Q\\n. Q . . . .\\n. . . . Q .\\nQ . . . . .\\n. . . Q . ."
         },
         {
-          "input": "9",
-          "output": "Q . . . . . . . .\n. . Q . . . . . .\n. . . . Q . . . .\n. . . . . . Q . .\n. . . . . . . . Q\n. Q . . . . . . .\n. . . Q . . . . .\n. . . . . Q . . .\n. . . . . . . Q ."
+          "input": "8",
+          "output": "Q . . . . . . .\\n. . . . Q . . .\\n. . . . . . . Q\\n. . . . . Q . .\\n. . Q . . . . .\\n. . . . . . Q .\\n. Q . . . . . .\\n. . . Q . . . ."
         },
         {
           "input": "10",
-          "output": "Q . . . . . . . . .\n. . Q . . . . . . .\n. . . . Q . . . . .\n. . . . . . Q . . .\n. . . . . . . . Q .\n. Q . . . . . . . .\n. . . Q . . . . . .\n. . . . . Q . . . .\n. . . . . . . Q . .\n. . . . . . . . . Q"
+          "output": "Q . . . . . . . . .\\n. . Q . . . . . . .\\n. . . . Q . . . . .\\n. . . . . . Q . . .\\n. . . . . . . . Q .\\n. Q . . . . . . . .\\n. . . Q . . . . . .\\n. . . . . Q . . . .\\n. . . . . . . Q . .\\n. . . . . . . . . Q"
         },
         {
           "input": "12",
-          "output": "Q . . . . . . . . . . .\n. . Q . . . . . . . . .\n. . . . Q . . . . . . .\n. . . . . . Q . . . . .\n. . . . . . . . Q . . .\n. . . . . . . . . . Q .\n. Q . . . . . . . . . .\n. . . Q . . . . . . . .\n. . . . . Q . . . . . .\n. . . . . . . Q . . . .\n. . . . . . . . . Q . .\n. . . . . . . . . . . Q"
+          "output": "Q . . . . . . . . . . .\\n. . Q . . . . . . . . .\\n. . . . Q . . . . . . .\\n. . . . . . Q . . . . .\\n. . . . . . . . Q . . .\\n. . . . . . . . . . Q .\\n. Q . . . . . . . . . .\\n. . . Q . . . . . . . .\\n. . . . . Q . . . . . .\\n. . . . . . . Q . . . .\\n. . . . . . . . . Q . .\\n. . . . . . . . . . . Q"
         }
       ]
     },
     {
       "question_number": 2,
-      "title": "Spiral Matrix Constructor with Dynamic Patterns",
+      "title": "Spiral Matrix Construction",
       "category": "2D Arrays & Pointer Arithmetic",
       "marks": 25,
-      "time_estimate_minutes": 52,
-      "content": "# Spiral Matrix Constructor (25 Marks)\n\nConstruct an N\u00d7N matrix by filling numbers from 1 to N\u00b2 in a spiral pattern (clockwise from outside to inside).\n\n## Problem Statement:\n\nGiven N, create a matrix where numbers are placed in a clockwise spiral:\n\n**N=3 Example:**\n\n**Step 1:** Fill top row (left to right):\n\n| Col 0 | Col 1 | Col 2 |\n|:-----:|:-----:|:-----:|\n|   1   |   2   |   3   |\n|       |       |       |\n|       |       |       |\n\n**Step 2:** Fill right column (top to bottom):\n\n| Col 0 | Col 1 | Col 2 |\n|:-----:|:-----:|:-----:|\n|   1   |   2   |   3   |\n|       |       |   4   |\n|       |       |   5   |\n\n**Step 3:** Fill bottom row (right to left):\n\n| Col 0 | Col 1 | Col 2 |\n|:-----:|:-----:|:-----:|\n|   1   |   2   |   3   |\n|       |       |   4   |\n|   7   |   6   |   5   |\n\n**Step 4:** Fill left column (bottom to top):\n\n| Col 0 | Col 1 | Col 2 |\n|:-----:|:-----:|:-----:|\n|   1   |   2   |   3   |\n|   8   |       |   4   |\n|   7   |   6   |   5   |\n\n**Step 5:** Fill inner layer:\n\n| Col 0 | Col 1 | Col 2 |\n|:-----:|:-----:|:-----:|\n|   1   |   2   |   3   |\n|   8   |   9   |   4   |\n|   7   |   6   |   5   |\n\n**N=5 Final Result:**\n\n|  1 |  2 |  3 |  4 |  5 |\n|:--:|:--:|:--:|:--:|:--:|\n| 16 | 17 | 18 | 19 |  6 |\n| 15 | 24 | 25 | 20 |  7 |\n| 14 | 23 | 22 | 21 |  8 |\n| 13 | 12 | 11 | 10 |  9 |\n\n## Requirements:\n\n- Implement `void fillSpiral(int** matrix, int n)`\n- Use dynamic memory allocation\n- Track boundaries: top, bottom, left, right\n- Use ONLY pointer arithmetic\n- Handle edge case when N=1\n\n## Constraints:\n\n- 1 \u2264 N \u2264 50\n- Time complexity: O(N\u00b2)\n- Space complexity: O(N\u00b2)\n- Must use 4-direction approach\n\n## Function Signatures:\n\n```cpp\nvoid fillSpiral(int** matrix, int n);\nvoid printMatrix(int** matrix, int n);\n```\n",
-      "starter_code": "#include <iostream>\nusing namespace std;\n\nvoid fillSpiral(int** matrix, int n) {\n    int top = 0, bottom = n - 1;\n    int left = 0, right = n - 1;\n    int num = 1;\n    \n    while (top <= bottom && left <= right) {\n        // Fill top row\n        \n        // Fill right column\n        \n        // Fill bottom row\n        \n        // Fill left column\n        \n    }\n}\n\nvoid printMatrix(int** matrix, int n) {\n    for (int i = 0; i < n; i++) {\n        for (int j = 0; j < n; j++) {\n            cout << *(*(matrix + i) + j) << \" \";\n        }\n        cout << endl;\n    }\n}\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int** matrix = new int*[n];\n    for (int i = 0; i < n; i++)\n        *(matrix + i) = new int[n];\n    \n    fillSpiral(matrix, n);\n    printMatrix(matrix, n);\n    \n    for (int i = 0; i < n; i++)\n        delete[] *(matrix + i);\n    delete[] matrix;\n    \n    return 0;\n}",
+      "time_estimate_minutes": 50,
+      "content": "# Spiral Matrix Construction (25 Marks)\\n\\nGenerate an NxN matrix filled with integers from 1 to N^2 in a clockwise spiral order.\\n\\n## Problem Statement:\\n\\nCreate a dynamic 2D array and fill it in a spiral pattern starting from (0,0) going right, then down, then left, then up, repeatedly.\\n\\n## Visualization (N=3):\\n\\n**Step 1: Fill Top Row (Left to Right)**\\n| index | 0 | 1 | 2 |\\n|:-----:|:-:|:-:|:-:|\\n| 0 | 1 | 2 | 3 |\\n| 1 | . | . | . |\\n| 2 | . | . | . |\\n\\n**Step 2: Fill Right Column (Top to Bottom)**\\n| index | 0 | 1 | 2 |\\n|:-----:|:-:|:-:|:-:|\\n| 0 | 1 | 2 | 3 |\\n| 1 | . | . | 4 |\\n| 2 | . | . | 5 |\\n\\n**Step 3: Fill Bottom Row (Right to Left)**\\n| index | 0 | 1 | 2 |\\n|:-----:|:-:|:-:|:-:|\\n| 0 | 1 | 2 | 3 |\\n| 1 | . | . | 4 |\\n| 2 | 7 | 6 | 5 |\\n\\n**Step 4: Fill Left Column (Bottom to Top)**\\n| index | 0 | 1 | 2 |\\n|:-----:|:-:|:-:|:-:|\\n| 0 | 1 | 2 | 3 |\\n| 1 | 8 | . | 4 |\\n| 2 | 7 | 6 | 5 |\\n\\n**Step 5: Fill Interior**\\n| index | 0 | 1 | 2 |\\n|:-----:|:-:|:-:|:-:|\\n| 0 | 1 | 2 | 3 |\\n| 1 | 8 | 9 | 4 |\\n| 2 | 7 | 6 | 5 |\\n\\n## Requirements:\\n- Implement `void constructSpiral(int** matrix, int n)`\\n- Use ONLY pointer arithmetic for indexing\\n- No `struct`s or classes\\n- Handle dynamic memory allocation and cleanup in `main`\\n\\n## Constraints:\\n- 1 \u2264 N \u2264 20\\n- Time Complexity: O(N^2)\\n- Space Complexity: O(N^2)\\n\\n## Function Signatures:\\n```cpp\\nvoid constructSpiral(int** matrix, int n);\\nvoid printMatrix(int** matrix, int n);\\n```",
+      "starter_code": "#include <iostream>\\nusing namespace std;\\n\\nvoid printMatrix(int** matrix, int n) {\\n    for (int i = 0; i < n; i++) {\\n        for (int j = 0; j < n; j++) {\\n            cout << *(*(matrix + i) + j) << \" \";\\n        }\\n        cout << endl;\\n    }\\n}\\n\\nvoid constructSpiral(int** matrix, int n) {\\n    int value = 1;\\n    int top = 0, bottom = n - 1;\\n    int left = 0, right = n - 1;\\n\\n    while (value <= n * n) {\\n        // TODO: Fill from left to right in the top boundary\\n        \\n        // TODO: Fill from top to bottom in the right boundary\\n        \\n        // TODO: Fill from right to left in the bottom boundary\\n        \\n        // TODO: Fill from bottom to top in the left boundary\\n        \\n    }\\n}\\n\\nint main() {\\n    int n;\\n    cin >> n;\\n\\n    int** matrix = new int*[n];\\n    for (int i = 0; i < n; i++) {\\n        *(matrix + i) = new int[n];\\n    }\\n\\n    constructSpiral(matrix, n);\\n    printMatrix(matrix, n);\\n\\n    for (int i = 0; i < n; i++) delete[] *(matrix + i);\\n    delete[] matrix;\\n\\n    return 0;\\n}",
       "visible_test_cases": [
         {
           "input": "3",
-          "output": "1 2 3\n8 9 4\n7 6 5",
-          "explanation": "3\u00d73 spiral fills clockwise from outside to center."
+          "output": "1 2 3\\n8 9 4\\n7 6 5",
+          "explanation": "3x3 spiral matrix starting from 1."
         },
         {
-          "input": "5",
-          "output": "1 2 3 4 5\n16 17 18 19 6\n15 24 25 20 7\n14 23 22 21 8\n13 12 11 10 9",
-          "explanation": "5\u00d75 spiral with nested layers."
+          "input": "2",
+          "output": "1 2\\n4 3",
+          "explanation": "2x2 spiral matrix."
         }
       ],
       "hidden_test_cases": [
@@ -69,352 +69,1224 @@
           "output": "1"
         },
         {
-          "input": "2",
-          "output": "1 2\n4 3"
+          "input": "4",
+          "output": "1 2 3 4\\n12 13 14 5\\n11 16 15 6\\n10 9 8 7"
         },
         {
-          "input": "4",
-          "output": "1 2 3 4\n12 13 14 5\n11 16 15 6\n10 9 8 7"
+          "input": "5",
+          "output": "1 2 3 4 5\\n16 17 18 19 6\\n15 24 25 20 7\\n14 23 22 21 8\\n13 12 11 10 9"
         },
         {
           "input": "6",
-          "output": "1 2 3 4 5 6\n20 21 22 23 24 7\n19 32 33 34 25 8\n18 31 36 35 26 9\n17 30 29 28 27 10\n16 15 14 13 12 11"
+          "output": "1 2 3 4 5 6\\n20 21 22 23 24 7\\n19 32 33 34 25 8\\n18 31 36 35 26 9\\n17 30 29 28 27 10\\n16 15 14 13 12 11"
         },
         {
-          "input": "10",
-          "output": "1 2 3 4 5 6 7 8 9 10\n36 37 38 39 40 41 42 43 44 11\n35 64 65 66 67 68 69 70 45 12\n34 63 84 85 86 87 88 71 46 13\n33 62 83 96 97 98 89 72 47 14\n32 61 82 95 100 99 90 73 48 15\n31 60 81 94 93 92 91 74 49 16\n30 59 80 79 78 77 76 75 50 17\n29 58 57 56 55 54 53 52 51 18\n28 27 26 25 24 23 22 21 20 19"
+          "input": "7",
+          "output": "1 2 3 4 5 6 7\\n24 25 26 27 28 29 8\\n23 44 45 46 47 30 9\\n22 43 52 53 48 31 10\\n21 42 51 50 49 32 11\\n20 41 40 39 38 33 12\\n19 18 17 16 15 14 13"
         }
       ]
     },
     {
       "question_number": 3,
-      "title": "Matrix Rotation with In-Place Transformation",
-      "category": "2D Arrays & Pointer Manipulation",
+      "title": "4x4 Sudoku Solver",
+      "category": "Recursion & Backtracking",
       "marks": 25,
-      "time_estimate_minutes": 58,
-      "content": "# Matrix Rotation 90\u00b0 Clockwise (25 Marks)\n\nRotate an N\u00d7N matrix 90 degrees clockwise IN-PLACE without using extra space.\n\n## Problem Statement:\n\nGiven a matrix, rotate it 90\u00b0 clockwise using only O(1) extra space.\n\n## Rotation Process (N=4):\n\n**Original Matrix:**\n\n|  1 |  2 |  3 |  4 |\n|:--:|:--:|:--:|:--:|\n|  5 |  6 |  7 |  8 |\n|  9 | 10 | 11 | 12 |\n| 13 | 14 | 15 | 16 |\n\n**Step 1:** Transpose matrix (swap across diagonal):\n\n|  1 |  5 |  9 | 13 |\n|:--:|:--:|:--:|:--:|\n|  2 |  6 | 10 | 14 |\n|  3 |  7 | 11 | 15 |\n|  4 |  8 | 12 | 16 |\n\n**Step 2:** Reverse each row:\n\n| 13 |  9 |  5 |  1 |\n|:--:|:--:|:--:|:--:|\n| 14 | 10 |  6 |  2 |\n| 15 | 11 |  7 |  3 |\n| 16 | 12 |  8 |  4 |\n\n**Result:** Matrix rotated 90\u00b0 clockwise!\n\n## Layer-by-Layer Approach:\n\nFor 5\u00d75 matrix, process 2 layers:\n\n**Layer 0 (outer):** Rotate elements at boundaries\n**Layer 1 (inner):** Rotate inner 3\u00d73 matrix\n\n**Original 5\u00d75:**\n\n|  1 |  2 |  3 |  4 |  5 |\n|:--:|:--:|:--:|:--:|:--:|\n|  6 |  7 |  8 |  9 | 10 |\n| 11 | 12 | 13 | 14 | 15 |\n| 16 | 17 | 18 | 19 | 20 |\n| 21 | 22 | 23 | 24 | 25 |\n\n**After Rotation:**\n\n| 21 | 16 | 11 |  6 |  1 |\n|:--:|:--:|:--:|:--:|:--:|\n| 22 | 17 | 12 |  7 |  2 |\n| 23 | 18 | 13 |  8 |  3 |\n| 24 | 19 | 14 |  9 |  4 |\n| 25 | 20 | 15 | 10 |  5 |\n\n## Requirements:\n\n- Implement `void rotateMatrix(int** mat, int n)`\n- Use in-place rotation (O(1) extra space)\n- Use ONLY pointer arithmetic\n- Handle both transpose and layer approaches\n- Support K rotations (K % 4 gives effective rotations)\n\n## Constraints:\n\n- 1 \u2264 N \u2264 100\n- 1 \u2264 K \u2264 1000 (number of rotations)\n- Time complexity: O(N\u00b2)\n- Space complexity: O(1)\n\n## Function Signatures:\n\n```cpp\nvoid rotateMatrix(int** mat, int n);\nvoid transpose(int** mat, int n);\nvoid reverseRows(int** mat, int n);\n```\n",
-      "starter_code": "#include <iostream>\nusing namespace std;\n\nvoid transpose(int** mat, int n) {\n    // Swap elements across diagonal\n}\n\nvoid reverseRows(int** mat, int n) {\n    // Reverse each row\n}\n\nvoid rotateMatrix(int** mat, int n) {\n    // Approach 1: Transpose + Reverse rows\n    // OR\n    // Approach 2: Layer-by-layer rotation\n}\n\nvoid printMatrix(int** mat, int n) {\n    for (int i = 0; i < n; i++) {\n        for (int j = 0; j < n; j++)\n            cout << *(*(mat + i) + j) << \" \";\n        cout << endl;\n    }\n}\n\nint main() {\n    int n, k;\n    cin >> n >> k;\n    \n    int** mat = new int*[n];\n    for (int i = 0; i < n; i++) {\n        *(mat + i) = new int[n];\n        for (int j = 0; j < n; j++)\n            cin >> *(*(mat + i) + j);\n    }\n    \n    k = k % 4; // Optimize rotations\n    for (int i = 0; i < k; i++)\n        rotateMatrix(mat, n);\n    \n    printMatrix(mat, n);\n    \n    for (int i = 0; i < n; i++)\n        delete[] *(mat + i);\n    delete[] mat;\n    \n    return 0;\n}",
+      "time_estimate_minutes": 55,
+      "content": "# 4x4 Sudoku Solver (25 Marks)\\n\\nSolve a 4x4 Sudoku grid using backtracking. A 4x4 grid is valid if each row, column, and 2x2 subgrid contains all numbers from 1 to 4.\\n\\n## Problem Statement:\\n\\nGiven a 4x4 grid with some empty cells (represented by 0), find the solution that completes the grid. Use recursion and backtracking.\\n\\n## Visualization (Initial Grid):\\n\\n| . | 1 | 3 | . |\\n|:---:|:---:|:---:|:---:|\\n| 2 | . | . | 1 |\\n| . | . | 4 | . |\\n| . | 2 | . | . |\\n\\n**Step 1: Try placing 4 in (0,0).**\\nIt's safe because row 0, col 0, and top-left box don't have 4.\\n| 4 | 1 | 3 | . |\\n\\n**Step 2: Try row 0, col 3.**\\nOnly 2 is left. Safe.\\n| 4 | 1 | 3 | 2 |\\n\\n**Step 3: Proceed to (1,1).**\\nTry 3, 4. If 4 fails later, backtracking will occur.\\n\\n## Requirements:\\n- Implement `bool solveSudoku(int** grid)`\\n- Implement `bool isSafe(int** grid, int row, int col, int num)`\\n- Use ONLY pointer arithmetic (`*(*(grid + i) + j)`)\\n- No `struct` or class containers\\n\\n## Constraints:\\n- Grid size is fixed at 4x4\\n- Numbers are 1-4\\n- Exactly one solution per puzzle\\n\\n## Function Signatures:\\n```cpp\\nbool isSafe(int** grid, int row, int col, int num);\\nbool solveSudoku(int** grid);\\nvoid printGrid(int** grid);\\n```",
+      "starter_code": "#include <iostream>\\nusing namespace std;\\n\\nbool isSafe(int** grid, int row, int col, int num) {\\n    // TODO: Check row and column\\n    \\n    // TODO: Check 2x2 subgrid\\n    \\n    return true;\\n}\\n\\nbool solveSudoku(int** grid) {\\n    // TODO: Find an empty cell\\n    \\n    // TODO: Try placing numbers 1 to 4 and recurse\\n    \\n    return false;\\n}\\n\\nvoid printGrid(int** grid) {\\n    for (int i = 0; i < 4; i++) {\\n        for (int j = 0; j < 4; j++) {\\n            cout << *(*(grid + i) + j) << \" \";\\n        }\\n        cout << endl;\\n    }\\n}\\n\\nint main() {\\n    int** grid = new int*[4];\\n    for (int i = 0; i < 4; i++) {\\n        *(grid + i) = new int[4];\\n        for (int j = 0; j < 4; j++) cin >> *(*(grid + i) + j);\\n    }\\n\\n    if (solveSudoku(grid)) {\\n        printGrid(grid);\\n    } else {\\n        cout << \"No solution\";\\n    }\\n\\n    for (int i = 0; i < 4; i++) delete[] *(grid + i);\\n    delete[] grid;\\n    return 0;\\n}",
       "visible_test_cases": [
         {
-          "input": "3 1\n1 2 3\n4 5 6\n7 8 9",
-          "output": "7 4 1\n8 5 2\n9 6 3",
-          "explanation": "3\u00d73 matrix rotated 90\u00b0 clockwise once."
+          "input": "0 1 3 0\\n2 0 0 1\\n0 0 4 0\\n0 2 0 0",
+          "output": "4 1 3 2\\n2 3 4 1\\n1 4 2 3\\n3 2 1 4",
+          "explanation": "Completed 4x4 Sudoku grid."
         },
         {
-          "input": "4 2\n1 2 3 4\n5 6 7 8\n9 10 11 12\n13 14 15 16",
-          "output": "16 15 14 13\n12 11 10 9\n8 7 6 5\n4 3 2 1",
-          "explanation": "4\u00d74 matrix rotated 180\u00b0 (2 times 90\u00b0)."
+          "input": "1 0 0 4\\n0 0 0 0\\n0 0 0 0\\n2 0 0 3",
+          "output": "1 2 3 4\\n3 4 1 2\\n4 3 2 1\\n2 1 4 3",
+          "explanation": "Valid solution for 4-corner puzzle."
         }
       ],
       "hidden_test_cases": [
         {
-          "input": "1 1\n42",
-          "output": "42"
+          "input": "0 0 0 0\\n0 0 0 0\\n0 0 0 0\\n0 0 0 0",
+          "output": "1 2 3 4\\n3 4 1 2\\n2 1 4 3\\n4 3 2 1"
         },
         {
-          "input": "2 3\n1 2\n3 4",
-          "output": "2 4\n1 3"
+          "input": "0 0 2 0\\n0 3 0 0\\n0 0 1 0\\n0 4 0 0",
+          "output": "4 1 2 3\\n2 3 4 1\\n3 2 1 4\\n1 4 3 2"
         },
         {
-          "input": "5 1\n1 2 3 4 5\n6 7 8 9 10\n11 12 13 14 15\n16 17 18 19 20\n21 22 23 24 25",
-          "output": "21 16 11 6 1\n22 17 12 7 2\n23 18 13 8 3\n24 19 14 9 4\n25 20 15 10 5"
+          "input": "1 2 0 0\\n3 4 0 0\\n0 0 1 2\\n0 0 3 4",
+          "output": "1 2 3 4\\n3 4 1 2\\n4 3 1 2\\n2 1 3 4"
         },
         {
-          "input": "6 4\n1 2 3 4 5 6\n7 8 9 10 11 12\n13 14 15 16 17 18\n19 20 21 22 23 24\n25 26 27 28 29 30\n31 32 33 34 35 36",
-          "output": "1 2 3 4 5 6\n7 8 9 10 11 12\n13 14 15 16 17 18\n19 20 21 22 23 24\n25 26 27 28 29 30\n31 32 33 34 35 36"
+          "input": "0 0 1 2\\n0 0 3 4\\n1 2 0 0\\n3 4 0 0",
+          "output": "3 4 1 2\\n2 1 3 4\\n1 2 4 3\\n3 4 2 1"
         },
         {
-          "input": "7 5\n1 2 3 4 5 6 7\n8 9 10 11 12 13 14\n15 16 17 18 19 20 21\n22 23 24 25 26 27 28\n29 30 31 32 33 34 35\n36 37 38 39 40 41 42\n43 44 45 46 47 48 49",
-          "output": "43 36 29 22 15 8 1\n44 37 30 23 16 9 2\n45 38 31 24 17 10 3\n46 39 32 25 18 11 4\n47 40 33 26 19 12 5\n48 41 34 27 20 13 6\n49 42 35 28 21 14 7"
+          "input": "0 0 0 1\\n0 0 2 0\\n0 3 0 0\\n4 0 0 0",
+          "output": "2 4 3 1\\n3 1 2 4\\n1 3 4 2\\n4 2 1 3"
         }
       ]
     },
     {
       "question_number": 4,
-      "title": "Suffix Array Construction with LCP Optimization",
-      "category": "Arrays & Sorting Algorithms",
+      "title": "Zig-Zag Matrix Traversal",
+      "category": "2D Arrays & Pointer Arithmetic",
       "marks": 25,
-      "time_estimate_minutes": 60,
-      "content": "# Suffix Array with LCP Array (25 Marks)\n\nConstruct a suffix array and Longest Common Prefix (LCP) array for efficient string processing.\n\n## Problem Statement:\n\nGiven a string S, create:\n1. **Suffix Array**: Sorted array of all suffix starting positions\n2. **LCP Array**: Length of longest common prefix between adjacent suffixes\n\n## Example for S = \"banana\":\n\n**All Suffixes:**\n\n| Index | Suffix  |\n|:-----:|:-------:|\n|   0   | banana  |\n|   1   | anana   |\n|   2   | nana    |\n|   3   | ana     |\n|   4   | na      |\n|   5   | a       |\n\n**Sorted Suffixes (Suffix Array):**\n\n| Position | Original Index | Suffix  |\n|:--------:|:--------------:|:-------:|\n|    0     |       5        |    a    |\n|    1     |       3        |   ana   |\n|    2     |       1        |  anana  |\n|    3     |       0        | banana  |\n|    4     |       4        |   na    |\n|    5     |       2        |  nana   |\n\n**Suffix Array:** [5, 3, 1, 0, 4, 2]\n\n**LCP Array Calculation:**\n\n| i | SA[i] | SA[i+1] | Suffix[SA[i]]  | Suffix[SA[i+1]] | LCP |\n|:-:|:-----:|:-------:|:--------------:|:---------------:|:---:|\n| 0 |   5   |    3    |       a        |      ana        |  1  |\n| 1 |   3   |    1    |      ana       |     anana       |  3  |\n| 2 |   1   |    0    |     anana      |    banana       |  0  |\n| 3 |   0   |    4    |    banana      |      na         |  0  |\n| 4 |   4   |    2    |      na        |     nana        |  2  |\n\n**LCP Array:** [1, 3, 0, 0, 2]\n\n## Requirements:\n\n- Implement `void buildSuffixArray(char* str, int* suffixArr, int n)`\n- Implement `void buildLCPArray(char* str, int* suffixArr, int* lcp, int n)`\n- Use efficient O(n log n) sorting with ranking\n- Use ONLY pointer arithmetic\n- Handle duplicate characters\n\n## Constraints:\n\n- 1 \u2264 |S| \u2264 10,000\n- String contains only lowercase letters\n- Time complexity: O(n log\u00b2n) acceptable\n- Space complexity: O(n)\n\n## Algorithm Hint:\n\n1. Create suffix structure with index and rank\n2. Sort by first character, then first 2 chars, 4 chars, etc.\n3. Update ranks after each sorting phase\n4. Build LCP using Kasai's algorithm\n\n## Function Signatures:\n\n```cpp\nvoid buildSuffixArray(char* str, int* suffixArr, int n);\nvoid buildLCPArray(char* str, int* suffixArr, int* lcp, int n);\nint compareSubstrings(char* str, int i, int j, int len);\n```\n",
-      "starter_code": "#include <iostream>\n#include <cstring>\nusing namespace std;\n\nstruct Suffix {\n    int index;\n    int rank[2];\n};\n\nint cmp(const void* a, const void* b) {\n    Suffix* s1 = (Suffix*)a;\n    Suffix* s2 = (Suffix*)b;\n    if (s1->rank[0] != s2->rank[0])\n        return s1->rank[0] - s2->rank[0];\n    return s1->rank[1] - s2->rank[1];\n}\n\nvoid buildSuffixArray(char* str, int* suffixArr, int n) {\n    Suffix* suffixes = new Suffix[n];\n    \n    // Initialize suffixes\n    for (int i = 0; i < n; i++) {\n        suffixes[i].index = i;\n        suffixes[i].rank[0] = *(str + i) - 'a';\n        suffixes[i].rank[1] = (i + 1 < n) ? (*(str + i + 1) - 'a') : -1;\n    }\n    \n    // Sort based on first 2 characters\n    // Then double the length each iteration\n    \n    // Extract suffix array\n    for (int i = 0; i < n; i++)\n        *(suffixArr + i) = suffixes[i].index;\n    \n    delete[] suffixes;\n}\n\nvoid buildLCPArray(char* str, int* suffixArr, int* lcp, int n) {\n    int* rank = new int[n];\n    \n    // Build rank array from suffix array\n    for (int i = 0; i < n; i++)\n        *(rank + *(suffixArr + i)) = i;\n    \n    // Kasai's algorithm for LCP\n    int k = 0;\n    for (int i = 0; i < n; i++) {\n        if (*(rank + i) == n - 1) {\n            k = 0;\n            continue;\n        }\n        \n        int j = *(suffixArr + *(rank + i) + 1);\n        \n        // Find LCP\n        while (i + k < n && j + k < n && *(str + i + k) == *(str + j + k))\n            k++;\n        \n        *(lcp + *(rank + i)) = k;\n        \n        if (k > 0)\n            k--;\n    }\n    \n    delete[] rank;\n}\n\nint main() {\n    char str[10001];\n    cin >> str;\n    \n    int n = strlen(str);\n    int* suffixArr = new int[n];\n    int* lcp = new int[n];\n    \n    buildSuffixArray(str, suffixArr, n);\n    buildLCPArray(str, suffixArr, lcp, n);\n    \n    cout << \"Suffix Array: \";\n    for (int i = 0; i < n; i++)\n        cout << *(suffixArr + i) << \" \";\n    cout << endl;\n    \n    cout << \"LCP Array: \";\n    for (int i = 0; i < n - 1; i++)\n        cout << *(lcp + i) << \" \";\n    cout << endl;\n    \n    delete[] suffixArr;\n    delete[] lcp;\n    \n    return 0;\n}",
+      "time_estimate_minutes": 50,
+      "content": "# Zig-Zag Matrix Traversal (25 Marks)\\n\\nPrint the diagonal elements of an NxM matrix in a zig-zag fashion.\\n\\n## Problem Statement:\\n\\nTraverse the matrix in diagonals starting from the top-left (0,0). The first diagonal goes up-right, the second goes down-left, and so on.\\n\\n## Visualization (3x3):\\n\\n**Diagonal 1: (0,0)**\\n| index | 0 | 1 | 2 |\\n|:-----:|:-:|:-:|:-:|\\n| 0 | 1 | . | . |\\n\\n**Diagonal 2: (0,1), (1,0) (Down-Left)**\\n| index | 0 | 1 | 2 |\\n|:-----:|:-:|:-:|:-:|\\n| 0 | 1 | 2 | . |\\n| 1 | 3 | . | . |\\n\\n**Diagonal 3: (2,0), (1,1), (0,2) (Up-Right)**\\n| index | 0 | 1 | 2 |\\n|:-----:|:-:|:-:|:-:|\\n| 0 | 1 | 2 | 6 |\\n| 1 | 3 | 5 | . |\\n| 2 | 4 | . | . |\\n\\n## Requirements:\\n- Implement `void printZigZag(int** matrix, int rows, int cols)`\\n- Use pointer arithmetic for all accesses\\n- No structs or classes\\n- Maintain a direction flag to alternate movement\\n\\n## Constraints:\\n- 1 \u2264 Rows, Cols \u2264 25\\n- Time Complexity: O(Rows * Cols)\\n- Space Complexity: O(1) additional\\n\\n## Function Signatures:\\n```cpp\\nvoid printZigZag(int** matrix, int rows, int cols);\\n```",
+      "starter_code": "#include <iostream>\\nusing namespace std;\\n\\nvoid printZigZag(int** matrix, int rows, int cols) {\\n    // TODO: Loop through diagonals (rows + cols - 1 total)\\n    \\n    // TODO: Determine direction and print elements\\n}\\n\\nint main() {\\n    int r, c;\\n    cin >> r >> c;\\n\\n    int** matrix = new int*[r];\\n    for (int i = 0; i < r; i++) {\\n        *(matrix + i) = new int[c];\\n        for (int j = 0; j < c; j++) cin >> *(*(matrix + i) + j);\\n    }\\n\\n    printZigZag(matrix, r, c);\\n\\n    for (int i = 0; i < r; i++) delete[] *(matrix + i);\\n    delete[] matrix;\\n\\n    return 0;\\n}",
       "visible_test_cases": [
         {
-          "input": "banana",
-          "output": "Suffix Array: 5 3 1 0 4 2\nLCP Array: 1 3 0 0 2",
-          "explanation": "Suffixes sorted lexicographically: a, ana, anana, banana, na, nana"
+          "input": "3 3\\n1 2 3\\n4 5 6\\n7 8 9",
+          "output": "1 2 4 7 5 3 6 8 9",
+          "explanation": "Zigzag traversal: (0,0) -> (0,1),(1,0) -> (2,0),(1,1),(0,2) -> (1,2),(2,1) -> (2,2)"
         },
         {
-          "input": "abcab",
-          "output": "Suffix Array: 0 2 4 1 3\nLCP Array: 2 0 1 1",
-          "explanation": "Suffixes: ab(0), ab(2), b(4), bcab(1), cab(3)"
+          "input": "2 3\\n1 2 3\\n4 5 6",
+          "output": "1 2 4 5 3 6",
+          "explanation": "Zigzag traversal of 2x3 matrix."
         }
       ],
       "hidden_test_cases": [
         {
-          "input": "a",
-          "output": "Suffix Array: 0\nLCP Array:"
+          "input": "1 1\\n42",
+          "output": "42"
         },
         {
-          "input": "aaa",
-          "output": "Suffix Array: 2 1 0\nLCP Array: 1 2"
+          "input": "3 1\\n1\\n2\\n3",
+          "output": "1 2 3"
         },
         {
-          "input": "abracadabra",
-          "output": "Suffix Array: 10 7 0 3 5 8 1 4 6 9 2\nLCP Array: 1 4 1 1 0 3 0 0 0 2"
+          "input": "1 3\\n1 2 3",
+          "output": "1 2 3"
         },
         {
-          "input": "mississippi",
-          "output": "Suffix Array: 10 7 4 1 0 9 8 6 3 5 2\nLCP Array: 1 1 4 0 0 1 0 2 1 3"
+          "input": "4 4\\n1 2 3 4\\n5 6 7 8\\n9 10 11 12\\n13 14 15 16",
+          "output": "1 2 5 9 6 3 4 7 10 13 14 11 8 12 15 16"
         },
         {
-          "input": "programming",
-          "output": "Suffix Array: 9 2 3 10 4 0 8 6 1 5 7\nLCP Array: 0 1 0 2 0 1 1 2 1 0"
+          "input": "2 2\\n1 2\\n3 4",
+          "output": "1 2 3 4"
         }
       ]
     },
     {
       "question_number": 5,
-      "title": "University Course Registration System with Conflicts",
-      "category": "Dynamic Arrays & Linked Structures",
+      "title": "Maze Pathfinding with Backtracking",
+      "category": "Recursion & Backtracking",
       "marks": 25,
-      "time_estimate_minutes": 55,
-      "content": "# University Course Registration System (25 Marks)\n\nImplement a course registration system that handles enrollment, waitlists, prerequisites, and time conflicts.\n\n## System Requirements:\n\n### Data Structures:\n\n**Course:**\n- Course code (string)\n- Capacity (max students)\n- Enrolled students array (dynamic)\n- Waitlist array (dynamic)\n- Prerequisites array\n- Time slot (start hour, end hour)\n\n**Student:**\n- Student ID\n- Enrolled courses array (dynamic)\n- Total credits\n\n### Operations:\n\n1. **Enroll Student**: Add to course if:\n   - Not at capacity\n   - Prerequisites met\n   - No time conflict with enrolled courses\n   - Otherwise add to waitlist\n\n2. **Drop Course**: Remove student, promote from waitlist\n\n3. **Check Conflicts**: Detect time overlaps\n\n## Example Scenario:\n\n**Courses Available:**\n\n| Code  | Capacity | Time Slot | Prerequisites |\n|:-----:|:--------:|:---------:|:-------------:|\n| CS101 |    30    |  9-11 AM  |     None      |\n| CS201 |    25    |  10-12 PM |    CS101      |\n| MATH  |    40    |  9-11 AM  |     None      |\n| PHY   |    35    |  2-4 PM   |     None      |\n\n**Student Actions:**\n\n| Step | Action                      | Result                        |\n|:----:|:---------------------------:|:-----------------------------:|\n|  1   | Enroll in CS101             | SUCCESS (enrolled)            |\n|  2   | Enroll in CS201             | FAIL (prerequisite not met)   |\n|  3   | Complete CS101              | CS101 marked complete         |\n|  4   | Enroll in CS201             | SUCCESS                       |\n|  5   | Enroll in MATH              | FAIL (time conflict 9-11)     |\n|  6   | Enroll in PHY               | SUCCESS (no conflict)         |\n\n**Final Enrollment:**\n- CS101: Completed\n- CS201: Enrolled (10-12)\n- PHY: Enrolled (2-4)\n\n## Requirements:\n\n- Implement `bool enrollStudent(Course* course, Student* student)`\n- Implement `bool checkTimeConflict(Student* student, int start, int end)`\n- Implement `bool checkPrerequisites(Student* student, Course* course)`\n- Implement `void promoteFromWaitlist(Course* course)`\n- Use dynamic arrays (resize when needed)\n- Use ONLY pointer arithmetic\n\n## Constraints:\n\n- 1 \u2264 Number of courses \u2264 100\n- 1 \u2264 Number of students \u2264 1000\n- 1 \u2264 Course capacity \u2264 200\n- Time slots: 8 AM - 8 PM (24-hour format)\n- Handle memory leaks properly\n\n## Input Format:\n```\nN M K\nN courses (code, capacity, startTime, endTime, numPrereqs, prereqs...)\nM students (ID)\nK operations (ENROLL/DROP studentID courseCode)\n```\n\n## Output Format:\n```\nFor each operation:\nSUCCESS / FAIL: reason\nFinal enrollment report\n```\n\n## Function Signatures:\n\n```cpp\nstruct Course {\n    char code[10];\n    int capacity;\n    int* enrolled;\n    int enrolledCount;\n    int* waitlist;\n    int waitlistCount;\n    char prerequisites[5][10];\n    int numPrereqs;\n    int startTime, endTime;\n};\n\nstruct Student {\n    int id;\n    char** enrolledCourses;\n    int courseCount;\n    char** completedCourses;\n    int completedCount;\n};\n\nbool enrollStudent(Course* course, Student* student);\nbool checkTimeConflict(Student* student, int start, int end);\nvoid promoteFromWaitlist(Course* course);\n```\n",
-      "starter_code": "#include <iostream>\n#include <cstring>\nusing namespace std;\n\nstruct Course {\n    char code[10];\n    int capacity;\n    int* enrolled;\n    int enrolledCount;\n    int* waitlist;\n    int waitlistCount;\n    char prerequisites[5][10];\n    int numPrereqs;\n    int startTime, endTime;\n};\n\nstruct Student {\n    int id;\n    char** enrolledCourses;\n    int courseCount;\n    char** completedCourses;\n    int completedCount;\n};\n\nbool checkPrerequisites(Student* student, Course* course) {\n    // Check if student completed all prerequisites\n    return true;\n}\n\nbool checkTimeConflict(Student* student, Course* courses, int numCourses, Course* newCourse) {\n    // Check if newCourse conflicts with student's enrolled courses\n    return false;\n}\n\nbool enrollStudent(Course* course, Student* student, Course* allCourses, int numCourses) {\n    // Check prerequisites\n    // Check time conflicts\n    // Enroll if capacity available, else waitlist\n    return false;\n}\n\nvoid dropCourse(Course* course, Student* student) {\n    // Remove student from course\n    // Promote from waitlist if available\n}\n\nvoid promoteFromWaitlist(Course* course, Student* students, int numStudents) {\n    // Move first student from waitlist to enrolled\n}\n\nint main() {\n    int n, m, k;\n    cin >> n >> m >> k;\n    \n    Course* courses = new Course[n];\n    Student* students = new Student[m];\n    \n    // Read courses\n    for (int i = 0; i < n; i++) {\n        cin >> courses[i].code >> courses[i].capacity;\n        cin >> courses[i].startTime >> courses[i].endTime;\n        cin >> courses[i].numPrereqs;\n        for (int j = 0; j < courses[i].numPrereqs; j++)\n            cin >> courses[i].prerequisites[j];\n        \n        courses[i].enrolled = new int[courses[i].capacity];\n        courses[i].enrolledCount = 0;\n        courses[i].waitlist = new int[100];\n        courses[i].waitlistCount = 0;\n    }\n    \n    // Read students\n    for (int i = 0; i < m; i++) {\n        cin >> students[i].id;\n        students[i].enrolledCourses = new char*[10];\n        students[i].courseCount = 0;\n        students[i].completedCourses = new char*[20];\n        students[i].completedCount = 0;\n    }\n    \n    // Process operations\n    for (int i = 0; i < k; i++) {\n        char operation[10];\n        int studentID;\n        char courseCode[10];\n        cin >> operation >> studentID >> courseCode;\n        \n        // Find student and course\n        Student* student = nullptr;\n        Course* course = nullptr;\n        \n        for (int j = 0; j < m; j++)\n            if (students[j].id == studentID)\n                student = &students[j];\n        \n        for (int j = 0; j < n; j++)\n            if (strcmp(courses[j].code, courseCode) == 0)\n                course = &courses[j];\n        \n        if (strcmp(operation, \"ENROLL\") == 0) {\n            if (enrollStudent(course, student, courses, n))\n                cout << \"SUCCESS\" << endl;\n            else\n                cout << \"FAIL\" << endl;\n        } else if (strcmp(operation, \"DROP\") == 0) {\n            dropCourse(course, student);\n            cout << \"DROPPED\" << endl;\n        }\n    }\n    \n    // Cleanup\n    delete[] courses;\n    delete[] students;\n    \n    return 0;\n}",
+      "time_estimate_minutes": 60,
+      "content": "# Maze Pathfinding (25 Marks)\\n\\nFind a path from top-left (0,0) to bottom-right (N-1, M-1) in a maze with walls.\\n\\n## Problem Statement:\\n\\nGiven an NxM grid where 1 represents a path and 0 represents a wall, find if a path exists. You can move Down or Right.\\n\\n## Visualization (4x4):\\n\\n**Input Grid:**\\n| 1 | 0 | 0 | 0 |\\n|---|---|---|---|\\n| 1 | 1 | 0 | 1 |\\n| 0 | 1 | 0 | 0 |\\n| 1 | 1 | 1 | 1 |\\n\\n**Step 1: Start at (0,0).**\\n| P | 0 | 0 | 0 |\\n\\n**Step 2: Move to (1,0).**\\n| P | 0 | 0 | 0 |\\n| P | 1 | 0 | 1 |\\n\\n**Step 3: Move to (1,1).**\\n| P | 0 | 0 | 0 |\\n| P | P | 0 | 1 |\\n\\n**Step 4: Move to (2,1).**\\n| P | 0 | 0 | 0 |\\n| P | P | 0 | 1 |\\n| 0 | P | 0 | 0 |\\n| . | . | . | . |\\n\\n## Requirements:\\n- Implement `bool findPath(int** maze, int n, int m, int r, int c, int** solution)`\\n- Mark the path in the solution grid with 1\\n- Use pointer arithmetic ONLY\\n- No structs or classes\\n\\n## Constraints:\\n- 1 \u2264 N, M \u2264 15\\n- Time Complexity: O(2^(N+M))\\n- Space Complexity: O(N*M) for solution matrix\\n\\n## Function Signatures:\\n```cpp\\nbool findPath(int** maze, int n, int m, int r, int c, int** solution);\\nvoid printSolution(int** solution, int n, int m);\\n```",
+      "starter_code": "#include <iostream>\\nusing namespace std;\\n\\nbool isSafe(int** maze, int n, int m, int r, int c) {\\n    return (r >= 0 && r < n && c >= 0 && c < m && *(*(maze + r) + c) == 1);\\n}\\n\\nbool findPath(int** maze, int n, int m, int r, int c, int** solution) {\\n    // TODO: Base case: At exit\\n    \\n    // TODO: Check safety and try Down and Right moves\\n    \\n    return false;\\n}\\n\\nint main() {\\n    int n, m;\\n    cin >> n >> m;\\n\\n    int** maze = new int*[n];\\n    int** solution = new int*[n];\\n    for (int i = 0; i < n; i++) {\\n        *(maze + i) = new int[m];\\n        *(solution + i) = new int[m];\\n        for (int j = 0; j < m; j++) {\\n            cin >> *(*(maze + i) + j);\\n            *(*(solution + i) + j) = 0;\\n        }\\n    }\\n\\n    if (findPath(maze, n, m, 0, 0, solution)) {\\n        for (int i = 0; i < n; i++) {\\n            for (int j = 0; j < m; j++) cout << *(*(solution + i) + j) << \" \";\\n            cout << endl;\\n        }\\n    } else {\\n        cout << \"No Path Found\";\\n    }\\n\\n    // TODO: Cleanup memory\\n    return 0;\\n}",
       "visible_test_cases": [
         {
-          "input": "3 2 4\nCS101 30 9 11 0\nCS201 25 10 12 1 CS101\nMATH 40 9 11 0\n1001\n1002\nENROLL 1001 CS101\nENROLL 1001 CS201\nENROLL 1001 MATH\nENROLL 1002 CS101",
-          "output": "SUCCESS\nFAIL\nFAIL\nSUCCESS",
-          "explanation": "Student 1001: Enrolls in CS101, fails CS201 (prereq), fails MATH (conflict). Student 1002: Enrolls in CS101."
+          "input": "4 4\\n1 0 0 0\\n1 1 0 1\\n0 1 0 0\\n1 1 1 1",
+          "output": "1 0 0 0\\n1 1 0 0\\n0 1 0 0\\n0 1 1 1",
+          "explanation": "Path from start to end marked by 1s."
         },
         {
-          "input": "2 3 5\nPHY 2 14 16 0\nCHEM 2 14 16 0\n2001\n2002\n2003\nENROLL 2001 PHY\nENROLL 2002 PHY\nENROLL 2003 PHY\nDROP 2001 PHY\nENROLL 2003 PHY",
-          "output": "SUCCESS\nSUCCESS\nFAIL\nDROPPED\nSUCCESS",
-          "explanation": "PHY capacity=2. First 2 students enroll, 3rd waitlisted. After drop, promoted from waitlist."
+          "input": "2 2\\n1 1\\n0 1",
+          "output": "1 1\\n0 1",
+          "explanation": "Simplest path."
         }
       ],
       "hidden_test_cases": [
         {
-          "input": "1 1 1\nCS101 50 9 11 0\n1001\nENROLL 1001 CS101",
-          "output": "SUCCESS"
+          "input": "1 1\\n1",
+          "output": "1"
         },
         {
-          "input": "4 1 4\nA 10 9 10 0\nB 10 10 11 0\nC 10 11 12 0\nD 10 9 12 0\n1001\nENROLL 1001 A\nENROLL 1001 B\nENROLL 1001 C\nENROLL 1001 D",
-          "output": "SUCCESS\nSUCCESS\nSUCCESS\nFAIL"
+          "input": "3 3\\n1 0 0\\n1 1 0\\n1 1 1",
+          "output": "1 0 0\\n1 0 0\\n1 1 1"
         },
         {
-          "input": "3 2 6\nCS101 1 9 11 0\nCS201 1 13 15 1 CS101\nCS301 1 16 18 1 CS201\n3001\n3002\nENROLL 3001 CS101\nENROLL 3002 CS101\nDROP 3001 CS101\nENROLL 3002 CS201\nDROP 3002 CS101\nENROLL 3002 CS301",
-          "output": "SUCCESS\nFAIL\nDROPPED\nFAIL\nDROPPED\nFAIL"
+          "input": "4 4\\n1 1 1 1\\n0 0 0 1\\n1 1 1 1\\n1 0 0 0",
+          "output": "No Path Found"
         },
         {
-          "input": "5 5 10\nA 2 8 10 0\nB 2 10 12 0\nC 2 12 14 0\nD 2 14 16 0\nE 2 16 18 0\n4001\n4002\n4003\n4004\n4005\nENROLL 4001 A\nENROLL 4001 B\nENROLL 4002 A\nENROLL 4002 C\nENROLL 4003 A\nENROLL 4003 B\nENROLL 4004 B\nENROLL 4005 C\nDROP 4001 A\nDROP 4001 B",
-          "output": "SUCCESS\nSUCCESS\nSUCCESS\nSUCCESS\nFAIL\nFAIL\nSUCCESS\nSUCCESS\nDROPPED\nDROPPED"
+          "input": "2 3\\n1 1 0\\n0 1 1",
+          "output": "1 1 0\\n0 1 1"
         },
         {
-          "input": "2 10 20\nPOP 3 9 11 0\nREG 3 13 15 0\n5001\n5002\n5003\n5004\n5005\n5006\n5007\n5008\n5009\n5010\nENROLL 5001 POP\nENROLL 5002 POP\nENROLL 5003 POP\nENROLL 5004 POP\nENROLL 5005 REG\nENROLL 5006 REG\nENROLL 5007 REG\nENROLL 5008 REG\nDROP 5001 POP\nDROP 5002 POP\nENROLL 5001 REG\nENROLL 5002 REG\nDROP 5005 REG\nDROP 5006 REG\nENROLL 5009 POP\nENROLL 5010 POP\nENROLL 5009 REG\nENROLL 5010 REG\nDROP 5003 POP\nDROP 5004 POP",
-          "output": "SUCCESS\nSUCCESS\nSUCCESS\nFAIL\nSUCCESS\nSUCCESS\nSUCCESS\nFAIL\nDROPPED\nDROPPED\nFAIL\nFAIL\nDROPPED\nDROPPED\nSUCCESS\nFAIL\nSUCCESS\nSUCCESS\nDROPPED\nDROPPED"
+          "input": "5 5\\n1 0 0 0 0\\n1 1 1 0 0\\n0 0 1 1 0\\n0 0 0 1 0\\n0 0 0 1 1",
+          "output": "1 0 0 0 0\\n1 1 1 0 0\\n0 0 1 1 0\\n0 0 0 1 0\\n0 0 0 1 1"
         }
       ]
     },
     {
       "question_number": 6,
-      "title": "Sudoku Solver with Backtracking Visualization",
-      "category": "2D Arrays & Recursion",
+      "title": "Matrix Layer Rotation",
+      "category": "2D Arrays & Pointer Arithmetic",
       "marks": 25,
-      "time_estimate_minutes": 58,
-      "content": "# Sudoku Solver with Backtracking (25 Marks)\n\nSolve a 9\u00d79 Sudoku puzzle using backtracking algorithm.\n\n## Problem Statement:\n\nFill a partially filled 9\u00d79 grid so that:\n- Each row contains digits 1-9 without repetition\n- Each column contains digits 1-9 without repetition\n- Each 3\u00d73 sub-grid contains digits 1-9 without repetition\n\n## Example Puzzle:\n\n**Initial State (0 = empty):**\n\n| 5 | 3 | 0 | 0 | 7 | 0 | 0 | 0 | 0 |\n|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|\n| 6 | 0 | 0 | 1 | 9 | 5 | 0 | 0 | 0 |\n| 0 | 9 | 8 | 0 | 0 | 0 | 0 | 6 | 0 |\n| 8 | 0 | 0 | 0 | 6 | 0 | 0 | 0 | 3 |\n| 4 | 0 | 0 | 8 | 0 | 3 | 0 | 0 | 1 |\n| 7 | 0 | 0 | 0 | 2 | 0 | 0 | 0 | 6 |\n| 0 | 6 | 0 | 0 | 0 | 0 | 2 | 8 | 0 |\n| 0 | 0 | 0 | 4 | 1 | 9 | 0 | 0 | 5 |\n| 0 | 0 | 0 | 0 | 8 | 0 | 0 | 7 | 9 |\n\n**Step-by-Step Solution Process:**\n\n**Step 1:** Find first empty cell (0,2), try digits 1-9\n- Try 1: Check row 0, column 2, box (0,0)-(2,2)\n- 1 is valid, place it\n\n**Step 2:** Move to next empty (0,3)\n- Try 1: Invalid (already in row)\n- Try 2: Valid, place it\n\n**Continue until solved or backtrack when stuck...**\n\n**Final Solution:**\n\n| 5 | 3 | 4 | 6 | 7 | 8 | 9 | 1 | 2 |\n|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|\n| 6 | 7 | 2 | 1 | 9 | 5 | 3 | 4 | 8 |\n| 1 | 9 | 8 | 3 | 4 | 2 | 5 | 6 | 7 |\n| 8 | 5 | 9 | 7 | 6 | 1 | 4 | 2 | 3 |\n| 4 | 2 | 6 | 8 | 5 | 3 | 7 | 9 | 1 |\n| 7 | 1 | 3 | 9 | 2 | 4 | 8 | 5 | 6 |\n| 9 | 6 | 1 | 5 | 3 | 7 | 2 | 8 | 4 |\n| 2 | 8 | 7 | 4 | 1 | 9 | 6 | 3 | 5 |\n| 3 | 4 | 5 | 2 | 8 | 6 | 1 | 7 | 9 |\n\n## Requirements:\n\n- Implement `bool solveSudoku(int** grid)`\n- Implement `bool isSafe(int** grid, int row, int col, int num)`\n- Implement `bool findEmpty(int** grid, int& row, int& col)`\n- Use backtracking recursion\n- Use ONLY pointer arithmetic\n- Modify grid in-place\n\n## Constraints:\n\n- Grid is always 9\u00d79\n- 0 represents empty cells\n- Input has exactly one solution\n- Time complexity: O(9^(n*n)) worst case\n- Space complexity: O(1) excluding recursion stack\n\n## Function Signatures:\n\n```cpp\nbool isSafe(int** grid, int row, int col, int num);\nbool findEmpty(int** grid, int& row, int& col);\nbool solveSudoku(int** grid);\n```\n",
-      "starter_code": "#include <iostream>\nusing namespace std;\n\nbool isSafe(int** grid, int row, int col, int num) {\n    // Check row\n    for (int x = 0; x < 9; x++)\n        if (*(*(grid + row) + x) == num)\n            return false;\n    \n    // Check column\n    for (int x = 0; x < 9; x++)\n        if (*(*(grid + x) + col) == num)\n            return false;\n    \n    // Check 3x3 box\n    int startRow = row - row % 3;\n    int startCol = col - col % 3;\n    for (int i = 0; i < 3; i++)\n        for (int j = 0; j < 3; j++)\n            if (*(*(grid + i + startRow) + j + startCol) == num)\n                return false;\n    \n    return true;\n}\n\nbool findEmpty(int** grid, int& row, int& col) {\n    for (row = 0; row < 9; row++)\n        for (col = 0; col < 9; col++)\n            if (*(*(grid + row) + col) == 0)\n                return true;\n    return false;\n}\n\nbool solveSudoku(int** grid) {\n    int row, col;\n    \n    // If no empty cell, puzzle solved\n    if (!findEmpty(grid, row, col))\n        return true;\n    \n    // Try digits 1-9\n    for (int num = 1; num <= 9; num++) {\n        if (isSafe(grid, row, col, num)) {\n            // Place number\n            *(*(grid + row) + col) = num;\n            \n            // Recursively solve\n            if (solveSudoku(grid))\n                return true;\n            \n            // Backtrack\n            *(*(grid + row) + col) = 0;\n        }\n    }\n    \n    return false;\n}\n\nvoid printGrid(int** grid) {\n    for (int i = 0; i < 9; i++) {\n        for (int j = 0; j < 9; j++)\n            cout << *(*(grid + i) + j) << \" \";\n        cout << endl;\n    }\n}\n\nint main() {\n    int** grid = new int*[9];\n    for (int i = 0; i < 9; i++) {\n        *(grid + i) = new int[9];\n        for (int j = 0; j < 9; j++)\n            cin >> *(*(grid + i) + j);\n    }\n    \n    if (solveSudoku(grid)) {\n        printGrid(grid);\n    } else {\n        cout << \"NO SOLUTION\" << endl;\n    }\n    \n    for (int i = 0; i < 9; i++)\n        delete[] *(grid + i);\n    delete[] grid;\n    \n    return 0;\n}",
+      "time_estimate_minutes": 55,
+      "content": "# Matrix Layer Rotation (25 Marks)\\n\\nRotate the layers of an NxN matrix counter-clockwise by k positions. Rotate only the outer layers, followed by the inner layers independently.\\n\\n## Problem Statement:\\n\\nGiven a 2D dynamic array and an integer k, rotate each 'ring' of the matrix independently. No extra matrix should be used except for temporary storage of a single ring's elements.\\n\\n## Visualization (4x4, k=1):\\n\\n**Step 1: Identify Outer Ring**\\n| 1 | 2 | 3 | 4 |\\n| 5 | . | . | 8 |\\n| 9 | . | . | 12|\\n| 13| 14| 15| 16|\\nElements: 1, 2, 3, 4, 8, 12, 16, 15, 14, 13, 9, 5\\n\\n**Step 2: Rotate Outer Ring CCW by 1**\\nNew Elements: 2, 3, 4, 8, 12, 16, 15, 14, 13, 9, 5, 1\\n\\n**Step 3: Update Outer Ring in Matrix**\\n| 2 | 3 | 4 | 8 |\\n| 1 | . | . | 12|\\n| 5 | . | . | 16|\\n| 9 | 13| 14| 15|\\n\\n**Step 4: Rotate Inner Ring (2x2)**\\nElements: 6, 7, 11, 10 -> CCW by 1 -> 7, 11, 10, 6\\n\\n## Requirements:\\n- Implement `void rotateLayers(int** matrix, int n, int k)`\\n- Use manual pointer arithmetic (`*(ptr + i)`) exclusively\\n- No structs or global containers\\n- Rotate each ring independently\\n\\n## Constraints:\\n- 2 \u2264 N \u2264 50 (N is even)\\n- 1 \u2264 k \u2264 100\\n- Time Complexity: O(N^2)\\n- Space Complexity: O(N) temporary space for one ring\\n\\n## Function Signatures:\\n```cpp\\nvoid rotateLayers(int** matrix, int n, int k);\\nvoid getRing(int** matrix, int n, int ringIdx, int* ring, int& size);\\nvoid setRing(int** matrix, int n, int ringIdx, int* ring, int size);\\n```",
+      "starter_code": "#include <iostream>\\nusing namespace std;\\n\\nvoid rotateLayers(int** matrix, int n, int k) {\\n    // TODO: Loop through rings (n/2 total)\\n    \\n    // TODO: For each ring, extract to 1D array, rotate k times, and put back\\n}\\n\\nint main() {\\n    int n, k;\\n    cin >> n >> k;\\n\\n    int** matrix = new int*[n];\\n    for (int i = 0; i < n; i++) {\\n        *(matrix + i) = new int[n];\\n        for (int j = 0; j < n; j++) cin >> *(*(matrix + i) + j);\\n    }\\n\\n    rotateLayers(matrix, n, k);\\n\\n    for (int i = 0; i < n; i++) {\\n        for (int j = 0; j < n; j++) cout << *(*(matrix + i) + j) << \" \";\\n        cout << endl;\\n    }\\n\\n    for (int i = 0; i < n; i++) delete[] *(matrix + i);\\n    delete[] matrix;\\n    return 0;\\n}",
       "visible_test_cases": [
         {
-          "input": "5 3 0 0 7 0 0 0 0\n6 0 0 1 9 5 0 0 0\n0 9 8 0 0 0 0 6 0\n8 0 0 0 6 0 0 0 3\n4 0 0 8 0 3 0 0 1\n7 0 0 0 2 0 0 0 6\n0 6 0 0 0 0 2 8 0\n0 0 0 4 1 9 0 0 5\n0 0 0 0 8 0 0 7 9",
-          "output": "5 3 4 6 7 8 9 1 2\n6 7 2 1 9 5 3 4 8\n1 9 8 3 4 2 5 6 7\n8 5 9 7 6 1 4 2 3\n4 2 6 8 5 3 7 9 1\n7 1 3 9 2 4 8 5 6\n9 6 1 5 3 7 2 8 4\n2 8 7 4 1 9 6 3 5\n3 4 5 2 8 6 1 7 9",
-          "explanation": "Classic Sudoku puzzle solved using backtracking."
+          "input": "4 1\\n1 2 3 4\\n5 6 7 8\\n9 10 11 12\\n13 14 15 16",
+          "output": "2 3 4 8\\n1 7 11 12\\n5 6 10 16\\n9 13 14 15",
+          "explanation": "Matrix rotated CCW by 1 position per layer."
         },
         {
-          "input": "0 0 0 2 6 0 7 0 1\n6 8 0 0 7 0 0 9 0\n1 9 0 0 0 4 5 0 0\n8 2 0 1 0 0 0 4 0\n0 0 4 6 0 2 9 0 0\n0 5 0 0 0 3 0 2 8\n0 0 9 3 0 0 0 7 4\n0 4 0 0 5 0 0 3 6\n7 0 3 0 1 8 0 0 0",
-          "output": "4 3 5 2 6 9 7 8 1\n6 8 2 5 7 1 4 9 3\n1 9 7 8 3 4 5 6 2\n8 2 6 1 9 5 3 4 7\n3 7 4 6 8 2 9 1 5\n9 5 1 7 4 3 6 2 8\n5 1 9 3 2 6 8 7 4\n2 4 8 9 5 7 1 3 6\n7 6 3 4 1 8 2 5 9",
-          "explanation": "Another valid Sudoku with unique solution."
+          "input": "2 2\\n1 2\\n3 4",
+          "output": "4 3\\n2 1",
+          "explanation": "2x2 matrix rotated CCW by 2 (180 degrees)."
         }
       ],
       "hidden_test_cases": [
         {
-          "input": "0 0 0 0 0 0 6 8 0\n0 0 0 0 7 3 0 0 9\n3 0 9 0 0 0 0 4 5\n4 9 0 0 0 0 0 0 0\n8 0 3 0 5 0 9 0 2\n0 0 0 0 0 0 0 3 6\n9 6 0 0 0 0 3 0 8\n7 0 0 6 8 0 0 0 0\n0 2 8 0 0 0 0 0 0",
-          "output": "1 7 2 5 4 9 6 8 3\n6 4 5 8 7 3 2 1 9\n3 8 9 2 6 1 7 4 5\n4 9 6 3 2 7 8 5 1\n8 1 3 4 5 6 9 7 2\n2 5 7 1 9 8 4 3 6\n9 6 4 7 1 5 3 2 8\n7 3 1 6 8 2 5 9 4\n5 2 8 9 3 4 1 6 7"
+          "input": "2 1\\n1 2\\n3 4",
+          "output": "2 4\\n1 3"
         },
         {
-          "input": "0 2 0 0 0 0 0 0 0\n0 0 0 6 0 0 0 0 3\n0 7 4 0 8 0 0 0 0\n0 0 0 0 0 3 0 0 2\n0 8 0 0 4 0 0 1 0\n6 0 0 5 0 0 0 0 0\n0 0 0 0 1 0 7 8 0\n5 0 0 0 0 9 0 0 0\n0 0 0 0 0 0 0 4 0",
-          "output": "1 2 6 4 3 7 9 5 8\n8 9 5 6 2 1 4 7 3\n3 7 4 9 8 5 1 2 6\n4 5 7 1 9 3 8 6 2\n9 8 3 2 4 6 5 1 7\n6 1 2 5 7 8 3 9 4\n2 6 9 3 1 4 7 8 5\n5 4 8 7 6 9 2 3 1\n7 3 1 8 5 2 6 4 9"
+          "input": "4 2\\n1 2 3 4\\n5 6 7 8\\n9 10 11 12\\n13 14 15 16",
+          "output": "3 4 8 12\\n2 11 10 16\\n1 6 7 15\\n5 9 13 14"
         },
         {
-          "input": "8 0 0 0 0 0 0 0 0\n0 0 3 6 0 0 0 0 0\n0 7 0 0 9 0 2 0 0\n0 5 0 0 0 7 0 0 0\n0 0 0 0 4 5 7 0 0\n0 0 0 1 0 0 0 3 0\n0 0 1 0 0 0 0 6 8\n0 0 8 5 0 0 0 1 0\n0 9 0 0 0 0 4 0 0",
-          "output": "8 1 2 7 5 3 6 4 9\n9 4 3 6 8 2 1 7 5\n6 7 5 4 9 1 2 8 3\n1 5 4 2 3 7 8 9 6\n3 6 9 8 4 5 7 2 1\n2 8 7 1 6 9 5 3 4\n5 2 1 9 7 4 3 6 8\n4 3 8 5 2 6 9 1 7\n7 9 6 3 1 8 4 5 2"
+          "input": "6 1\\n1 2 3 4 5 6\\n7 8 9 10 11 12\\n13 14 15 16 17 18\\n19 20 21 22 23 24\\n25 26 27 28 29 30\\n31 32 33 34 35 36",
+          "output": "2 3 4 5 6 12\\n1 9 10 11 17 18\\n7 8 16 22 23 24\\n13 14 15 21 29 30\\n19 25 26 27 28 36\\n25 31 32 33 34 35"
         },
         {
-          "input": "0 0 0 0 0 0 0 1 2\n0 0 0 0 3 5 0 0 0\n0 0 0 6 0 0 7 0 0\n7 0 0 0 0 0 3 0 0\n0 0 0 4 0 0 8 0 0\n1 0 0 0 0 0 0 0 0\n0 0 0 1 2 0 0 0 0\n0 8 0 0 0 0 0 4 0\n0 5 0 0 0 0 6 0 0",
-          "output": "6 7 3 8 9 4 5 1 2\n9 1 2 7 3 5 4 8 6\n8 4 5 6 1 2 7 9 3\n7 9 8 2 6 1 3 5 4\n5 2 6 4 7 3 8 1 9\n1 3 4 5 8 9 2 6 7\n4 6 9 1 2 8 3 7 5\n2 8 1 3 5 7 9 4 6\n3 5 7 9 4 6 1 2 8"
+          "input": "2 4\\n1 2\\n3 4",
+          "output": "1 2\\n3 4"
+        },
+        {
+          "input": "4 0\\n1 2 3 4\\n5 6 7 8\\n9 10 11 12\\n13 14 15 16",
+          "output": "1 2 3 4\\n5 6 7 8\\n9 10 11 12\\n13 14 15 16"
         }
       ]
     },
     {
       "question_number": 7,
-      "title": "Snake Pattern Matrix Traversal with Obstacles",
-      "category": "2D Arrays & Path Finding",
+      "title": "Word Search Solver in 2D Grid",
+      "category": "Recursion & Backtracking",
       "marks": 25,
-      "time_estimate_minutes": 54,
-      "content": "# Snake Pattern Traversal (25 Marks)\n\nTraverse a matrix in snake pattern while avoiding obstacles and collecting maximum value.\n\n## Problem Statement:\n\nGiven an N\u00d7M matrix with values and obstacles (-1), traverse in snake pattern:\n- Row 0: Left to right\n- Row 1: Right to left\n- Row 2: Left to right\n- Continue alternating...\n\nSkip obstacles and collect sum of all visited cells.\n\n## Visualization (4\u00d75 matrix):\n\n**Input Matrix:**\n\n|  3 |  5 |  2 |  8 |  1 |\n|:--:|:--:|:--:|:--:|:--:|:-:|\n|  7 | -1 |  4 |  6 |  9 |\n|  2 |  3 | -1 |  5 |  1 |\n| 10 |  4 |  6 |  2 |  8 |\n\n**Step-by-Step Traversal:**\n\n**Step 1:** Row 0 (left\u2192right): 3, 5, 2, 8, 1\n\n| \u21923 | \u21925 | \u21922 | \u21928 | \u21921 |\n|:--:|:--:|:--:|:--:|:--:|\n|  7 | -1 |  4 |  6 |  9 |\n|  2 |  3 | -1 |  5 |  1 |\n| 10 |  4 |  6 |  2 |  8 |\n\n**Sum so far:** 3+5+2+8+1 = 19\n\n**Step 2:** Row 1 (right\u2192left): 9, 6, 4, skip(-1), 7\n\n|  3 |  5 |  2 |  8 |  1 |\n|:--:|:--:|:--:|:--:|:--:|\n| \u21907 | \u2717  | \u21904 | \u21906 | \u21909 |\n|  2 |  3 | -1 |  5 |  1 |\n| 10 |  4 |  6 |  2 |  8 |\n\n**Sum so far:** 19 + 9+6+4+7 = 45\n\n**Step 3:** Row 2 (left\u2192right): 2, 3, skip(-1), 5, 1\n\n|  3 |  5 |  2 |  8 |  1 |\n|:--:|:--:|:--:|:--:|:--:|\n|  7 | -1 |  4 |  6 |  9 |\n| \u21922 | \u21923 | \u2717  | \u21925 | \u21921 |\n| 10 |  4 |  6 |  2 |  8 |\n\n**Sum so far:** 45 + 2+3+5+1 = 56\n\n**Step 4:** Row 3 (right\u2192left): 8, 2, 6, 4, 10\n\n|  3 |  5 |  2 |  8 |  1 |\n|:--:|:--:|:--:|:--:|:--:|\n|  7 | -1 |  4 |  6 |  9 |\n|  2 |  3 | -1 |  5 |  1 |\n| \u219010| \u21904 | \u21906 | \u21902 | \u21908 |\n\n**Final Sum:** 56 + 8+2+6+4+10 = **86**\n\n## Advanced Version:\n\nFind path with **maximum sum** when you can:\n- Move right or down only\n- Skip obstacles\n- Use dynamic programming\n\n## Requirements:\n\n- Implement `int snakeTraversal(int** matrix, int n, int m)`\n- Implement `int maxPathSum(int** matrix, int n, int m)` (DP version)\n- Handle obstacles (-1)\n- Use ONLY pointer arithmetic\n- Return -1 if no valid path exists\n\n## Constraints:\n\n- 1 \u2264 N, M \u2264 100\n- -1 \u2264 matrix[i][j] \u2264 1000\n- -1 represents obstacle\n- Time complexity: O(N\u00d7M)\n- Space complexity: O(N\u00d7M) for DP\n\n## Function Signatures:\n\n```cpp\nint snakeTraversal(int** matrix, int n, int m);\nint maxPathSum(int** matrix, int n, int m);\nbool hasValidPath(int** matrix, int n, int m);\n```\n",
-      "starter_code": "#include <iostream>\nusing namespace std;\n\nint snakeTraversal(int** matrix, int n, int m) {\n    int sum = 0;\n    \n    for (int i = 0; i < n; i++) {\n        if (i % 2 == 0) {\n            // Left to right\n            for (int j = 0; j < m; j++) {\n                if (*(*(matrix + i) + j) != -1)\n                    sum += *(*(matrix + i) + j);\n            }\n        } else {\n            // Right to left\n            for (int j = m - 1; j >= 0; j--) {\n                if (*(*(matrix + i) + j) != -1)\n                    sum += *(*(matrix + i) + j);\n            }\n        }\n    }\n    \n    return sum;\n}\n\nint maxPathSum(int** matrix, int n, int m) {\n    // Create DP table\n    int** dp = new int*[n];\n    for (int i = 0; i < n; i++) {\n        *(dp + i) = new int[m];\n        for (int j = 0; j < m; j++)\n            *(*(dp + i) + j) = -1;\n    }\n    \n    // Base case\n    if (*(*(matrix + 0) + 0) != -1)\n        *(*(dp + 0) + 0) = *(*(matrix + 0) + 0);\n    \n    // Fill DP table\n    // Your code here\n    \n    int result = *(*(dp + n - 1) + m - 1);\n    \n    // Cleanup\n    for (int i = 0; i < n; i++)\n        delete[] *(dp + i);\n    delete[] dp;\n    \n    return result;\n}\n\nint main() {\n    int n, m, mode;\n    cin >> n >> m >> mode;\n    \n    int** matrix = new int*[n];\n    for (int i = 0; i < n; i++) {\n        *(matrix + i) = new int[m];\n        for (int j = 0; j < m; j++)\n            cin >> *(*(matrix + i) + j);\n    }\n    \n    int result;\n    if (mode == 1)\n        result = snakeTraversal(matrix, n, m);\n    else\n        result = maxPathSum(matrix, n, m);\n    \n    cout << result << endl;\n    \n    for (int i = 0; i < n; i++)\n        delete[] *(matrix + i);\n    delete[] matrix;\n    \n    return 0;\n}",
+      "time_estimate_minutes": 55,
+      "content": "# Word Search Solver (25 Marks)\\n\\nDetermine if a given word exists in a grid of characters. The word can be constructed from letters of sequentially adjacent cells (horizontal or vertical), but the same cell cannot be used twice.\\n\\n## Problem Statement:\\n\\nImplement a recursive search with backtracking to find if a word is present. No `std::string` or `std::vector` or global variables are allowed. Grid is dynamic.\\n\\n## Visualization (3x3 grid, search 'CAT'):\\n\\n**Grid:**\\n| B | C | A |\\n|---|---|---|\\n| D | A | T |\\n| G | T | E |\\n\\n**Step 1: Find 'C' at (0,1).**\\nSearch neighbors for 'A'.\\n\\n**Step 2: At (0,1), neighbors are (0,0), (0,2), (1,1).**\\n'A' found at (0,2) and (1,1). Recurse (1,1) first.\\n\\n**Step 3: At (1,1), search for 'T'.**\\n'T' found at (1,2) and (2,1). Recurse (1,2).\\n\\n**Step 4: 'CAT' completed! Return true.**\\n\\n## Requirements:\\n- Implement `bool exist(char** board, int n, int m, char* word)`\\n- Use a helper function `bool backtrack(char** board, int n, int m, int r, int c, char* word, int index)`\\n- Use pointer arithmetic for all character access\\n- No structs or classes\\n- Temporarily mark visited cells with a special character (e.g., '#') to avoid reuse\\n\\n## Constraints:\\n- 1 \u2264 N, M \u2264 10\\n- 1 \u2264 length of word \u2264 20\\n- Time Complexity: O(N * M * 4^L) where L is word length\\n- Space Complexity: O(L) for recursion stack\\n\\n## Function Signatures:\\n```cpp\\nbool exist(char** board, int n, int m, char* word);\\nbool backtrack(char** board, int n, int m, int r, int c, char* word, int index);\\n```",
+      "starter_code": "#include <iostream>\\n#include <cstring>\\nusing namespace std;\\n\\nbool backtrack(char** board, int n, int m, int r, int c, char* word, int index) {\\n    // TODO: Base case: All characters found\\n    \\n    // TODO: Boundary checks and character match\\n    \\n    // TODO: Mark visited, Explore 4 directions, Unmark (backtrack)\\n    \\n    return false;\\n}\\n\\nbool exist(char** board, int n, int m, char* word) {\\n    for (int i = 0; i < n; i++) {\\n        for (int j = 0; j < m; j++) {\\n            if (backtrack(board, n, m, i, j, word, 0)) return true;\\n        }\\n    }\\n    return false;\\n}\\n\\nint main() {\\n    int n, m;\\n    cin >> n >> m;\\n    char** board = new char*[n];\\n    for (int i = 0; i < n; i++) {\\n        *(board + i) = new char[m];\\n        for (int j = 0; j < m; j++) cin >> *(*(board + i) + j);\\n    }\\n    char word[100];\\n    cin >> word;\\n\\n    if (exist(board, n, m, word)) cout << \"true\";\\n    else cout << \"false\";\\n\\n    for (int i = 0; i < n; i++) delete[] *(board + i);\\n    delete[] board;\\n    return 0;\\n}",
       "visible_test_cases": [
         {
-          "input": "4 5 1\n3 5 2 8 1\n7 -1 4 6 9\n2 3 -1 5 1\n10 4 6 2 8",
-          "output": "86",
-          "explanation": "Snake traversal: Row0(L\u2192R): 19, Row1(R\u2192L): 26, Row2(L\u2192R): 11, Row3(R\u2192L): 30. Total: 86"
+          "input": "3 3\\nA B C\\nD E F\\nG H I\\nABC",
+          "output": "true",
+          "explanation": "'ABC' exists in the first row."
         },
         {
-          "input": "3 3 2\n1 2 3\n4 5 6\n7 8 9",
-          "output": "29",
-          "explanation": "Max path (DP): 1\u21922\u21923\u21926\u21929 = 21 OR 1\u21924\u21927\u21928\u21929 = 29. Maximum is 29."
+          "input": "3 3\\nA B C\\nD E F\\nG H I\\nAEI",
+          "output": "false",
+          "explanation": "Diagonal search is not allowed."
         }
       ],
       "hidden_test_cases": [
         {
-          "input": "1 5 1\n5 10 15 20 25",
-          "output": "75"
+          "input": "2 2\\nA B\\nC D\\nACDB",
+          "output": "true"
         },
         {
-          "input": "3 3 1\n1 -1 3\n-1 5 -1\n7 -1 9",
-          "output": "25"
+          "input": "3 4\\nA B C E\\nS F C S\\nA D E E\\nABCCED",
+          "output": "true"
         },
         {
-          "input": "4 4 2\n1 3 1 5\n2 -1 4 1\n5 3 -1 3\n1 2 4 2",
-          "output": "18"
+          "input": "3 4\\nA B C E\\nS F C S\\nA D E E\\nSEE",
+          "output": "true"
         },
         {
-          "input": "5 5 1\n1 2 3 4 5\n10 9 8 7 6\n11 12 13 14 15\n20 19 18 17 16\n21 22 23 24 25",
-          "output": "325"
+          "input": "3 4\\nA B C E\\nS F C S\\nA D E E\\nABCB",
+          "output": "false"
         },
         {
-          "input": "6 4 2\n5 10 15 20\n-1 3 8 12\n7 -1 4 9\n2 6 -1 5\n8 3 7 -1\n4 9 2 6",
-          "output": "73"
+          "input": "5 5\\nO A A N N\\nE T A E I\\nI H K R L\\nI F L V N\\nQ N E E D\\nOATH",
+          "output": "true"
         }
       ]
     },
     {
       "question_number": 8,
-      "title": "Longest Increasing Subsequence with Reconstruction",
-      "category": "Dynamic Programming & Arrays",
+      "title": "Subset Sum with Backtracking",
+      "category": "Recursion & Backtracking",
       "marks": 25,
-      "time_estimate_minutes": 60,
-      "content": "# Longest Increasing Subsequence (LIS) (25 Marks)\n\nFind the longest strictly increasing subsequence and reconstruct the actual sequence.\n\n## Problem Statement:\n\nGiven an array of integers, find:\n1. Length of longest increasing subsequence (LIS)\n2. The actual subsequence elements\n3. All possible LIS if multiple exist\n\n## Example: arr = [10, 9, 2, 5, 3, 7, 101, 18]\n\n**Step-by-Step DP Table Construction:**\n\n**Initial:**\n\n| Index |  0 |  1 |  2 |  3 |  4 |  5 |  6 |  7 |\n|:-----:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|\n| Value | 10 |  9 |  2 |  5 |  3 |  7 | 101| 18 |\n| LIS   |  1 |  1 |  1 |  1 |  1 |  1 |  1 |  1 |\n\n**After processing index 3 (value=5):**\n- Can extend from index 2 (2 < 5)\n- LIS[3] = LIS[2] + 1 = 2\n\n| Index |  0 |  1 |  2 |  3 |  4 |  5 |  6 |  7 |\n|:-----:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|\n| Value | 10 |  9 |  2 |  5 |  3 |  7 | 101| 18 |\n| LIS   |  1 |  1 |  1 |  2 |  1 |  1 |  1 |  1 |\n\n**After processing index 5 (value=7):**\n- Can extend from index 3 (5 < 7)\n- LIS[5] = LIS[3] + 1 = 3\n\n| Index |  0 |  1 |  2 |  3 |  4 |  5 |  6 |  7 |\n|:-----:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|\n| Value | 10 |  9 |  2 |  5 |  3 |  7 | 101| 18 |\n| LIS   |  1 |  1 |  1 |  2 |  2 |  3 |  1 |  1 |\n\n**Final DP Table:**\n\n| Index |  0 |  1 |  2 |  3 |  4 |  5 |  6 |  7 |\n|:-----:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|\n| Value | 10 |  9 |  2 |  5 |  3 |  7 | 101| 18 |\n| LIS   |  1 |  1 |  1 |  2 |  2 |  3 |  4 |  4 |\n\n**LIS Length:** 4\n\n**Reconstruction (backtrack from max LIS):**\n- Start at index 7 (LIS=4, value=18)\n- Find previous with LIS=3 and value < 18: index 5 (value=7)\n- Find previous with LIS=2 and value < 7: index 3 (value=5)\n- Find previous with LIS=1 and value < 5: index 2 (value=2)\n\n**LIS Sequence:** [2, 5, 7, 18]\n\n## Alternative LIS:\n[2, 5, 7, 101] also has length 4\n\n## Requirements:\n\n- Implement `int findLIS(int* arr, int n, int** lisSeq)`\n- Implement `void reconstructLIS(int* arr, int* dp, int n, int* result)`\n- Use dynamic programming O(n\u00b2) or O(n log n)\n- Use ONLY pointer arithmetic\n- Return length and actual sequence\n\n## Constraints:\n\n- 1 \u2264 N \u2264 2500\n- -10\u2076 \u2264 arr[i] \u2264 10\u2076\n- Time complexity: O(n\u00b2) acceptable, O(n log n) bonus\n- Space complexity: O(n)\n\n## Function Signatures:\n\n```cpp\nint findLIS(int* arr, int n);\nvoid reconstructLIS(int* arr, int* dp, int* parent, int n, int* result, int& len);\nint binarySearch(int* tail, int len, int key);\n```\n",
-      "starter_code": "#include <iostream>\nusing namespace std;\n\nint findLIS(int* arr, int n) {\n    int* dp = new int[n];\n    \n    // Initialize all LIS values to 1\n    for (int i = 0; i < n; i++)\n        *(dp + i) = 1;\n    \n    // Compute LIS values bottom-up\n    for (int i = 1; i < n; i++) {\n        for (int j = 0; j < i; j++) {\n            if (*(arr + j) < *(arr + i) && *(dp + i) < *(dp + j) + 1)\n                *(dp + i) = *(dp + j) + 1;\n        }\n    }\n    \n    // Find maximum\n    int maxLIS = 1;\n    for (int i = 0; i < n; i++)\n        if (*(dp + i) > maxLIS)\n            maxLIS = *(dp + i);\n    \n    delete[] dp;\n    return maxLIS;\n}\n\nvoid reconstructLIS(int* arr, int* dp, int* parent, int n, int* result, int& len) {\n    // Find index with maximum LIS\n    int maxIdx = 0;\n    for (int i = 1; i < n; i++)\n        if (*(dp + i) > *(dp + maxIdx))\n            maxIdx = i;\n    \n    len = *(dp + maxIdx);\n    \n    // Backtrack using parent array\n    int idx = maxIdx;\n    for (int i = len - 1; i >= 0; i--) {\n        *(result + i) = *(arr + idx);\n        idx = *(parent + idx);\n    }\n}\n\nint findLISWithReconstruction(int* arr, int n, int* result) {\n    int* dp = new int[n];\n    int* parent = new int[n];\n    \n    for (int i = 0; i < n; i++) {\n        *(dp + i) = 1;\n        *(parent + i) = -1;\n    }\n    \n    for (int i = 1; i < n; i++) {\n        for (int j = 0; j < i; j++) {\n            if (*(arr + j) < *(arr + i) && *(dp + i) < *(dp + j) + 1) {\n                *(dp + i) = *(dp + j) + 1;\n                *(parent + i) = j;\n            }\n        }\n    }\n    \n    int len;\n    reconstructLIS(arr, dp, parent, n, result, len);\n    \n    delete[] dp;\n    delete[] parent;\n    \n    return len;\n}\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int* arr = new int[n];\n    for (int i = 0; i < n; i++)\n        cin >> *(arr + i);\n    \n    int* result = new int[n];\n    int len = findLISWithReconstruction(arr, n, result);\n    \n    cout << len << endl;\n    for (int i = 0; i < len; i++)\n        cout << *(result + i) << \" \";\n    cout << endl;\n    \n    delete[] arr;\n    delete[] result;\n    \n    return 0;\n}",
+      "time_estimate_minutes": 50,
+      "content": "# Subset Sum (25 Marks)\\n\\nFind if there exists a subset of a given set of non-negative integers that sums up to a target value.\\n\\n## Problem Statement:\\n\\nGiven a dynamic 1D array of integers and a target total, determine if any combination of integers equals the target. Use recursion without any container like `vector`.\\n\\n## Visualization (Arr=[3, 34, 4, 12, 5, 2], Target=9):\\n\\n**Step 1: Root - Target 9**\\nChoice: Include 3? or Exclude 3?\\n\\n**Step 2: Path A (Include 3)**\\nRemaining Target: 6. Next element: 34.\\n34 > 6, so must Exclude 34.\\n\\n**Step 3: Path A (Target 6 continued)**\\nNext element: 4. Include 4?\\nRemaining Target: 2.\\n\\n**Step 4: Path A (Target 2 continued)**\\nNext element: 12. 12 > 2, skip.\\nNext element: 5. 5 > 2, skip.\\nNext element: 2. Include 2?\\nRemaining Target: 0. SUCCESS! Subset {3, 4, 2} found.\\n\\n## Requirements:\\n- Implement `bool isSubsetSum(int* set, int n, int target)`\\n- Use pointer arithmetic (`*(set + i)`) exclusively\\n- No structs, no classes\\n- Use recursion for the decision tree (include/exclude)\\n\\n## Constraints:\\n- 1 \u2264 N \u2264 30\\n- 0 \u2264 Target \u2264 1000\\n- Time Complexity: O(2^N)\\n- Space Complexity: O(N) stack space\\n\\n## Function Signatures:\\n```cpp\\nbool isSubsetSum(int* set, int n, int target);\\n```",
+      "starter_code": "#include <iostream>\\nusing namespace std;\\n\\nbool isSubsetSum(int* set, int n, int target) {\\n    // TODO: Base Cases\\n    \\n    // TODO: Optimization: If last element is greater than target, ignore it\\n    \\n    // TODO: Return if target can be reached by (a) including last element (b) excluding last element\\n    \\n    return false;\\n}\\n\\nint main() {\\n    int n, target;\\n    cin >> n >> target;\\n    int* set = new int[n];\\n    for (int i = 0; i < n; i++) cin >> *(set + i);\\n\\n    if (isSubsetSum(set, n, target)) cout << \"true\";\\n    else cout << \"false\";\\n\\n    delete[] set;\\n    return 0;\\n}",
       "visible_test_cases": [
         {
-          "input": "8\n10 9 2 5 3 7 101 18",
-          "output": "4\n2 5 7 18",
-          "explanation": "LIS of length 4: [2,5,7,18]. Another valid: [2,5,7,101]"
+          "input": "6 9\\n3 34 4 12 5 2",
+          "output": "true",
+          "explanation": "Subset {3, 4, 2} sums to 9."
         },
         {
-          "input": "6\n0 1 0 3 2 3",
-          "output": "4\n0 1 2 3",
-          "explanation": "LIS: [0,1,2,3] with length 4"
+          "input": "6 30\\n3 34 4 12 5 2",
+          "output": "false",
+          "explanation": "No subset sums to 30."
         }
       ],
       "hidden_test_cases": [
         {
-          "input": "1\n42",
-          "output": "1\n42"
+          "input": "3 10\\n5 5 5",
+          "output": "true"
         },
         {
-          "input": "5\n5 4 3 2 1",
-          "output": "1\n5"
+          "input": "5 0\\n1 2 3 4 5",
+          "output": "true"
         },
         {
-          "input": "10\n3 10 2 1 20 4 5 6 7 8",
-          "output": "6\n2 4 5 6 7 8"
+          "input": "4 1\\n2 4 8 16",
+          "output": "false"
         },
         {
-          "input": "12\n1 3 6 7 9 4 10 5 6 11 12 13",
-          "output": "8\n1 3 4 5 6 11 12 13"
+          "input": "10 55\\n1 2 3 4 5 6 7 8 9 10",
+          "output": "true"
         },
         {
-          "input": "15\n50 3 10 7 40 80 5 12 15 20 25 30 35 40 45",
-          "output": "9\n5 12 15 20 25 30 35 40 45"
+          "input": "7 14\\n2 2 2 2 2 2 3",
+          "output": "false"
         }
       ]
     },
     {
       "question_number": 9,
-      "title": "Knapsack Problem with Item Tracking",
-      "category": "Dynamic Programming & Optimization",
+      "title": "Knight's Tour Visualization",
+      "category": "Recursion & Backtracking",
       "marks": 25,
-      "time_estimate_minutes": 57,
-      "content": "# 0/1 Knapsack with Item Selection (25 Marks)\n\nSolve the classic 0/1 knapsack problem and track which items are selected.\n\n## Problem Statement:\n\nGiven:\n- N items with weights and values\n- Knapsack capacity W\n\nFind:\n1. Maximum value achievable\n2. Which items to select\n3. Total weight used\n\n## Example: Capacity = 10\n\n**Items:**\n\n| Item | Weight | Value | Value/Weight |\n|:----:|:------:|:-----:|:------------:|\n|  1   |   2    |  10   |     5.0      |\n|  2   |   3    |  15   |     5.0      |\n|  3   |   5    |  25   |     5.0      |\n|  4   |   7    |  30   |     4.3      |\n\n**DP Table Construction:**\n\n**dp[i][w] = max value using first i items with capacity w**\n\n**Partial DP Table (showing key cells):**\n\n|  i\\w  |  0 |  1 |  2 |  3 |  4 |  5 |  6 |  7 |  8 |  9 | 10 |\n|:-----:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|\n|   0   |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |\n| 1(2,10)|  0 |  0 | 10 | 10 | 10 | 10 | 10 | 10 | 10 | 10 | 10 |\n| 2(3,15)|  0 |  0 | 10 | 15 | 15 | 25 | 25 | 25 | 25 | 25 | 25 |\n| 3(5,25)|  0 |  0 | 10 | 15 | 15 | 25 | 25 | 35 | 40 | 40 | 50 |\n| 4(7,30)|  0 |  0 | 10 | 15 | 15 | 25 | 25 | 35 | 40 | 40 | 50 |\n\n**Backtracking to find items:**\n\nStart at dp[4][10] = 50\n- dp[4][10] \u2260 dp[3][10] \u2192 Item 4 NOT taken\n- Move to dp[3][10] = 50\n- dp[3][10] \u2260 dp[2][10] \u2192 Item 3 IS taken (weight=5, value=25)\n- Move to dp[2][5] = 25\n- dp[2][5] \u2260 dp[1][5] \u2192 Item 2 IS taken (weight=3, value=15)\n- Move to dp[1][2] = 10\n- dp[1][2] \u2260 dp[0][2] \u2192 Item 1 IS taken (weight=2, value=10)\n\n**Selected Items:** 1, 2, 3\n**Total Weight:** 2 + 3 + 5 = 10\n**Total Value:** 10 + 15 + 25 = 50\n\n## Recurrence Relation:\n\n```\ndp[i][w] = max(\n    dp[i-1][w],                    // Don't take item i\n    dp[i-1][w-weight[i]] + value[i] // Take item i\n)\n```\n\n## Requirements:\n\n- Implement `int knapsack(int* weights, int* values, int n, int capacity, int* selected)`\n- Use 2D DP table\n- Backtrack to find selected items\n- Use ONLY pointer arithmetic\n- Handle edge cases (capacity=0, n=0)\n\n## Constraints:\n\n- 1 \u2264 N \u2264 100\n- 1 \u2264 W \u2264 1000\n- 1 \u2264 weights[i] \u2264 W\n- 1 \u2264 values[i] \u2264 1000\n- Time complexity: O(N\u00d7W)\n- Space complexity: O(N\u00d7W)\n\n## Input Format:\n```\nN W\nweight1 value1\nweight2 value2\n...\n```\n\n## Output Format:\n```\nMaxValue\nSelectedItems (1-indexed, space-separated)\nTotalWeight\n```\n\n## Function Signatures:\n\n```cpp\nint knapsack(int* weights, int* values, int n, int capacity, int* selected);\nvoid backtrack(int** dp, int* weights, int n, int capacity, int* selected);\n```\n",
-      "starter_code": "#include <iostream>\nusing namespace std;\n\nvoid backtrack(int** dp, int* weights, int n, int capacity, int* selected, int& count) {\n    int w = capacity;\n    count = 0;\n    \n    for (int i = n; i > 0 && w > 0; i--) {\n        // If value comes from including current item\n        if (*(*(dp + i) + w) != *(*(dp + i - 1) + w)) {\n            *(selected + count) = i; // 1-indexed\n            count++;\n            w -= *(weights + i - 1);\n        }\n    }\n    \n    // Reverse selected array\n    for (int i = 0; i < count / 2; i++) {\n        int temp = *(selected + i);\n        *(selected + i) = *(selected + count - 1 - i);\n        *(selected + count - 1 - i) = temp;\n    }\n}\n\nint knapsack(int* weights, int* values, int n, int capacity, int* selected) {\n    // Create DP table\n    int** dp = new int*[n + 1];\n    for (int i = 0; i <= n; i++) {\n        *(dp + i) = new int[capacity + 1];\n        for (int w = 0; w <= capacity; w++)\n            *(*(dp + i) + w) = 0;\n    }\n    \n    // Fill DP table\n    for (int i = 1; i <= n; i++) {\n        for (int w = 1; w <= capacity; w++) {\n            // Don't take item\n            *(*(dp + i) + w) = *(*(dp + i - 1) + w);\n            \n            // Take item if possible\n            if (*(weights + i - 1) <= w) {\n                int takeValue = *(*(dp + i - 1) + w - *(weights + i - 1)) + *(values + i - 1);\n                if (takeValue > *(*(dp + i) + w))\n                    *(*(dp + i) + w) = takeValue;\n            }\n        }\n    }\n    \n    int maxValue = *(*(dp + n) + capacity);\n    \n    // Backtrack to find items\n    int count;\n    backtrack(dp, weights, n, capacity, selected, count);\n    \n    // Cleanup\n    for (int i = 0; i <= n; i++)\n        delete[] *(dp + i);\n    delete[] dp;\n    \n    return maxValue;\n}\n\nint main() {\n    int n, capacity;\n    cin >> n >> capacity;\n    \n    int* weights = new int[n];\n    int* values = new int[n];\n    int* selected = new int[n];\n    \n    for (int i = 0; i < n; i++)\n        cin >> *(weights + i) >> *(values + i);\n    \n    int maxValue = knapsack(weights, values, n, capacity, selected);\n    \n    cout << maxValue << endl;\n    \n    // Print selected items\n    int count = 0;\n    int totalWeight = 0;\n    for (int i = 0; i < n; i++) {\n        if (*(selected + i) != 0) {\n            cout << *(selected + i) << \" \";\n            totalWeight += *(weights + *(selected + i) - 1);\n            count++;\n        }\n    }\n    cout << endl << totalWeight << endl;\n    \n    delete[] weights;\n    delete[] values;\n    delete[] selected;\n    \n    return 0;\n}",
+      "time_estimate_minutes": 60,
+      "content": "# Knight's Tour (25 Marks)\\n\\nFind a sequence of moves for a Knight such that it visits every square on an NxN chessboard exactly once.\\n\\n## Problem Statement:\\n\\nImplement a recursive backtracking algorithm to solve the Knight's Tour problem. Represent the board using integers showing the move number (0 to N^2-1).\\n\\n## Visualization (5x5, Path Start at 0,0):\\n\\n**Step 1: Move 0 at (0,0)**\\n| 0 | . | . | . | . |\\n|---|---|---|---|---|\\n\\n**Step 2: Try move to (1,2). Correct.**\\n| 0 | . | . | . | . |\\n| . | . | 1 | . | . |\\n\\n**Step 3: Try move to (2,4). Valid.**\\n| 0 | . | . | . | . |\\n| . | . | 1 | . | . |\\n| . | . | . | . | 2 |\\n\\n**Step 4: Backtrack if no moves lead to the end.**\\n\\n## Requirements:\\n- Implement `bool solveKT(int** board, int n, int r, int c, int moveCount)`\\n- Use ONLY pointer arithmetic for board access\\n- No structs or global arrays\\n- Move options for a Knight: (2,1), (1,2), (-1,2), (-2,1), (-2,-1), (-1,-2), (1,-2), (2,-1)\\n\\n## Constraints:\\n- 5 \u2264 N \u2264 8\\n- Board starts with 0 at (0,0), all other cells are -1\\n- Time Complexity: O(8^(N^2))\\n- Space Complexity: O(N^2)\\n\\n## Function Signatures:\\n```cpp\\nbool isSafe(int** board, int n, int r, int c);\\nbool solveKT(int** board, int n, int r, int c, int moveCount);\\nvoid printBoard(int** board, int n);\\n```",
+      "starter_code": "#include <iostream>\\n#include <iomanip>\\nusing namespace std;\\n\\nbool isSafe(int** board, int n, int r, int c) {\\n    return (r >= 0 && r < n && c >= 0 && c < n && *(*(board + r) + c) == -1);\\n}\\n\\nbool solveKT(int** board, int n, int r, int c, int moveCount) {\\n    // TODO: Base case: All squares visited\\n    \\n    // TODO: Try all 8 moves of a Knight\\n    \\n    return false;\\n}\\n\\nint main() {\\n    int n;\\n    cin >> n;\\n\\n    int** board = new int*[n];\\n    for (int i = 0; i < n; i++) {\\n        *(board + i) = new int[n];\\n        for (int j = 0; j < n; j++) *(*(board + i) + j) = -1;\\n    }\\n\\n    *(*(board + 0) + 0) = 0;\\n    if (solveKT(board, n, 0, 0, 1)) {\\n        for (int i = 0; i < n; i++) {\\n            for (int j = 0; j < n; j++) cout << setw(2) << *(*(board + i) + j) << \" \";\\n            cout << endl;\\n        }\\n    } else {\\n        cout << \"No solution\";\\n    }\\n\\n    for (int i = 0; i < n; i++) delete[] *(board + i);\\n    delete[] board;\\n    return 0;\\n}",
       "visible_test_cases": [
         {
-          "input": "4 10\n2 10\n3 15\n5 25\n7 30",
-          "output": "50\n1 2 3\n10",
-          "explanation": "Select items 1,2,3 with total weight=10 and value=50"
+          "input": "5",
+          "output": " 0 11 16  5 22 \\n17  4 21 10 15 \\n12  1  6 23  9 \\n 3 18  8 14 19 \\n 7 13 20 24  2 ",
+          "explanation": "5x5 solution (move numbers 0-24)."
         },
         {
-          "input": "5 15\n12 4\n2 2\n1 1\n4 10\n1 2",
-          "output": "15\n2 3 4 5\n8",
-          "explanation": "Select items 2,3,4,5 with weight=8 and value=15"
+          "input": "4",
+          "output": "No solution",
+          "explanation": "Knight's tour is impossible for N=4."
         }
       ],
       "hidden_test_cases": [
         {
-          "input": "1 5\n3 10",
-          "output": "10\n1\n3"
+          "input": "5",
+          "output": " 0 11 16  5 22 \\n17  4 21 10 15 \\n12  1  6 23  9 \\n 3 18  8 14 19 \\n 7 13 20 24  2 "
         },
         {
-          "input": "3 5\n6 30\n3 14\n4 16",
-          "output": "14\n2\n3"
+          "input": "4",
+          "output": "No solution"
         },
         {
-          "input": "6 20\n5 30\n10 50\n15 100\n3 20\n2 15\n8 40",
-          "output": "165\n1 2 4 5\n20"
+          "input": "3",
+          "output": "No solution"
         },
         {
-          "input": "8 50\n10 60\n20 100\n30 120\n5 30\n15 80\n25 110\n12 70\n8 50",
-          "output": "390\n1 2 4 5 7 8\n50"
+          "input": "2",
+          "output": "No solution"
         },
         {
-          "input": "10 100\n23 92\n31 57\n29 49\n44 68\n53 60\n38 43\n63 67\n85 84\n89 87\n82 72",
-          "output": "309\n1 2 3 4 7\n100"
+          "input": "6",
+          "output": " 0 25  6 15 32 17 \\n 7 14 33 26  5 16 \\n24  1 10 31 18 33 \\n13  8 27 34 23 30 \\n 2 21 36  9 20 11 \\n35 12  3 22 29  4 "
         }
       ]
     },
     {
       "question_number": 10,
-      "title": "Hospital Emergency Room Management System",
-      "category": "Priority Queues & Dynamic Arrays",
+      "title": "Dynamic Jagged Matrix Transposition",
+      "category": "Memory Management & Pointers",
       "marks": 25,
-      "time_estimate_minutes": 56,
-      "content": "# Hospital ER Management System (25 Marks)\n\nImplement an emergency room patient management system with priority-based treatment.\n\n## System Requirements:\n\n### Patient Structure:\n```cpp\nstruct Patient {\n    int id;\n    char name[50];\n    int priority;      // 1=Critical, 2=Urgent, 3=Normal\n    int arrivalTime;\n    int treatmentTime; // Minutes needed\n};\n```\n\n### Operations:\n\n1. **ADD_PATIENT**: Add patient to queue\n2. **TREAT_NEXT**: Treat highest priority patient (FCFS within same priority)\n3. **UPDATE_PRIORITY**: Change patient priority (e.g., condition worsens)\n4. **REMOVE_PATIENT**: Remove patient (e.g., transferred)\n5. **GET_WAIT_TIME**: Calculate expected wait time for patient\n6. **SHOW_QUEUE**: Display current queue state\n\n## Example Scenario:\n\n**Initial Queue:**\n\n| Position | ID  | Name  | Priority | Arrival | Treatment |\n|:--------:|:---:|:-----:|:--------:|:-------:|:---------:|\n|    1     | 101 | Alice |    3     |   0     |    15     |\n|    2     | 102 | Bob   |    2     |   5     |    20     |\n|    3     | 103 | Carol |    1     |   10    |    30     |\n\n**After Operations:**\n\n**Operation 1:** `ADD_PATIENT 104 David 2 15 25`\n\n**Queue (sorted by priority, then arrival):**\n\n| Position | ID  | Name  | Priority | Arrival | Treatment |\n|:--------:|:---:|:-----:|:--------:|:-------:|:---------:|\n|    1     | 103 | Carol |    1     |   10    |    30     |\n|    2     | 102 | Bob   |    2     |   5     |    20     |\n|    3     | 104 | David |    2     |   15    |    25     |\n|    4     | 101 | Alice |    3     |   0     |    15     |\n\n**Operation 2:** `TREAT_NEXT`\n- Treats Carol (ID 103, Priority 1)\n- Current time: 30 minutes\n\n**Remaining Queue:**\n\n| Position | ID  | Name  | Priority | Arrival | Wait Time |\n|:--------:|:---:|:-----:|:--------:|:-------:|:---------:|\n|    1     | 102 | Bob   |    2     |   5     |    25     |\n|    2     | 104 | David |    2     |   15    |    15     |\n|    3     | 101 | Alice |    3     |   0     |    30     |\n\n**Operation 3:** `UPDATE_PRIORITY 101 1`\n- Alice's condition worsens to Critical\n\n**Updated Queue:**\n\n| Position | ID  | Name  | Priority | Arrival | Wait Time |\n|:--------:|:---:|:-----:|:--------:|:-------:|:---------:|\n|    1     | 101 | Alice |    1     |   0     |    30     |\n|    2     | 102 | Bob   |    2     |   5     |    25     |\n|    3     | 104 | David |    2     |   15    |    15     |\n\n**Operation 4:** `GET_WAIT_TIME 104`\n- David must wait for: Alice (15 min) + Bob (20 min) = 35 minutes\n\n## Requirements:\n\n- Implement priority queue using dynamic array\n- Maintain heap property OR sorted array\n- Use ONLY pointer arithmetic\n- Handle all operations efficiently\n- Calculate accurate wait times\n\n## Constraints:\n\n- 1 \u2264 Number of patients \u2264 500\n- 1 \u2264 Priority \u2264 3 (1=highest)\n- 0 \u2264 Arrival time \u2264 1440 (24 hours in minutes)\n- 5 \u2264 Treatment time \u2264 120 minutes\n- Operations: up to 1000\n\n## Input Format:\n```\nN (number of operations)\nOperation parameters...\n```\n\n## Output Format:\n```\nFor each operation:\n- ADD: \"ADDED patientID\"\n- TREAT: \"TREATED patientID name\"\n- UPDATE: \"UPDATED patientID priority\"\n- REMOVE: \"REMOVED patientID\"\n- WAIT_TIME: \"WAIT waitMinutes\"\n- SHOW: Display queue\n```\n\n## Function Signatures:\n\n```cpp\nstruct Patient {\n    int id;\n    char name[50];\n    int priority;\n    int arrivalTime;\n    int treatmentTime;\n};\n\nvoid addPatient(Patient** queue, int& size, Patient p);\nPatient treatNext(Patient** queue, int& size, int& currentTime);\nvoid updatePriority(Patient* queue, int size, int id, int newPriority);\nvoid removePatient(Patient** queue, int& size, int id);\nint getWaitTime(Patient* queue, int size, int id, int currentTime);\nvoid heapifyUp(Patient* queue, int index);\nvoid heapifyDown(Patient* queue, int size, int index);\n```\n",
-      "starter_code": "#include <iostream>\n#include <cstring>\nusing namespace std;\n\nstruct Patient {\n    int id;\n    char name[50];\n    int priority;\n    int arrivalTime;\n    int treatmentTime;\n};\n\nbool hasHigherPriority(Patient a, Patient b) {\n    if (a.priority != b.priority)\n        return a.priority < b.priority; // Lower number = higher priority\n    return a.arrivalTime < b.arrivalTime; // FCFS within same priority\n}\n\nvoid addPatient(Patient** queue, int& size, int& capacity, Patient p) {\n    // Resize if needed\n    if (size >= capacity) {\n        capacity *= 2;\n        Patient* newQueue = new Patient[capacity];\n        for (int i = 0; i < size; i++)\n            *(newQueue + i) = *((*queue) + i);\n        delete[] *queue;\n        *queue = newQueue;\n    }\n    \n    // Add patient and maintain sorted order\n    *((*queue) + size) = p;\n    size++;\n    \n    // Sort (insertion sort for simplicity)\n    for (int i = size - 1; i > 0; i--) {\n        if (hasHigherPriority(*((*queue) + i), *((*queue) + i - 1))) {\n            Patient temp = *((*queue) + i);\n            *((*queue) + i) = *((*queue) + i - 1);\n            *((*queue) + i - 1) = temp;\n        } else {\n            break;\n        }\n    }\n}\n\nPatient treatNext(Patient** queue, int& size, int& currentTime) {\n    Patient treated = **queue;\n    currentTime += treated.treatmentTime;\n    \n    // Shift array\n    for (int i = 0; i < size - 1; i++)\n        *((*queue) + i) = *((*queue) + i + 1);\n    size--;\n    \n    return treated;\n}\n\nvoid updatePriority(Patient* queue, int size, int id, int newPriority) {\n    for (int i = 0; i < size; i++) {\n        if ((queue + i)->id == id) {\n            (queue + i)->priority = newPriority;\n            \n            // Re-sort\n            Patient temp = *(queue + i);\n            int j = i;\n            while (j > 0 && hasHigherPriority(temp, *(queue + j - 1))) {\n                *(queue + j) = *(queue + j - 1);\n                j--;\n            }\n            *(queue + j) = temp;\n            break;\n        }\n    }\n}\n\nvoid removePatient(Patient** queue, int& size, int id) {\n    int idx = -1;\n    for (int i = 0; i < size; i++) {\n        if (((*queue) + i)->id == id) {\n            idx = i;\n            break;\n        }\n    }\n    \n    if (idx != -1) {\n        for (int i = idx; i < size - 1; i++)\n            *((*queue) + i) = *((*queue) + i + 1);\n        size--;\n    }\n}\n\nint getWaitTime(Patient* queue, int size, int id, int currentTime) {\n    int waitTime = 0;\n    for (int i = 0; i < size; i++) {\n        if ((queue + i)->id == id)\n            return waitTime;\n        waitTime += (queue + i)->treatmentTime;\n    }\n    return -1;\n}\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int capacity = 10;\n    Patient* queue = new Patient[capacity];\n    int size = 0;\n    int currentTime = 0;\n    \n    for (int i = 0; i < n; i++) {\n        char operation[20];\n        cin >> operation;\n        \n        if (strcmp(operation, \"ADD\") == 0) {\n            Patient p;\n            cin >> p.id >> p.name >> p.priority >> p.arrivalTime >> p.treatmentTime;\n            addPatient(&queue, size, capacity, p);\n            cout << \"ADDED \" << p.id << endl;\n        }\n        else if (strcmp(operation, \"TREAT\") == 0) {\n            if (size > 0) {\n                Patient treated = treatNext(&queue, size, currentTime);\n                cout << \"TREATED \" << treated.id << \" \" << treated.name << endl;\n            }\n        }\n        else if (strcmp(operation, \"UPDATE\") == 0) {\n            int id, newPriority;\n            cin >> id >> newPriority;\n            updatePriority(queue, size, id, newPriority);\n            cout << \"UPDATED \" << id << \" \" << newPriority << endl;\n        }\n        else if (strcmp(operation, \"REMOVE\") == 0) {\n            int id;\n            cin >> id;\n            removePatient(&queue, size, id);\n            cout << \"REMOVED \" << id << endl;\n        }\n        else if (strcmp(operation, \"WAIT\") == 0) {\n            int id;\n            cin >> id;\n            int wait = getWaitTime(queue, size, id, currentTime);\n            cout << \"WAIT \" << wait << endl;\n        }\n    }\n    \n    delete[] queue;\n    return 0;\n}",
+      "time_estimate_minutes": 55,
+      "content": "# Jagged Matrix Transposition (25 Marks)\\n\\nTranspose a jagged 2D array and output the resulting 2D matrix. A jagged array is an array of arrays where each row can have a different number of columns.\\n\\n## Problem Statement:\\n\\nGiven a jagged array, transpose it such that the rows of the result correspond to the indices of the elements in the original rows. If an index does not exist in a row, it should be ignored in the output. You must use pointers to pointers.\\n\\n## Visualization:\\n\\n**Original Jagged Array:**\\nRow 0: [1, 2, 3]\\nRow 1: [4, 5]\\nRow 2: [6]\\n\\n**Memory Mapping:**\\n| index | 0 | 1 | 2 |\\n|---|---|---|---|\\n| **Row 0** | 1 | 2 | 3 |\\n| **Row 1** | 4 | 5 | . |\\n| **Row 2** | 6 | . | . |\\n\\n**Transposed Result:**\\nRow 0: [1, 4, 6]\\nRow 1: [2, 5]\\nRow 2: [3]\\n\\n**Visualization Table:**\\n| Transposed Row | Values |\\n|:---:|:---:|\\n| 0 | 1, 4, 6 |\\n| 1 | 2, 5 |\\n| 2 | 3 |\\n\\n## Requirements:\\n- Implement manual memory allocation for the jagged structure\\n- Identify the maximum column length to determine resulting rows\\n- Transpose the elements using pointer logic\\n- Use ONLY pointer arithmetic (`*(ptr + i)`)\\n- No structs or classes\\n\\n## Constraints:\\n- 1 \u2264 N \u2264 50 (number of rows)\\n- Each row length \u2264 50\\n- Time Complexity: O(Sum of all elements)\\n- Space Complexity: O(N) for row length array\\n\\n## Function Signatures:\\n```cpp\\nvoid transposeJagged(int** jagged, int* rowLens, int n);\\n```",
+      "starter_code": "#include <iostream>\\nusing namespace std;\\n\\nvoid transposeJagged(int** jagged, int* rowLens, int n) {\\n    // TODO: Determine the maximum number of columns across all rows\\n    \\n    // TODO: Iterate through each column index i up to maxCol\\n    \\n    // TODO: For each i, check which rows *(original + row)[i] exists and print it\\n}\\n\\nint main() {\\n    int n;\\n    cin >> n;\\n    int* rowLens = new int[n];\\n    int** jagged = new int*[n];\\n\\n    for (int i = 0; i < n; i++) {\\n        cin >> *(rowLens + i);\\n        *(jagged + i) = new int[*(rowLens + i)];\\n        for (int j = 0; j < *(rowLens + i); j++) cin >> *(*(jagged + i) + j);\\n    }\\n\\n    transposeJagged(jagged, rowLens, n);\\n\\n    // Cleanup\\n    for (int i = 0; i < n; i++) delete[] *(jagged + i);\\n    delete[] jagged;\\n    delete[] rowLens;\\n\\n    return 0;\\n}",
       "visible_test_cases": [
         {
-          "input": "6\nADD 101 Alice 3 0 15\nADD 102 Bob 2 5 20\nADD 103 Carol 1 10 30\nADD 104 David 2 15 25\nTREAT\nWAIT 104",
-          "output": "ADDED 101\nADDED 102\nADDED 103\nADDED 104\nTREATED 103 Carol\nWAIT 20",
-          "explanation": "Carol treated first (priority 1). David waits for Bob (20 min)."
+          "input": "3\\n3 1 2 3\\n2 4 5\\n1 6",
+          "output": "1 4 6\\n2 5\\n3",
+          "explanation": "Transposed jagged rows."
         },
         {
-          "input": "5\nADD 201 Eve 3 0 10\nADD 202 Frank 2 5 15\nUPDATE 201 1\nTREAT\nTREAT",
-          "output": "ADDED 201\nADDED 202\nUPDATED 201 1\nTREATED 201 Eve\nTREATED 202 Frank",
-          "explanation": "Eve's priority updated to 1, treated first."
+          "input": "2\\n1 10\\n3 20 30 40",
+          "output": "10 20\\n30\\n40",
+          "explanation": "Transposed mapping with different row lengths."
         }
       ],
       "hidden_test_cases": [
         {
-          "input": "3\nADD 301 Grace 1 0 20\nTREAT\nWAIT 301",
-          "output": "ADDED 301\nTREATED 301 Grace\nWAIT -1"
+          "input": "1\\n3 1 2 3",
+          "output": "1\\n2\\n3"
         },
         {
-          "input": "7\nADD 401 Henry 2 0 10\nADD 402 Ivy 2 5 15\nADD 403 Jack 1 10 20\nREMOVE 402\nTREAT\nADD 404 Kate 3 20 25\nWAIT 404",
-          "output": "ADDED 401\nADDED 402\nADDED 403\nREMOVED 402\nTREATED 403 Jack\nADDED 404\nWAIT 10"
+          "input": "2\\n2 1 2\\n2 3 4",
+          "output": "1 3\\n2 4"
         },
         {
-          "input": "10\nADD 501 Leo 3 0 5\nADD 502 Mia 2 2 10\nADD 503 Noah 1 5 15\nADD 504 Olivia 2 8 12\nTREAT\nUPDATE 501 1\nTREAT\nWAIT 504\nREMOVE 504\nWAIT 504",
-          "output": "ADDED 501\nADDED 502\nADDED 503\nADDED 504\nTREATED 503 Noah\nUPDATED 501 1\nTREATED 501 Leo\nWAIT 10\nREMOVED 504\nWAIT -1"
+          "input": "3\\n3 1 1 1\\n2 2 2\\n1 3",
+          "output": "1 2 3\\n1 2\\n1"
+        },
+        {
+          "input": "4\\n1 1\\n1 2\\n1 3\\n1 4",
+          "output": "1 2 3 4"
+        },
+        {
+          "input": "2\\n3 1 1 1\\n0",
+          "output": "1\\n1\\n1"
+        }
+      ]
+    },
+    {
+      "question_number": 11,
+      "title": "Island Discovery with Perimeter Analysis",
+      "category": "Recursion & 2D Arrays",
+      "marks": 25,
+      "time_estimate_minutes": 60,
+      "content": "# Island Perimeter Analysis (25 Marks)\\n\\nIdentify all independent islands in a grid and calculate both the total area and the exact perimeter of each island.\\n\\n## Problem Statement:\\n\\nGiven an NxM grid of integers where 1 represents land and 0 represents water, use recursive depth-first search (DFS) to find all disjoint land masses. For each mass, calculate its size (number of cells) and its perimeter (number of land edges adjacent to water or the grid boundary).\\n\\n## Visualization (5x5 Grid):\\n\\n**Input Grid:**\\n| 1 | 1 | 0 | 0 | 0 |\\n|---|---|---|---|---|\\n| 1 | 1 | 0 | 1 | 1 |\\n| 0 | 0 | 0 | 1 | 0 |\\n| 0 | 1 | 1 | 0 | 0 |\\n| 0 | 1 | 1 | 0 | 0 |\\n\\n**Step 1: Discover Island A at (0,0).**\\nDFS uncovers {(0,0), (0,1), (1,0), (1,1)}.\\n- Area: 4\\n- Perimeter: (0,0) looks North/West, (0,1) looks North/East, (1,0) looks West/South, (1,1) looks South/East. Total: 8 edges.\\n\\n**Step 2: Discover Island B at (1,3).**\\nDFS uncovers {(1,3), (1,4), (2,3)}.\\n- Area: 3\\n- Perimeter: 8 edges.\\n\\n**Step 3: Discover Island C at (3,1).**\\nDFS uncovers {(3,1), (3,2), (4,1), (4,2)}.\\n- Area: 4\\n- Perimeter: 8 edges.\\n\\n## Requirements:\\n- Implement `void discoverIslands(int** grid, int n, int m)`\\n- Implement `void dfs(int** grid, int n, int m, int r, int c, int& area, int& perimeter)`\\n- Use ONLY pointer arithmetic (`*(*(grid + i) + j)`)\\n- No structs, classes, or global containers\\n- Mark visited cells using a value like -1 to avoid revisiting\\n- Output the area and perimeter of each island found, sorted by their discovery order (top-to-bottom, left-to-right)\\n\\n## Constraints:\\n- 1 \u2264 N, M \u2264 50\\n- Time Complexity: O(N * M)\\n- Space Complexity: O(N * M) for recursion stack\\n\\n## Function Signatures:\\n```cpp\\nvoid dfs(int** grid, int n, int m, int r, int c, int& area, int& perimeter);\\nvoid discoverIslands(int** grid, int n, int m);\\n```",
+      "starter_code": "#include <iostream>\\nusing namespace std;\\n\\nvoid dfs(int** grid, int n, int m, int r, int c, int& area, int& perimeter) {\\n    // TODO: Mark as visited\\n    // TODO: Increment area\\n    \\n    // TODO: Check 4 neighbors\\n    // If neighbor is out of bounds or 0, increment perimeter\\n    // If land and not visited, recurse\\n}\\n\\nvoid discoverIslands(int** grid, int n, int m) {\\n    for (int i = 0; i < n; i++) {\\n        for (int j = 0; j < m; j++) {\\n            if (*(*(grid + i) + j) == 1) {\\n                int area = 0, perimeter = 0;\\n                dfs(grid, n, m, i, j, area, perimeter);\\n                cout << \"Island Found: Area=\" << area << \", Perimeter=\" << perimeter << endl;\\n            }\\n        }\\n    }\\n}\\n\\nint main() {\\n    int n, m;\\n    cin >> n >> m;\\n    int** grid = new int*[n];\\n    for (int i = 0; i < n; i++) {\\n        *(grid + i) = new int[m];\\n        for (int j = 0; j < m; j++) cin >> *(*(grid + i) + j);\\n    }\\n\\n    discoverIslands(grid, n, m);\\n\\n    for (int i = 0; i < n; i++) delete[] *(grid + i);\\n    delete[] grid;\\n    return 0;\\n}",
+      "visible_test_cases": [
+        {
+          "input": "4 4\\n1 1 0 0\\n1 1 0 0\\n0 0 1 0\\n0 0 0 1",
+          "output": "Island Found: Area=4, Perimeter=8\\nIsland Found: Area=1, Perimeter=4\\nIsland Found: Area=1, Perimeter=4",
+          "explanation": "One 2x2 island and two single-cell islands."
+        },
+        {
+          "input": "2 2\\n1 0\\n0 1",
+          "output": "Island Found: Area=1, Perimeter=4\\nIsland Found: Area=1, Perimeter=4",
+          "explanation": "Diagonal cells are independent islands."
+        }
+      ],
+      "hidden_test_cases": [
+        {
+          "input": "3 3\\n1 1 1\\n1 0 1\\n1 1 1",
+          "output": "Island Found: Area=8, Perimeter=16"
+        },
+        {
+          "input": "1 1\\n0",
+          "output": ""
+        },
+        {
+          "input": "5 5\\n1 1 1 1 1\\n1 0 0 0 1\\n1 0 1 0 1\\n1 0 0 0 1\\n1 1 1 1 1",
+          "output": "Island Found: Area=16, Perimeter=32\\nIsland Found: Area=1, Perimeter=4"
+        },
+        {
+          "input": "10 2\\n1 0\\n1 0\\n1 0\\n1 0\\n1 0\\n1 0\\n0 1\\n0 1\\n0 1\\n0 1",
+          "output": "Island Found: Area=6, Perimeter=14\\nIsland Found: Area=4, Perimeter=10"
+        },
+        {
+          "input": "3 3\\n0 0 0\\n0 0 0\\n0 0 0",
+          "output": ""
+        }
+      ]
+    },
+    {
+      "question_number": 12,
+      "title": "Integer Gaussian Elimination Solver",
+      "category": "2D Arrays & Pointer Mathematics",
+      "marks": 25,
+      "time_estimate_minutes": 60,
+      "content": "# Integer-scaled Gaussian Elimination (25 Marks)\\n\\nSolve a system of N linear equations with N variables using Gaussian elimination. To avoid floating point issues in this fundamental exam, assume all steps result in integers (scaled coefficients).\\n\\n## Problem Statement:\\n\\nGiven an augmented matrix of size Nx(N+1), perform row operations to transform it into reduced row echelon form. Use ONLY pointer arithmetic for all matrix operations.\\n\\n## Visualization (3x4 Matrix):\\n\\n**System:**\\n2x + y - z = 8\\n-3x - y + 2z = -11\\n-2x + y + 2z = -3\\n\\n**Augmented Matrix State:**\\n| index | 0 | 1 | 2 | 3 (Val) |\\n|:---:|:---:|:---:|:---:|:---:|\\n| 0 | 2 | 1 | -1 | 8 |\\n| 1 | -3 | -1 | 2 | -11|\\n| 2 | -2 | 1 | 2 | -3 |\\n\\n**Step 1: Eliminate col 0 below row 0.**\\nR1 = 2*R1 + 3*R0\\nR2 = R2 + R0\\n| 2 | 1 | -1 | 8 |\\n| 0 | 1 | 1 | 2 |\\n| 0 | 2 | 1 | 5 |\\n\\n**Step 2: Eliminate col 1 below row 1.**\\nR2 = R2 - 2*R1\\n| 2 | 1 | -1 | 8 |\\n| 0 | 1 | 1 | 2 |\\n| 0 | 0 | -1 | 1 |\\n\\n**Step 3: Back Substitution.**\\n-z = 1 => z = -1\\ny + (-1) = 2 => y = 3\\n2x + 3 - (-1) = 8 => 2x = 4 => x = 2\\nResult: x=2, y=3, z=-1\\n\\n## Requirements:\\n- Implement `void gaussianElimination(double** matrix, int n)`\\n- Use pointer arithmetic (`*(*(matrix + i) + j)`) exclusively\\n- No structs or classes allowed\\n- Allocate/deallocate matrix dynamically\\n\\n## Constraints:\\n- 2 \u2264 N \u2264 10\\n- All systems provided have a unique integer solution\\n- Time Complexity: O(N^3)\\n\\n## Function Signatures:\\n```cpp\\nvoid gaussianElimination(double** matrix, int n);\\n```",
+      "starter_code": "#include <iostream>\\n#include <iomanip>\\nusing namespace std;\\n\\nvoid gaussianElimination(double** matrix, int n) {\\n    // TODO: Forward Elimination\\n    for (int i = 0; i < n; i++) {\\n        // Partial pivoting (optional but recommended)\\n        \\n        for (int k = i + 1; k < n; k++) {\\n            double factor = *(*(matrix + k) + i) / *(*(matrix + i) + i);\\n            for (int j = i; j <= n; j++) {\\n                *(*(matrix + k) + j) -= factor * (*(*(matrix + i) + j));\\n            }\\n        }\\n    }\\n\\n    // TODO: Back Substitution\\n    double* x = new double[n];\\n    for (int i = n - 1; i >= 0; i--) {\\n        *(x + i) = *(*(matrix + i) + n);\\n        for (int j = i + 1; j < n; j++) {\\n            *(x + i) -= *(*(matrix + i) + j) * (*(x + j));\\n        }\\n        *(x + i) /= *(*(matrix + i) + i);\\n    }\\n\\n    for (int i = 0; i < n; i++) cout << (int)(*(x + i) + 0.5) << \" \";\\n    cout << endl;\\n    delete[] x;\\n}\\n\\nint main() {\\n    int n;\\n    cin >> n;\\n    double** matrix = new double*[n];\\n    for (int i = 0; i < n; i++) {\\n        *(matrix + i) = new double[n + 1];\\n        for (int j = 0; j <= n; j++) cin >> *(*(matrix + i) + j);\\n    }\\n\\n    gaussianElimination(matrix, n);\\n\\n    for (int i = 0; i < n; i++) delete[] *(matrix + i);\\n    delete[] matrix;\\n    return 0;\\n}",
+      "visible_test_cases": [
+        {
+          "input": "3\\n2 1 -1 8\\n-3 -1 2 -11\\n-2 1 2 -3",
+          "output": "2 3 -1",
+          "explanation": "x=2, y=3, z=-1"
+        },
+        {
+          "input": "2\\n1 1 5\\n1 -1 1",
+          "output": "3 2",
+          "explanation": "x+y=5, x-y=1 => x=3, y=2"
+        }
+      ],
+      "hidden_test_cases": [
+        {
+          "input": "3\\n1 2 3 14\\n0 1 2 8\\n0 0 1 3",
+          "output": "1 2 3"
+        },
+        {
+          "input": "3\\n1 1 1 6\\n1 2 2 11\\n1 2 3 14",
+          "output": "1 2 3"
+        },
+        {
+          "input": "4\\n1 1 1 1 10\\n1 2 1 1 12\\n1 1 3 1 16\\n1 1 1 4 22",
+          "output": "1 2 3 4"
+        },
+        {
+          "input": "2\\n4 5 13\\n2 -3 -10",
+          "output": "-1 3"
+        },
+        {
+          "input": "3\\n5 2 3 24\\n0 4 1 11\\n0 0 5 15",
+          "output": "3 2 3"
+        }
+      ]
+    },
+    {
+      "question_number": 13,
+      "title": "Recursive Descent Boolean Parser",
+      "category": "Recursion & String Processing",
+      "marks": 25,
+      "time_estimate_minutes": 65,
+      "content": "# Recursive Descent Boolean Evaluator (25 Marks)\\n\\nEvaluate a boolean expression provided as a string. The string may contain 'T' (True), 'F' (False), '&' (AND), '|' (OR), '!' (NOT), and parentheses '()'.\\n\\n## Problem Statement:\\n\\nImplement a parser using recursive descent. You must handle operator precedence: `!` > `&` > `|`. All parsing must be done using pointer arithmetic on the character array.\\n\\n## Visualization (Expr: \"!(T & F) | F\"):\\n\\n**Step 1: Evaluate `(T & F)`**\\nT AND F = F\\n\\n**Step 2: Evaluate `!(F)`**\\nNOT F = T\\n\\n**Step 3: Evaluate `T | F`**\\nT OR F = T\\n\\n**Final Result: T**\\n\\n## Precedence Levels:\\n1. Parentheses (Highest)\\n2. `!` (Unary NOT)\\n3. `&` (Binary AND)\\n4. `|` (Binary OR) (Lowest)\\n\\n## Requirements:\\n- Implement `bool parseOr(char** expr)`\\n- Implement `bool parseAnd(char** expr)`\\n- Implement `bool parseNot(char** expr)`\\n- Implement `bool parseFactor(char** expr)`\\n- Use pointer arithmetic exclusively (e.g., `*(*expr)++` to consume chars)\\n- No `std::string`, no classes, no global state\\n\\n## Constraints:\\n- Maximum string length: 100\\n- Valid inputs only\\n- Time Complexity: O(N)\\n\\n## Function Signatures:\\n```cpp\\nbool parseOr(char** expr);\\nbool parseAnd(char** expr);\\nbool parseNot(char** expr);\\nbool parseFactor(char** expr);\\n```",
+      "starter_code": "#include <iostream>\\nusing namespace std;\\n\\n// Forward declarations\\nbool parseOr(char** expr);\\n\\nbool parseFactor(char** expr) {\\n    char c = **expr;\\n    if (c == '(') {\\n        (*expr)++; // consume '('\\n        bool res = parseOr(expr);\\n        (*expr)++; // consume ')'\\n        return res;\\n    }\\n    if (c == 'T') {\\n        (*expr)++;\\n        return true;\\n    }\\n    if (c == 'F') {\\n        (*expr)++;\\n        return false;\\n    }\\n    return false;\\n}\\n\\nbool parseNot(char** expr) {\\n    if (**expr == '!') {\\n        (*expr)++;\\n        return !parseNot(expr);\\n    }\\n    return parseFactor(expr);\\n}\\n\\nbool parseAnd(char** expr) {\\n    bool res = parseNot(expr);\\n    while (**expr == '&') {\\n        (*expr)++;\\n        res = res & parseNot(expr);\\n    }\\n    return res;\\n}\\n\\nbool parseOr(char** expr) {\\n    bool res = parseAnd(expr);\\n    while (**expr == '|') {\\n        (*expr)++;\\n        res = res | parseAnd(expr);\\n    }\\n    return res;\\n}\\n\\nint main() {\\n    char input[101];\\n    cin >> input;\\n    char* ptr = input;\\n    if (parseOr(&ptr)) cout << \"T\" << endl;\\n    else cout << \"F\" << endl;\\n    return 0;\\n}",
+      "visible_test_cases": [
+        {
+          "input": "!(T&F)|F",
+          "output": "T",
+          "explanation": "!(F)|F = T|F = T"
+        },
+        {
+          "input": "T&F|T&T",
+          "output": "T",
+          "explanation": "(T&F)|(T&T) = F|T = T"
+        }
+      ],
+      "hidden_test_cases": [
+        {
+          "input": "T",
+          "output": "T"
+        },
+        {
+          "input": "F",
+          "output": "F"
+        },
+        {
+          "input": "!!T",
+          "output": "T"
+        },
+        {
+          "input": "!(T|T|T|F)",
+          "output": "F"
+        },
+        {
+          "input": "(T&T)&(F|T)",
+          "output": "T"
+        }
+      ]
+    },
+    {
+      "question_number": 14,
+      "title": "2D Kernel Convolution with Padding",
+      "category": "2D Arrays & Image Processing Logic",
+      "marks": 25,
+      "time_estimate_minutes": 60,
+      "content": "# Matrix Convolution Simulation (25 Marks)\\n\\nPerform a 2D convolution operation on an NxM matrix using a 3x3 kernel. Implement 'same' padding (adding zeros around the border) so the output matrix has the same dimensions as the input.\\n\\n## Problem Statement:\\n\\nGiven an input matrix `A` and a 3x3 kernel `K`, the convolution result `Y[i][j]` is the sum of element-wise products of `K` and the 3x3 neighborhood centered at `A[i][j]`.\\n\\n## Visualization (3x3 Kernel, Center at 0,0 with Padding):\\n\\n**Input A (3x3):**\\n| 1 | 2 | 3 |\\n| 4 | 5 | 6 |\\n| 7 | 8 | 9 |\\n\\n**Step 1: Pad Input with zeros.**\\n| 0 | 0 | 0 | 0 | 0 |\\n| 0 | 1 | 2 | 3 | 0 |\\n| 0 | 4 | 5 | 6 | 0 |\\n| 0 | 7 | 8 | 9 | 0 |\\n| 0 | 0 | 0 | 0 | 0 |\\n\\n**Step 2: Center Kernel on A[0,0] (which is Padded[1,1]).**\\nNeighbors: [[0,0,0], [0,1,2], [0,4,5]]\\nKernel K: [[0,1,0], [1,-4,1], [0,1,0]] (Laplacian)\\nResult at (0,0): (0*0 + 1*1 + 0*0) + (1*0 + -4*1 + 1*2) + (0*0 + 1*4 + 0*5) = 1 - 4 + 2 + 4 = 3.\\n\\n## Requirements:\\n- Implement `void applyConvolution(int** input, int n, int m, int** kernel, int** output)`\\n- Use manual padding logic within the loop (simulate padding index by index)\\n- Use ONLY pointer arithmetic (`*(ptr + i)`) for all 2D array coordinates\\n- No structs or classes\\n\\n## Constraints:\\n- 3 \u2264 N, M \u2264 20\\n- Kernel size fixed at 3x3\\n- Output should be integers\\n\\n## Function Signatures:\\n```cpp\\nvoid applyConvolution(int** input, int n, int m, int** kernel, int** output);\\n```",
+      "starter_code": "#include <iostream>\\nusing namespace std;\\n\\nvoid applyConvolution(int** input, int n, int m, int** kernel, int** output) {\\n    for (int i = 0; i < n; i++) {\\n        for (int j = 0; j < m; j++) {\\n            int sum = 0;\\n            for (int ki = -1; ki <= 1; ki++) {\\n                for (int kj = -1; kj <= 1; kj++) {\\n                    int ni = i + ki;\\n                    int nj = j + kj;\\n                    int val = 0;\\n                    if (ni >= 0 && ni < n && nj >= 0 && nj < m) {\\n                        val = *(*(input + ni) + nj);\\n                    }\\n                    sum += val * (*(*(kernel + ki + 1) + kj + 1));\\n                }\\n            }\\n            *(*(output + i) + j) = sum;\\n        }\\n    }\\n}\\n\\nint main() {\\n    int n, m;\\n    cin >> n >> m;\\n    int** input = new int*[n];\\n    for (int i = 0; i < n; i++) {\\n        *(input + i) = new int[m];\\n        for (int j = 0; j < m; j++) cin >> *(*(input + i) + j);\\n    }\\n    int** kernel = new int*[3];\\n    for (int i = 0; i < 3; i++) {\\n        *(kernel + i) = new int[3];\\n        for (int j = 0; j < 3; j++) cin >> *(*(kernel + i) + j);\\n    }\\n    int** output = new int*[n];\\n    for (int i = 0; i < n; i++) *(output + i) = new int[m];\\n\\n    applyConvolution(input, n, m, kernel, output);\\n\\n    for (int i = 0; i < n; i++) {\\n        for (int j = 0; j < m; j++) cout << *(*(output + i) + j) << \" \";\\n        cout << endl;\\n    }\\n\\n    // TODO: Memory cleanup\\n    return 0;\\n}",
+      "visible_test_cases": [
+        {
+          "input": "3 3\\n1 2 3\\n4 5 6\\n7 8 9\\n0 1 0\\n1 -4 1\\n0 1 0",
+          "output": "3 3 1\\n3 0 -3\\n-1 -3 -3",
+          "explanation": "Applying Laplacian kernel to 3x3 grid with same padding."
+        },
+        {
+          "input": "3 3\\n1 1 1\\n1 1 1\\n1 1 1\\n1 1 1\\n1 1 1\\n1 1 1",
+          "output": "4 6 4\\n6 9 6\\n4 6 4",
+          "explanation": "3x3 Blur kernel (all 1s) on all-1s grid."
+        }
+      ],
+      "hidden_test_cases": [
+        {
+          "input": "3 3\\n1 0 1\\n0 1 0\\n1 0 1\\n0 0 0\\n0 1 0\\n0 0 0",
+          "output": "1 0 1\\n0 1 0\\n1 0 1"
+        },
+        {
+          "input": "4 4\\n1 2 3 4\\n5 6 7 8\\n9 10 11 12\\n13 14 15 16\\n0 0 0\\n0 0 0\\n0 0 0",
+          "output": "0 0 0 0\\n0 0 0 0\\n0 0 0 0\\n0 0 0 0"
+        },
+        {
+          "input": "5 5\\n0 0 0 0 0\\n0 1 1 1 0\\n0 1 1 1 0\\n0 1 1 1 0\\n0 0 0 0 0\\n1 1 1\\n1 1 1\\n1 1 1",
+          "output": "1 2 3 2 1\\n2 4 6 4 2\\n3 6 9 6 3\\n2 4 6 4 2\\n1 2 3 2 1"
+        },
+        {
+          "input": "3 3\\n1 2 3\\n4 5 6\\n7 8 9\\n1 0 0\\n0 1 0\\n0 0 1",
+          "output": "6 9 8\\n12 15 14\\n12 13 14"
+        },
+        {
+          "input": "4 1\\n1\\n2\\n3\\n4\\n0 1 0\\n0 1 0\\n0 1 0",
+          "output": "3\\n6\\n9\\n7"
+        }
+      ]
+    },
+    {
+      "question_number": 15,
+      "title": "LCS for 3-Strings with 3D Dynamic Memory",
+      "category": "3D Dynamic Programming",
+      "marks": 25,
+      "time_estimate_minutes": 65,
+      "content": "# Longest Common Subsequence of 3 Strings (25 Marks)\\n\\nFind the length of the longest common subsequence of three given strings. You must manage a 3D dynamic memory block manually.\\n\\n## Problem Statement:\\n\\nGiven strings S1, S2, and S3, find the length of the largest subsequence present in all three. A subsequence is derived by deleting zero or more characters without changing the order.\\n\\n## Visualization (S1=\"abc\", S2=\"ac\", S3=\"ace\"):\\n\\n**Step 1: Memory Layout (len1+1, len2+1, len3+1).**\\nDP table dimensions: 4 x 3 x 4.\\n\\n**Step 2: DP State Transition.**\\nIf S1[i] == S2[j] == S3[k]:\\n   dp[i][j][k] = 1 + dp[i-1][j-1][k-1]\\nElse:\\n   dp[i][j][k] = max(dp[i-1][j][k], dp[i][j-1][k], dp[i][j][k-1])\\n\\n**Step 3: Execution example.**\\nAt ('a', 'a', 'a'), dp = 1.\\nAt ('c', 'c', 'c'), dp = 1 + 1 = 2.\\nFinal LCS length: 2 (\"ac\").\\n\\n## Requirements:\\n- Implement `int lcs3(char* s1, char* s2, char* s3, int n1, int n2, int n3)`\\n- Construct and destruct a 3D dynamic array (`int*** dp`) manually\\n- Use ONLY pointer arithmetic for all 3D access (`*(*(*(dp + i) + j) + k)`) \\n- No structs, no classes\\n\\n## Constraints:\\n- String lengths \u2264 50\\n- Time Complexity: O(N1 * N2 * N3)\\n- Space Complexity: O(N1 * N2 * N3)\\n\\n## Function Signatures:\\n```cpp\\nint lcs3(char* s1, char* s2, char* s3, int n1, int n2, int n3);\\n```",
+      "starter_code": "#include <iostream>\\n#include <cstring>\\n#include <algorithm>\\nusing namespace std;\\n\\nint lcs3(char* s1, char* s2, char* s3, int n1, int n2, int n3) {\\n    // Allocate 3D array\\n    int*** dp = new int**[n1 + 1];\\n    for (int i = 0; i <= n1; i++) {\\n        *(dp + i) = new int*[n2 + 1];\\n        for (int j = 0; j <= n2; j++) {\\n            *(*(dp + i) + j) = new int[n3 + 1];\\n            for (int k = 0; k <= n3; k++) *(*(*(dp + i) + j) + k) = 0;\\n        }\\n    }\\n\\n    // TODO: Fill DP Table using pointer arithmetic\\n    \\n    int result = *(*(*(dp + n1) + n2) + n3);\\n\\n    // TODO: Memory cleanup\\n    return result;\\n}\\n\\nint main() {\\n    char s1[100], s2[100], s3[100];\\n    cin >> s1 >> s2 >> s3;\\n    cout << lcs3(s1, s2, s3, strlen(s1), strlen(s2), strlen(s3)) << endl;\\n    return 0;\\n}",
+      "visible_test_cases": [
+        {
+          "input": "abc ac ace",
+          "output": "2",
+          "explanation": "LCS is \"ac\"."
+        },
+        {
+          "input": "abcd1e2 ab12 abcd",
+          "output": "2",
+          "explanation": "LCS is \"ab\"."
+        }
+      ],
+      "hidden_test_cases": [
+        {
+          "input": "a b c",
+          "output": "0"
+        },
+        {
+          "input": "aaa aaa aaa",
+          "output": "3"
+        },
+        {
+          "input": "abcde edcba abc",
+          "output": "1"
+        },
+        {
+          "input": "hello world hi",
+          "output": "1"
+        },
+        {
+          "input": "12345 23456 34567",
+          "output": "3"
+        }
+      ]
+    },
+    {
+      "question_number": 16,
+      "title": "Huffman Logic via Parallel Arrays",
+      "category": "Recursion & Trees",
+      "marks": 25,
+      "time_estimate_minutes": 65,
+      "content": "# Huffman Coding with Parallel Arrays (25 Marks)\\n\\nConstruct a Huffman Tree to generate variable-length prefix codes. Since structs are forbidden, you must implement the tree using parallel arrays to store left children, right children, and frequencies.\\n\\n## Problem Statement:\\n\\nGiven a set of characters and their frequencies, build the Huffman tree by repeatedly joining the two nodes with the smallest frequencies. Represent the tree with three arrays: `left[2N-1]`, `right[2N-1]`, and `freq[2N-1]`. Finally, traverse the tree to output the binary code for a specific character.\\n\\n## Visualization (Chars: {'A':5, 'B':9, 'C':12, 'D':13}):\\n\\n**Step 1: Nodes 0-3 initialized with frequencies.**\\n| ID | Char | Freq | Left | Right |\\n|:---:|:---:|:---:|:---:|:---:|\\n| 0 | A | 5 | -1 | -1 |\\n| 1 | B | 9 | -1 | -1 |\\n| 2 | C | 12 | -1 | -1 |\\n| 3 | D | 13 | -1 | -1 |\\n\\n**Step 2: Combine A(0) and B(1) as siblings.**\\nNew Node 4 freq: 5+9=14. Left: 0, Right: 1.\\nActive nodes: {C:12, D:13, Node4:14}.\\n\\n**Step 3: Combine C(2) and D(3).**\\nNew Node 5 freq: 12+13=25. Left: 2, Right: 3.\\nActive nodes: {Node4:14, Node5:25}.\\n\\n**Step 4: Combine Node 4 and Node 5.**\\nNew Node 6 freq: 14+25=39. Left: 4, Right: 5.\\n\\n**Code for 'A' (0):** Trace 6 -> 4 -> 0. Path: Left (0), Left (0). Result: \"00\".\\n\\n## Requirements:\\n- Implement `void buildHuffman(int* freq, int* left, int* right, int n)`\\n- Implement `void printCode(int* left, int* right, int target, int root)`\\n- Use ONLY pointer arithmetic for all array accesses\\n- No structs or classes\\n- The tree will have exactly 2N-1 nodes\\n\\n## Constraints:\\n- 2 \u2264 N \u2264 26 (Uppercase characters A-Z)\\n- Time Complexity: O(N^2) to find minimums\\n- Space Complexity: O(N) for parallel arrays\\n\\n## Function Signatures:\\n```cpp\\nvoid buildHuffman(int* freq, int* left, int* right, int n);\\nbool getCode(int* left, int* right, int current, int target, char* buffer, int depth);\\n```",
+      "starter_code": "#include <iostream>\\n#include <cstring>\\nusing namespace std;\\n\\nvoid buildHuffman(int* freq, int* left, int* right, int n, int& root) {\\n    int totalNodes = 2 * n - 1;\\n    // Initialize left and right with -1\\n    for (int i = 0; i < totalNodes; i++) {\\n        *(left + i) = -1;\\n        *(right + i) = -1;\\n    }\\n\\n    for (int i = n; i < totalNodes; i++) {\\n        // TODO: Find two remaining nodes with smallest freq that don't have a parent\\n        // TODO: Combine them into node i\\n        // TODO: Update left, right, and freq for node i\\n    }\\n    root = totalNodes - 1;\\n}\\n\\nbool getCode(int* left, int* right, int current, int target, char* buffer, int depth) {\\n    if (current == target) {\\n        *(buffer + depth) = '\\\\0';\\n        return true;\\n    }\\n    if (current == -1) return false;\\n\\n    *(buffer + depth) = '0';\\n    if (getCode(left, right, *(left + current), target, buffer, depth + 1)) return true;\\n\\n    *(buffer + depth) = '1';\\n    if (getCode(left, right, *(right + current), target, buffer, depth + 1)) return true;\\n\\n    return false;\\n}\\n\\nint main() {\\n    int n;\\n    cin >> n;\\n    int* freq = new int[2 * n - 1];\\n    int* left = new int[2 * n - 1];\\n    int* right = new int[2 * n - 1];\\n    for (int i = 0; i < n; i++) cin >> *(freq + i);\\n\\n    int root;\\n    buildHuffman(freq, left, right, n, root);\\n\\n    char buffer[100];\\n    for (int i = 0; i < n; i++) {\\n        if (getCode(left, right, root, i, buffer, 0)) {\\n            cout << (char)('A' + i) << \": \" << buffer << endl;\\n        }\\n    }\\n\\n    // TODO: Cleanup memory\\n    return 0;\\n}",
+      "visible_test_cases": [
+        {
+          "input": "4\\n5 9 12 13",
+          "output": "A: 00\\nB: 01\\nC: 10\\nD: 11",
+          "explanation": "Example from visualization. Codes generated via tree traversal."
+        },
+        {
+          "input": "2\\n10 20",
+          "output": "A: 0\\nB: 1",
+          "explanation": "Simple two-node Huffman tree."
+        }
+      ],
+      "hidden_test_cases": [
+        {
+          "input": "3\\n1 1 1",
+          "output": "A: 00\\nB: 01\\nC: 1"
+        },
+        {
+          "input": "5\\n1 1 1 1 1",
+          "output": "A: 000\\nB: 001\\nC: 01\\nD: 10\\nE: 11"
+        },
+        {
+          "input": "4\\n10 10 10 10",
+          "output": "A: 00\\nB: 01\\nC: 10\\nD: 11"
+        },
+        {
+          "input": "6\\n5 10 15 20 25 30",
+          "output": "A: 0000\\nB: 0001\\nC: 001\\nD: 01\\nE: 10\\nF: 11"
+        },
+        {
+          "input": "3\\n10 5 2",
+          "output": "A: 1\\nB: 01\\nC: 00"
+        }
+      ]
+    },
+    {
+      "question_number": 17,
+      "title": "Topological Workflow Sorting",
+      "category": "Recursion & Graphs",
+      "marks": 25,
+      "time_estimate_minutes": 55,
+      "content": "# Topological Sorting of Task Dependencies (25 Marks)\\n\\nDetermine a valid sequence to execute N tasks given their dependencies. A dependency A -> B means task A must be finished before B starts.\\n\\n## Problem Statement:\\n\\nRepresent dependencies in a dynamic N*N adjacency matrix. Use Kahn's algorithm or DFS with a stack (implemented as an array) to find the topological order. If the graph contains a cycle (circular dependency), output \"Dependency Cycle Detected\".\\n\\n## Visualization (4 Tasks):\\n\\n**Dependencies:**\\n0 -> 1\\n0 -> 2\\n1 -> 3\\n2 -> 3\\n\\n**Adjacency Matrix:**\\n| Task | 0 | 1 | 2 | 3 |\\n|---|---|---|---|---|\\n| **0** | 0 | 1 | 1 | 0 |\\n| **1** | 0 | 0 | 0 | 1 |\\n| **2** | 0 | 0 | 0 | 1 |\\n| **3** | 0 | 0 | 0 | 0 |\\n\\n**Execution Logic:**\\n1. Tasks with 0 in-degree: {0}.\\n2. Execute 0. Decrement in-degree of 1 and 2. New in-degrees: 1:0, 2:0, 3:2.\\n3. Tasks with 0 in-degree: {1, 2}. Execute 1 then 2 (or vice versa).\\n4. Decrement in-degree of 3 twice. New in-degree: 3:0.\\n5. Execute 3.\\nFinal Order: 0 1 2 3\\n\\n## Requirements:\\n- Implement `void topologicalSort(int** adj, int n)`\\n- Detect cycles during traversal\\n- Use ONLY pointer arithmetic for matrix and array access\\n- Hand-allocate all arrays and clean up memory\\n- No structs or classes\\n\\n## Constraints:\\n- 1 \u2264 N \u2264 25\\n- Time Complexity: O(V + E) which is O(N^2) for adjacency matrix\\n- Space Complexity: O(N) for in-degree and stack arrays\\n\\n## Function Signatures:\\n```cpp\\nvoid topologicalSort(int** adj, int n);\\n```",
+      "starter_code": "#include <iostream>\\nusing namespace std;\\n\\nvoid topologicalSort(int** adj, int n) {\\n    int* inDegree = new int[n];\\n    for (int i = 0; i < n; i++) *(inDegree + i) = 0;\\n\\n    for (int i = 0; i < n; i++) {\\n        for (int j = 0; j < n; j++) {\\n            if (*(*(adj + i) + j) == 1) (*(inDegree + j))++;\\n        }\\n    }\\n\\n    int* queue = new int[n];\\n    int head = 0, tail = 0;\\n    \\n    // TODO: Add all tasks with 0 in-degree to queue\\n    \\n    // TODO: Process queue and update neighbors\\n    \\n    // TODO: Check if all tasks were processed (detect cycle)\\n\\n    delete[] inDegree;\\n    delete[] queue;\\n}\\n\\nint main() {\\n    int n, e;\\n    cin >> n >> e;\\n    int** adj = new int*[n];\\n    for (int i = 0; i < n; i++) {\\n        *(adj + i) = new int[n];\\n        for (int j = 0; j < n; j++) *(*(adj + i) + j) = 0;\\n    }\\n    for (int i = 0; i < e; i++) {\\n        int u, v;\\n        cin >> u >> v;\\n        *(*(adj + u) + v) = 1;\\n    }\\n\\n    topologicalSort(adj, n);\\n\\n    for (int i = 0; i < n; i++) delete[] *(adj + i);\\n    delete[] adj;\\n    return 0;\\n}",
+      "visible_test_cases": [
+        {
+          "input": "4 4\\n0 1\\n0 2\\n1 3\\n2 3",
+          "output": "0 1 2 3",
+          "explanation": "Valid sequence for diamond dependency."
+        },
+        {
+          "input": "2 2\\n0 1\\n1 0",
+          "output": "Dependency Cycle Detected",
+          "explanation": "Circular dependency between 0 and 1."
+        }
+      ],
+      "hidden_test_cases": [
+        {
+          "input": "1 0",
+          "output": "0"
+        },
+        {
+          "input": "3 2\\n0 1\\n1 2",
+          "output": "0 1 2"
+        },
+        {
+          "input": "5 4\\n0 1\\n1 2\\n2 3\\n3 4",
+          "output": "0 1 2 3 4"
+        },
+        {
+          "input": "3 3\\n0 1\\n1 2\\n2 0",
+          "output": "Dependency Cycle Detected"
+        },
+        {
+          "input": "4 3\\n1 0\\n2 0\\n3 0",
+          "output": "1 2 3 0"
+        }
+      ]
+    },
+    {
+      "question_number": 18,
+      "title": "Hierarchical Expression Simulation",
+      "category": "Recursion & Memory Management",
+      "marks": 25,
+      "time_estimate_minutes": 65,
+      "content": "# Recursive Expression Tree Evaluator (25 Marks)\\n\\nSimulate the evaluation of an arithmetic expression by representing the hierarchy using parallel arrays instead of an explicit tree structure. The expression strings use postfix notation for simplicity in this advanced memory task.\\n\\n## Problem Statement:\\n\\nGiven a list of 'nodes' in postfix order, evaluate the total. Some nodes are operators (+, -, *, /) and some are operands (integers). Use a manual stack (as a dynamic array) and handle the operations using pointer logic.\\n\\n## Visualization (Post-fix: \"10 2 8 * +\"):\\n\\n**Step 1: Push 10.**\\nStack: [10]\\n\\n**Step 2: Push 2.**\\nStack: [10, 2]\\n\\n**Step 3: Push 8.**\\nStack: [10, 2, 8]\\n\\n**Step 4: See Operator '*'.**\\nPop 8 and 2. Result 2 * 8 = 16. Push 16.\\nStack: [10, 16]\\n\\n**Step 5: See Operator '+'.**\\nPop 16 and 10. Result 10 + 16 = 26. Push 26.\\nStack: [26]\\n\\n## Requirements:\\n- Implement `int evaluatePostfix(char** tokens, int n)`\\n- Implement a manual dynamic Stack using pointers\\n- Support +, -, *, /\\n- Use ONLY pointer arithmetic for the stack and token access\\n- No structs or global containers\\n\\n## Constraints:\\n- 1 \u2264 N \u2264 50 tokens\\n- Tokens are either single operators or integers as strings\\n- Result fits in a standard integer\\n- Time Complexity: O(N)\\n\\n## Function Signatures:\\n```cpp\\nint evaluatePostfix(char** tokens, int n);\\nbool isOperator(char* token);\\nint charToInt(char* s);\\n```",
+      "starter_code": "#include <iostream>\\n#include <cstdlib>\\nusing namespace std;\\n\\nbool isOperator(char* token) {\\n    char c = *token;\\n    return (c == '+' || c == '-' || c == '*' || c == '/') && *(token + 1) == '\\\\0';\\n}\\n\\nint evaluatePostfix(char** tokens, int n) {\\n    int* stack = new int[n];\\n    int top = -1;\\n\\n    for (int i = 0; i < n; i++) {\\n        char* token = *(tokens + i);\\n        if (!isOperator(token)) {\\n            *(stack + (++top)) = atoi(token);\\n        } else {\\n            int b = *(stack + (top--));\\n            int a = *(stack + (top--));\\n            if (*token == '+') *(stack + (++top)) = a + b;\\n            else if (*token == '-') *(stack + (++top)) = a - b;\\n            else if (*token == '*') *(stack + (++top)) = a * b;\\n            else if (*token == '/') *(stack + (++top)) = a / b;\\n        }\\n    }\\n    int res = *(stack + top);\\n    delete[] stack;\\n    return res;\\n}\\n\\nint main() {\\n    int n;\\n    cin >> n;\\n    char** tokens = new char*[n];\\n    for (int i = 0; i < n; i++) {\\n        *(tokens + i) = new char[20];\\n        cin >> *(tokens + i);\\n    }\\n\\n    cout << evaluatePostfix(tokens, n) << endl;\\n\\n    for (int i = 0; i < n; i++) delete[] *(tokens + i);\\n    delete[] tokens;\\n    return 0;\\n}",
+      "visible_test_cases": [
+        {
+          "input": "5\\n10 2 8 * +",
+          "output": "26",
+          "explanation": "10 + (2 * 8) = 26"
+        },
+        {
+          "input": "3\\n4 2 /",
+          "output": "2",
+          "explanation": "4 / 2 = 2"
+        }
+      ],
+      "hidden_test_cases": [
+        {
+          "input": "1\\n5",
+          "output": "5"
+        },
+        {
+          "input": "7\\n5 1 2 + 4 * + 3 -",
+          "output": "14"
+        },
+        {
+          "input": "3\\n10 12 -",
+          "output": "-2"
+        },
+        {
+          "input": "5\\n2 3 * 5 4 * +",
+          "output": "26"
+        },
+        {
+          "input": "9\\n3 4 + 2 * 7 / 2 * 4 +",
+          "output": "8"
+        }
+      ]
+    },
+    {
+      "question_number": 19,
+      "title": "Sparse Matrix CSR Multiplication",
+      "category": "Memory Management & Pointers",
+      "marks": 25,
+      "time_estimate_minutes": 60,
+      "content": "# Sparse Matrix CSR Multiplication (25 Marks)\\n\\nMultiply two sparse matrices efficiently using the Compressed Sparse Row (CSR) format. You must implement the CSR storage and multiplication purely with pointers and dynamic memory.\\n\\n## Problem Statement:\\n\\nA CSR format represents a sparse matrix with three arrays:\\n1. `values`: non-zero elements\\n2. `col_indices`: column index of each value\\n3. `row_ptr`: indices in `values` where each row begins\\n\\nGiven two matrices A (NxM) and B (MxP) in dense format, convert A to CSR, then multiply A (CSR) by B (dense) to get the result C (NxP).\\n\\n## Visualization (A = [[0, 10], [20, 0]], B = [[1, 2], [3, 4]]):\\n\\n**A in CSR:**\\n- values: [10, 20]\\n- col_indices: [1, 0]\\n- row_ptr: [0, 1, 2]\\n\\n**Multiplication Loop for C[0,0]:**\\nRow 0 of A has elements from row_ptr[0] to row_ptr[1]-1.\\nIndex 0: value 10, col 1. Contribution = 10 * B[1,0] = 10 * 3 = 30.\\nTotal C[0,0] = 30.\\n\\n## Requirements:\\n- Implement `void denseToCSR(int** dense, int n, int m, int* values, int* col_indices, int* row_ptr)`\\n- Implement `void multiplyCSR(int* values, int* col_indices, int* row_ptr, int** B, int n, int p, int** result)`\\n- Use pointer arithmetic for all array manipulations\\n- No structs, no classes\\n- Manually count non-zero elements to allocate CSR arrays\\n\\n## Constraints:\\n- 1 \u2264 N, M, P \u2264 20\\n- Time Complexity: O(non_zeros + N*P)\\n- Space Complexity: O(N*M)\\n\\n## Function Signatures:\\n```cpp\\nvoid multiplyCSR(int* values, int* col_indices, int* row_ptr, int** B, int n, int p, int** result);\\n```",
+      "starter_code": "#include <iostream>\\nusing namespace std;\\n\\nvoid multiplyCSR(int* vals, int* cols, int* rptr, int** B, int n, int p, int** result) {\\n    for (int i = 0; i < n; i++) {\\n        for (int k = *(rptr + i); k < *(rptr + i + 1); k++) {\\n            int val = *(vals + k);\\n            int col_a = *(cols + k);\\n            for (int j = 0; j < p; j++) {\\n                *(*(result + i) + j) += val * (*(*(B + col_a) + j));\\n            }\\n        }\\n    }\\n}\\n\\nint main() {\\n    int n, m, p;\\n    cin >> n >> m >> p;\\n    \\n    int** A = new int*[n];\\n    int nnz = 0;\\n    for (int i = 0; i < n; i++) {\\n        *(A + i) = new int[m];\\n        for (int j = 0; j < m; j++) {\\n            cin >> *(*(A + i) + j);\\n            if (*(*(A + i) + j) != 0) nnz++;\\n        }\\n    }\\n\\n    int** B = new int*[m];\\n    for (int i = 0; i < m; i++) {\\n        *(B + i) = new int[p];\\n        for (int j = 0; j < p; j++) cin >> *(*(B + i) + j);\\n    }\\n\\n    int* vals = new int[nnz];\\n    int* col_idx = new int[nnz];\\n    int* row_ptr = new int[n + 1];\\n\\n    // TODO: Populate CSR arrays from dense A\\n\\n    int** res = new int*[n];\\n    for (int i = 0; i < n; i++) {\\n        *(res + i) = new int[p];\\n        for (int j = 0; j < p; j++) *(*(res + i) + j) = 0;\\n    }\\n\\n    multiplyCSR(vals, col_idx, row_ptr, B, n, p, res);\\n\\n    // TODO: Output result and cleanup\\n    return 0;\\n}",
+      "visible_test_cases": [
+        {
+          "input": "2 2 2\\n0 10\\n20 0\\n1 2\\n3 4",
+          "output": "30 40\\n20 40",
+          "explanation": "Row 0 takes 10*B[1]. Row 1 takes 20*B[0]."
+        },
+        {
+          "input": "2 3 2\\n1 0 0\\n0 0 2\\n10 20\\n30 40\\n50 60",
+          "output": "10 20\\n100 120",
+          "explanation": "Multiplying 2x3 and 3x2 matrices."
+        }
+      ],
+      "hidden_test_cases": [
+        {
+          "input": "1 1 1\\n5\\n10",
+          "output": "50"
+        },
+        {
+          "input": "2 2 1\\n1 2\\n3 4\\n10\\n20",
+          "output": "50\\n110"
+        },
+        {
+          "input": "3 3 3\\n1 0 0\\n0 1 0\\n0 0 1\\n1 2 3\\n4 5 6\\n7 8 9",
+          "output": "1 2 3\\n4 5 6\\n7 8 9"
+        },
+        {
+          "input": "2 2 2\\n0 0\\n0 0\\n1 2\\n3 4",
+          "output": "0 0\\n0 0"
+        },
+        {
+          "input": "3 2 3\\n1 2\\n0 0\\n3 4\\n1 0 1\\n0 1 0",
+          "output": "1 2 1\\n0 0 0\\n3 4 3"
+        }
+      ]
+    },
+    {
+      "question_number": 20,
+      "title": "Genetic Sequence Alignment",
+      "category": "Dynamic Programming & Memory",
+      "marks": 25,
+      "time_estimate_minutes": 65,
+      "content": "# Smith-Waterman Similarity Alignment (25 Marks)\\n\\nFind the optimal local alignment score and the alignment path between two DNA sequences using dynamic programming.\\n\\n## Problem Statement:\\n\\nGiven strings S1 and S2, use an edit-distance approach to fill a DP matrix. Scores: Match=+2, Mismatch=-1, Gap=-1. Since we seek local alignment, the DP cell value cannot be less than 0. Track the path to reconstruct the aligned segments.\\n\\n## Visualization (S1=\"GATTACA\", S2=\"GCAT\"):\\n\\n**DP Matrix fragment:**\\n| | - | G | C | A | T |\\n|---|---|---|---|---|---|\\n| - | 0 | 0 | 0 | 0 | 0 |\\n| G | 0 | 2 | 1 | 0 | 0 |\\n| A | 0 | 1 | 1 | 3 | 2 |\\n| T | 0 | 0 | 0 | 2 | 5 |\\n| T | 0 | 0 | 0 | 1 | 4 |\\n\\n**Max Score Found:** 5 at (3,4) corresponding to S1:\"GAT\" and S2:\"G-AT\" or similar.\\n\\n## Requirements:\\n- Implement `void alignSequences(char* s1, char* s2, int& score, char* aligned1, char* aligned2)`\\n- Construct DP matrix dynamically using pointers-to-pointers\\n- Implement backtracking to reconstruct the aligned strings with '-' for gaps\\n- Use ONLY pointer arithmetic for all accesses\\n- No structs or classes\\n\\n## Constraints:\\n- String length \u2264 50\\n- Time Complexity: O(N*M)\\n- Space Complexity: O(N*M)\\n\\n## Function Signatures:\\n```cpp\\nvoid alignSequences(char* s1, char* s2, int& maxScore, char* res1, char* res2);\\n```",
+      "starter_code": "#include <iostream>\\n#include <cstring>\\nusing namespace std;\\n\\nvoid alignSequences(char* s1, char* s2, int& maxScore, char* res1, char* res2) {\\n    int n = strlen(s1);\\n    int m = strlen(s2);\\n    int** dp = new int*[n + 1];\\n    for (int i = 0; i <= n; i++) {\\n        *(dp + i) = new int[m + 1];\\n        for (int j = 0; j <= m; j++) *(*(dp + i) + j) = 0;\\n    }\\n\\n    // TODO: Fill DP matrix with Smith-Waterman scores\\n    \\n    // TODO: Find max value and backtrack for reconstruction\\n    \\n    // TODO: Cleanup DP matrix\\n}\\n\\nint main() {\\n    char s1[100], s2[100];\\n    cin >> s1 >> s2;\\n    int score = 0;\\n    char r1[200] = {0}, r2[200] = {0};\\n    alignSequences(s1, s2, score, r1, r2);\\n    cout << score << \" \" << r1 << \" \" << r2 << endl;\\n    return 0;\\n}",
+      "visible_test_cases": [
+        {
+          "input": "GATTACA GCAT",
+          "output": "5 GAT GAT",
+          "explanation": "Optimal local alignment has score 5 between 'GAT' and 'GCA' variant."
+        },
+        {
+          "input": "AAA TTT",
+          "output": "0 - -",
+          "explanation": "No matching subsequences found with positive score."
+        }
+      ],
+      "hidden_test_cases": [
+        {
+          "input": "AGCTAGCT AGCT",
+          "output": "8 AGCT AGCT"
+        },
+        {
+          "input": "ABC DEF",
+          "output": "0 - -"
+        },
+        {
+          "input": "GGGG GGGG",
+          "output": "8 GGGG GGGG"
+        },
+        {
+          "input": "AAAAA AAA",
+          "output": "6 AAA AAA"
+        },
+        {
+          "input": "ACGT TGCA",
+          "output": "2 A T"
+        }
+      ]
+    },
+    {
+      "question_number": 21,
+      "title": "Recursive Matrix Determinant Solver",
+      "category": "Recursion & 2D Arrays",
+      "marks": 25,
+      "time_estimate_minutes": 65,
+      "content": "# Recursive Matrix Determinant (25 Marks)\\n\\nCalculate the determinant of an NxN matrix using the Laplace Expansion method. This problem focuses on high-complexity recursion and manual memory management for dynamic sub-matrices.\\n\\n## Problem Statement:\\n\\nThe determinant of an NxN matrix A is calculated by sum( (-1)^j * A[0][j] * det(M_0j) ) where M_0j is the (N-1)x(N-1) minor obtained by deleting row 0 and column j. You must allocate and deallocate memory for each minor during recursion.\\n\\n## Visualization (3x3 Matrix):\\n\\n**Input A:**\\n| 1 | 2 | 3 |\\n| 4 | 5 | 6 |\\n| 7 | 8 | 9 |\\n\\n**Expansion along Row 0:**\\ndet(A) = 1*det(M00) - 2*det(M01) + 3*det(M02)\\n\\n**Minor M00:**\\n| 5 | 6 |\\n| 8 | 9 |\\ndet = 5*9 - 6*8 = 45 - 48 = -3\\n\\n**Minor M01:**\\n| 4 | 6 |\\n| 7 | 9 |\\ndet = 4*9 - 6*7 = 36 - 42 = -6\\n\\n**Minor M02:**\\n| 4 | 5 |\\n| 7 | 8 |\\ndet = 4*8 - 5*7 = 32 - 35 = -3\\n\\n**Final Calculation:**\\ndet(A) = 1(-3) - 2(-6) + 3(-3) = -3 + 12 - 9 = 0.\\n\\n## Requirements:\\n- Implement `int calculateDeterminant(int** matrix, int n)`\\n- Dynamically allocate memory for sub-matrices inside the recursive function\\n- Properly `delete[]` all allocated memory before each return to prevent massive leaks\\n- Use ONLY pointer arithmetic (`*(*(matrix + i) + j)`)\\n- No structs or classes allowed\\n\\n## Constraints:\\n- 1 \u2264 N \u2264 8 (due to O(N!) complexity and memory limits)\\n- Time Complexity: O(N!)\\n- Space Complexity: O(N^2) per recursion level\\n\\n## Function Signatures:\\n```cpp\\nint calculateDeterminant(int** matrix, int n);\\nvoid getMinor(int** matrix, int** minor, int n, int colToSkip);\\n```",
+      "starter_code": "#include <iostream>\\nusing namespace std;\\n\\nvoid getMinor(int** matrix, int** minor, int n, int colToSkip) {\\n    // TODO: Copy elements from matrix into minor, skipping row 0 and colToSkip\\n    // Use pointer arithmetic exclusively\\n}\\n\\nint calculateDeterminant(int** matrix, int n) {\\n    if (n == 1) return **matrix;\\n    if (n == 2) return (**matrix * *(*(matrix + 1) + 1)) - (*(*matrix + 1) * **(matrix + 1));\\n\\n    int det = 0;\\n    int sign = 1;\\n\\n    for (int j = 0; j < n; j++) {\\n        // TODO: Allocate memory for minor (n-1 x n-1)\\n        \\n        // TODO: Populate minor\\n        \\n        // TODO: Recurse and add to det\\n        \\n        // TODO: Deallocate minor memory\\n        sign = -sign;\\n    }\\n\\n    return det;\\n}\\n\\nint main() {\\n    int n;\\n    cin >> n;\\n    int** matrix = new int*[n];\\n    for (int i = 0; i < n; i++) {\\n        *(matrix + i) = new int[n];\\n        for (int j = 0; j < n; j++) cin >> *(*(matrix + i) + j);\\n    }\\n\\n    cout << calculateDeterminant(matrix, n) << endl;\\n\\n    for (int i = 0; i < n; i++) delete[] *(matrix + i);\\n    delete[] matrix;\\n    return 0;\\n}",
+      "visible_test_cases": [
+        {
+          "input": "3\\n1 2 3\\n4 5 6\\n7 8 9",
+          "output": "0",
+          "explanation": "Determinant of lineary dependent rows is 0."
+        },
+        {
+          "input": "4\\n1 0 2 -1\\n3 0 0 5\\n2 1 4 -3\\n1 0 5 0",
+          "output": "30",
+          "explanation": "Determinant calculation for a 4x4 matrix."
+        }
+      ],
+      "hidden_test_cases": [
+        {
+          "input": "1\\n42",
+          "output": "42"
+        },
+        {
+          "input": "2\\n3 8\\n4 6",
+          "output": "-14"
+        },
+        {
+          "input": "3\\n6 1 1\\n4 -2 5\\n2 8 7",
+          "output": "-306"
+        },
+        {
+          "input": "5\\n2 3 4 5 6\\n1 2 3 4 5\\n3 4 5 6 7\\n0 0 0 1 0\\n0 0 0 0 1",
+          "output": "0"
+        },
+        {
+          "input": "4\\n1 2 3 4\\n0 5 6 7\\n0 0 8 9\\n0 0 0 10",
+          "output": "400"
+        }
+      ]
+    },
+    {
+      "question_number": 22,
+      "title": "Traveling Salesperson (Backtracking)",
+      "category": "Recursion & Graphs",
+      "marks": 25,
+      "time_estimate_minutes": 65,
+      "content": "# Traveling Salesperson Problem (25 Marks)\\n\\nFind the minimum cost to visit all cities exactly once and return to the starting city. Use backtracking to explore all possible routes in a directed weighted graph.\\n\\n## Problem Statement:\\n\\nRepresent the graph as an NxN adjacency matrix where `adj[i][j]` is the cost from city i to city j. Use recursive backtracking to find the Hamiltonian cycle with the minimum total weight. Track visited cities using a dynamic boolean array.\\n\\n## Visualization (4 Cities):\\n\\n**Adjacency Matrix:**\\n| City | 0 | 1 | 2 | 3 |\\n|:---:|:---:|:---:|:---:|:---:|\\n| 0 | 0 | 10 | 15 | 20 |\\n| 1 | 5 | 0 | 9 | 10 |\\n| 2 | 6 | 13 | 0 | 12 |\\n| 3 | 8 | 8 | 9 | 0 |\\n\\n**Step 1: Start at City 0.**\\nVisit City 1 (Cost 10). Visited: {0,1}\\n\\n**Step 2: From 1, visit City 2 (Cost 9).**\\nVisited: {0,1,2}. Current Total: 19.\\n\\n**Step 3: From 2, visit City 3 (Cost 12).**\\nVisited: {0,1,2,3}. Current Total: 31.\\n\\n**Step 4: Return to 0 from City 3 (Cost 8).**\\nTotal Cycle Cost: 39.\\n\\n**Step 5: Backtrack and try other paths (e.g., 0->2->1->3->0).**\\n\\n## Requirements:\\n- Implement `void tsp(int** graph, bool* visited, int currPos, int n, int count, int cost, int& minCost)`\\n- Use recursive call for each city\\n- Prune the search if current cost exceeds `minCost`\\n- Use ONLY pointer arithmetic (`*(*(graph + i) + j)`)\\n- No structs or global variables allowed\\n\\n## Constraints:\\n- 2 \u2264 N \u2264 12\\n- Time Complexity: O(N!)\\n- Space Complexity: O(N) for visited array\\n\\n## Function Signatures:\\n```cpp\\nvoid tsp(int** graph, bool* visited, int currPos, int n, int count, int cost, int& minCost);\\n```",
+      "starter_code": "#include <iostream>\\n#include <climits>\\nusing namespace std;\\n\\nvoid tsp(int** graph, bool* visited, int currPos, int n, int count, int cost, int& minCost) {\\n    // TODO: Base case - all cities visited, add return to start\\n    \\n    // TODO: Recursive step - try visiting each unvisited city\\n    // Use pointer arithmetic exclusively\\n}\\n\\nint main() {\\n    int n;\\n    cin >> n;\\n    int** graph = new int*[n];\\n    for (int i = 0; i < n; i++) {\\n        *(graph + i) = new int[n];\\n        for (int j = 0; j < n; j++) cin >> *(*(graph + i) + j);\\n    }\\n\\n    bool* visited = new bool[n];\\n    for (int i = 0; i < n; i++) *(visited + i) = false;\\n\\n    *(visited + 0) = true;\\n    int minCost = INT_MAX;\\n    tsp(graph, visited, 0, n, 1, 0, minCost);\\n\\n    cout << minCost << endl;\\n\\n    // TODO: Cleanup\\n    return 0;\\n}",
+      "visible_test_cases": [
+        {
+          "input": "4\\n0 10 15 20\\n5 0 9 10\\n6 13 0 12\\n8 8 9 0",
+          "output": "35",
+          "explanation": "Optimal path: 0 -> 1 -> 3 -> 2 -> 0. Cost: 10 + 10 + 9 + 6 = 35."
+        },
+        {
+          "input": "2\\n0 5\\n10 0",
+          "output": "15",
+          "explanation": "Only one possible cycle: 0 -> 1 -> 0."
+        }
+      ],
+      "hidden_test_cases": [
+        {
+          "input": "3\\n0 1 10\\n1 0 2\\n10 2 0",
+          "output": "13"
+        },
+        {
+          "input": "4\\n0 20 30 10\\n15 0 15 20\\n25 10 0 30\\n20 20 25 0",
+          "output": "60"
+        },
+        {
+          "input": "5\\n0 12 10 19 8\\n12 0 3 7 2\\n10 3 0 6 20\\n19 7 6 0 4\\n8 2 20 4 0",
+          "output": "32"
+        },
+        {
+          "input": "3\\n0 100 200\\n100 0 1\\n200 1 0",
+          "output": "301"
+        },
+        {
+          "input": "4\\n0 1 1 1\\n1 0 1 1\\n1 1 0 1\\n1 1 1 0",
+          "output": "4"
+        }
+      ]
+    },
+    {
+      "question_number": 23,
+      "title": "Largest Palindrome Sub-matrix",
+      "category": "2D Arrays & Logic",
+      "marks": 25,
+      "time_estimate_minutes": 60,
+      "content": "# Palindrome Square Discovery (25 Marks)\\n\\nFind the size of the largest NxN square sub-matrix in a character grid that reads as a palindrome in at least three directions: Horizontally, Vertically, and Diagonally.\\n\\n## Problem Statement:\\n\\nGiven an RxC grid of characters, a sub-matrix of size KxK is a 'Palindrome Square' if:\\n1. Every row is a palindrome.\\n2. Every column is a palindrome.\\n3. Both main and anti-diagonals are palindromes (middle symmetry).\\n\\nFind the maximum possible K.\\n\\n## Visualization (4x4 Grid):\\n\\n| A | B | B | A |\\n|---|---|---|---|\\n| B | C | C | B |\\n| B | C | C | B |\\n| A | B | B | A |\\n\\n**Analysis:**\\n- Entire 4x4 is a Palindrome Square.\\n- Row 0: ABBA (Pal)\\n- Col 0: ABBA (Pal)\\n- Diagonal: ACCA (Pal)\\n\\n## Requirements:\\n- Implement `int findMaxPalindromeSquare(char** grid, int r, int c)`\\n- Implement `bool isPalindromeSquare(char** grid, int r, int c, int size)`\\n- Use ONLY pointer arithmetic for character access\\n- No structs, no classes\\n- Iterate through all possible sub-matrix origins (i, j) and sizes S\\n\\n## Constraints:\\n- 1 \u2264 R, C \u2264 40\\n- Time Complexity: O(R * C * min(R,C)^2)\\n- Space Complexity: O(1) additional\\n\\n## Function Signatures:\\n```cpp\\nbool isPalindromeSquare(char** grid, int startR, int startC, int size);\\nint findMaxPalindromeSquare(char** grid, int r, int c);\\n```",
+      "starter_code": "#include <iostream>\\nusing namespace std;\\n\\nbool isPalindromeSquare(char** grid, int r, int c, int k) {\\n    // TODO: Verify each row in [r..r+k-1] [c..c+k-1] is a palindrome\\n    \\n    // TODO: Verify each column\\n    \\n    // TODO: Verify diagonals\\n    \\n    return true;\\n}\\n\\nint findMaxPalindromeSquare(char** grid, int r, int c) {\\n    int maxK = 1;\\n    // TODO: Nested loops for start indices and sizes\\n    return maxK;\\n}\\n\\nint main() {\\n    int r, c;\\n    cin >> r >> c;\\n    char** grid = new char*[r];\\n    for (int i = 0; i < r; i++) {\\n        *(grid + i) = new char[c];\\n        for (int j = 0; j < c; j++) cin >> *(*(grid + i) + j);\\n    }\\n\\n    cout << findMaxPalindromeSquare(grid, r, c) << endl;\\n\\n    return 0;\\n}",
+      "visible_test_cases": [
+        {
+          "input": "4 4\\nA B B A\\nB C C B\\nB C C B\\nA B B A",
+          "output": "4",
+          "explanation": "The entire 4x4 matrix satisfies all palindrome properties."
+        },
+        {
+          "input": "3 3\\nA B C\\nD E F\\nG H I",
+          "output": "1",
+          "explanation": "No sub-matrix larger than 1x1 is a palindrome."
+        }
+      ],
+      "hidden_test_cases": [
+        {
+          "input": "2 2\\nA A\\nA A",
+          "output": "2"
+        },
+        {
+          "input": "5 5\\nA B A B A\\nB C D C B\\nA D E D A\\nB C D C B\\nA B A B A",
+          "output": "5"
+        },
+        {
+          "input": "3 4\\nA B B A\\nA B B A\\nX Y Y X",
+          "output": "2"
+        },
+        {
+          "input": "1 10\\nA B A B A B A B A B",
+          "output": "1"
+        },
+        {
+          "input": "4 4\\nA X X A\\nX Y Y X\\nX Y Y X\\nA X X A",
+          "output": "4"
+        }
+      ]
+    },
+    {
+      "question_number": 24,
+      "title": "Dynamic Memory Coalescing Simulator",
+      "category": "Memory Management & Pointers",
+      "marks": 25,
+      "time_estimate_minutes": 65,
+      "content": "# Memory Block Merger (25 Marks)\\n\\nSimulate a manual heap management system that allocates memory blocks and merges (coalesces) adjacent free blocks to prevent fragmentation.\\n\\n## Problem Statement:\\n\\nUse a large dynamic integer array `heap[1000]` to represent space. Each block starts with a 'header' integer (size, >0 for used, <0 for free). Implement a merger function that scans the array and combines consecutive free blocks into a single larger free block.\\n\\n## Visualization (Heap Size 100):\\n\\n**Initial State:**\\n`[+20][...data...] [-10][...free...] [-30][...free...] [+40][...data...]`\\n\\n**Step 1: Detect adjacent free blocks.**\\nBlock at index 20 (size -10) and block at index 30 (size -30) are both free and adjacent.\\n\\n**Step 2: Merge.**\\nCombine them into a single block starting at index 20 with size -40.\\n\\n**Resulting Heap:**\\n`[+20][...data...] [-40][...free...] [+40][...data...]`\\n\\n## Requirements:\\n- Implement `void coalesce(int* heap, int totalSize)`\\n- Use pointer arithmetic ONLY to traverse the heap\\n- A header at `ptr` tells you to jump `abs(*ptr)` integers to find the next header\\n- No structs, classes, or `std::vector`\\n- Output the final headers of all blocks in order\\n\\n## Constraints:\\n- Heap total size: 1000 integers\\n- Header is part of the block size counts\\n- Time Complexity: O(Number of blocks)\\n\\n## Function Signatures:\\n```cpp\\nvoid coalesce(int* heap, int totalSize);\\nvoid printHeapState(int* heap, int totalSize);\\n```",
+      "starter_code": "#include <iostream>\\n#include <cmath>\\nusing namespace std;\\n\\nvoid coalesce(int* heap, int totalSize) {\\n    int* curr = heap;\\n    while (curr < heap + totalSize) {\\n        int size = *curr;\\n        if (size < 0) { // Free block\\n            int* next = curr + abs(size);\\n            if (next < heap + totalSize && *next < 0) {\\n                // TODO: Combine weights\\n                // Do not move curr, check again for next-next merging\\n                continue;\\n            }\\n        }\\n        // TODO: Move to next header\\n    }\\n}\\n\\nint main() {\\n    int totalSize;\\n    cin >> totalSize;\\n    int* heap = new int[totalSize];\\n    int current = 0;\\n    while (current < totalSize) {\\n        int size;\\n        cin >> size;\\n        *(heap + current) = size;\\n        current += abs(size);\\n    }\\n\\n    coalesce(heap, totalSize);\\n    \\n    // Print headers\\n    int* ptr = heap;\\n    while (ptr < heap + totalSize) {\\n        cout << *ptr << \" \";\\n        ptr += abs(*ptr);\\n    }\\n    cout << endl;\\n\\n    return 0;\\n}",
+      "visible_test_cases": [
+        {
+          "input": "100\\n20 -10 -30 40",
+          "output": "20 -40 40",
+          "explanation": "Adjacent free blocks of size 10 and 30 merged into 40."
+        },
+        {
+          "input": "50\\n-10 -10 -10 -10 -10",
+          "output": "-50",
+          "explanation": "Five adjacent free blocks merged into one."
+        }
+      ],
+      "hidden_test_cases": [
+        {
+          "input": "30\\n10 10 10",
+          "output": "10 10 10"
+        },
+        {
+          "input": "60\\n-20 20 -20",
+          "output": "-20 20 -20"
+        },
+        {
+          "input": "100\\n-10 -20 -30 -40",
+          "output": "-100"
+        },
+        {
+          "input": "50\\n10 -10 10 -10 10",
+          "output": "10 -10 10 -10 10"
+        },
+        {
+          "input": "25\\n5 -5 -15",
+          "output": "5 -20"
+        }
+      ]
+    },
+    {
+      "question_number": 25,
+      "title": "Radix Sort Simulation (Parallel Queues)",
+      "category": "Arrays & Memory Management",
+      "marks": 25,
+      "time_estimate_minutes": 60,
+      "content": "# Radix Sort with Manual Buckets (25 Marks)\\n\\nImplement Radix Sort for an array of integers using parallel arrays to simulate 10 dynamic buckets for each digit (0-9).\\n\\n## Problem Statement:\\n\\nSort an array of non-negative integers by processing each digit from least significant to most significant. Since you cannot use `vector` or structs, manage 10 buckets as a 2D dynamic array `int** buckets` where each row has a `sizes[10]` counter.\\n\\n## Visualization (Arr=[170, 45, 75, 90, 802, 24, 2, 66]):\\n\\n**Pass 1 (Units Digit):**\\nBucket 0: 170, 90\\nBucket 2: 802, 2\\nBucket 4: 24\\nBucket 5: 45, 75\\nBucket 6: 66\\nNew Arr: [170, 90, 802, 2, 24, 45, 75, 66]\\n\\n**Pass 2 (Tens Digit):**\\nBucket 0: 802, 2\\nBucket 2: 24\\nBucket 4: 45\\nBucket 6: 66\\nBucket 7: 170, 75\\nBucket 9: 90\\nNew Arr: [802, 2, 24, 45, 66, 170, 75, 90]\\n\\n## Requirements:\\n- Implement `void radixSort(int* arr, int n)`\\n- Dynamically allocate a 2D bucket array of size 10xN to ensure no overflow\\n- Use ONLY pointer arithmetic for all array indices and counts\\n- Find the maximum element to determine the number of passes\\n- No structs or classes allowed\\n\\n## Constraints:\\n- 1 \u2264 N \u2264 1000\\n- 0 \u2264 Arr[i] \u2264 10^7\\n- Time Complexity: O(Passes * N)\\n- Space Complexity: O(N) for buckets\\n\\n## Function Signatures:\\n```cpp\\nvoid radixSort(int* arr, int n);\\nint getMax(int* arr, int n);\\nvoid countSortForDigit(int* arr, int n, int exp);\\n```",
+      "starter_code": "#include <iostream>\\nusing namespace std;\\n\\nint getMax(int* arr, int n) {\\n    int mx = *arr;\\n    for (int i = 1; i < n; i++) if (*(arr + i) > mx) mx = *(arr + i);\\n    return mx;\\n}\\n\\nvoid radixSort(int* arr, int n) {\\n    int m = getMax(arr, n);\\n    int** buckets = new int*[10];\\n    for (int i = 0; i < 10; i++) *(buckets + i) = new int[n];\\n    int* counts = new int[10];\\n\\n    for (int exp = 1; m / exp > 0; exp *= 10) {\\n        // TODO: Clear counts\\n        \\n        // TODO: Place items in buckets based on (*(arr + i) / exp) % 10\\n        \\n        // TODO: Collect items back into arr\\n    }\\n    \\n    // TODO: Cleanup memory\\n}\\n\\nint main() {\\n    int n;\\n    cin >> n;\\n    int* arr = new int[n];\\n    for (int i = 0; i < n; i++) cin >> *(arr + i);\\n\\n    radixSort(arr, n);\\n\\n    for (int i = 0; i < n; i++) cout << *(arr + i) << \" \";\\n    cout << endl;\\n\\n    return 0;\\n}",
+      "visible_test_cases": [
+        {
+          "input": "8\\n170 45 75 90 802 24 2 66",
+          "output": "2 24 45 66 75 90 170 802",
+          "explanation": "Sorted array using radix sort logic."
+        },
+        {
+          "input": "3\\n10 1 100",
+          "output": "1 10 100",
+          "explanation": "Handling different number of digits."
+        }
+      ],
+      "hidden_test_cases": [
+        {
+          "input": "5\\n0 0 0 0 0",
+          "output": "0 0 0 0 0"
+        },
+        {
+          "input": "1\\n123456",
+          "output": "123456"
+        },
+        {
+          "input": "10\\n5 4 3 2 1 10 9 8 7 6",
+          "output": "1 2 3 4 5 6 7 8 9 10"
+        },
+        {
+          "input": "4\\n1000 100 10 1",
+          "output": "1 10 100 1000"
+        },
+        {
+          "input": "6\\n21 4 55 12 3 10",
+          "output": "3 4 10 12 21 55"
+        }
+      ]
+    },
+    {
+      "question_number": 26,
+      "title": "B-Tree Node Split Simulation",
+      "category": "Arrays & Memory Management",
+      "marks": 25,
+      "time_estimate_minutes": 65,
+      "content": "# B-Tree Node Split (25 Marks)\\n\\nSimulate a single insertion and split operation for a B-Tree node of order M. Since structs are forbidden, represent the node using two parallel dynamic arrays: `keys[M]` and `children[M+1]`.\\n\\n## Problem Statement:\\n\\nA B-Tree node of order M can hold at most M-1 keys. When an M-th key is inserted, the node must split into two nodes of size approx M/2, and the median key is 'promoted'. \\n\\nGiven a node that is full (M-1 keys) and a new key to insert, identify the median key, create two new dynamic arrays for the split nodes, and output the keys in the left node, the promoted key, and the keys in the right node.\\n\\n## Visualization (Order M=4):\\n\\n**Max keys = 3. Node keys: [10, 20, 30].**\\n\\n**Operation: Insert 25.**\\nTemporary Sorted Keys: [10, 20, 25, 30].\\n\\n**Splitting Mechanism:**\\n- Median index: (M-1)/2 = 3/2 = 1 (using 0-indexing for M keys).\\n- Median Key: 20.\\n- Left Node Keys: [10].\\n- Right Node Keys: [25, 30].\\n\\nNote: In this problem, we only focus on the keys, not the child pointers.\\n\\n## Requirements:\\n- Implement `void splitNode(int* keys, int m, int newKey)`\\n- Use only pointer arithmetic (`*(keys + i)`) for all array access\\n- No structs, no classes\\n- Manually allocate temporary storage for sorting and split nodes\\n\\n## Constraints:\\n- 3 \u2264 M \u2264 20\\n- All keys are unique integers\\n- Time Complexity: O(M log M) for sorting\\n\\n## Function Signatures:\\n```cpp\\nvoid splitNode(int* keys, int m, int newKey);\\n```",
+      "starter_code": "#include <iostream>\\n#include <algorithm>\\nusing namespace std;\\n\\nvoid splitNode(int* keys, int m, int newKey) {\\n    int* temp = new int[m];\\n    for (int i = 0; i < m - 1; i++) *(temp + i) = *(keys + i);\\n    *(temp + m - 1) = newKey;\\n\\n    // TODO: Sort temp using pointer arithmetic\\n    \\n    int medianIdx = m / 2;\\n    int medianKey = *(temp + medianIdx);\\n\\n    cout << \"Left: \";\\n    for (int i = 0; i < medianIdx; i++) cout << *(temp + i) << \" \";\\n    cout << \"\\\\nPromoted: \" << medianKey << \"\\\\nRight: \";\\n    for (int i = medianIdx + 1; i < m; i++) cout << *(temp + i) << \" \";\\n    cout << endl;\\n\\n    delete[] temp;\\n}\\n\\nint main() {\\n    int m, newKey;\\n    cin >> m;\\n    int* keys = new int[m - 1];\\n    for (int i = 0; i < m - 1; i++) cin >> *(keys + i);\\n    cin >> newKey;\\n\\n    splitNode(keys, m, newKey);\\n\\n    delete[] keys;\\n    return 0;\\n}",
+      "visible_test_cases": [
+        {
+          "input": "4\\n10 20 30\\n25",
+          "output": "Left: 10 \\nPromoted: 20\\nRight: 25 30 ",
+          "explanation": "Splitting a full node of order 4 with keys [10, 20, 30] and inserting 25."
+        },
+        {
+          "input": "3\\n5 15\\n10",
+          "output": "Left: 5 \\nPromoted: 10\\nRight: 15 ",
+          "explanation": "Order 3 split (3 keys: 5, 10, 15). Median is 10."
+        }
+      ],
+      "hidden_test_cases": [
+        {
+          "input": "5\\n1 2 3 4\\n5",
+          "output": "Left: 1 2 \\nPromoted: 3\\nRight: 4 5 "
+        },
+        {
+          "input": "4\\n100 200 300\\n50",
+          "output": "Left: 50 \\nPromoted: 100\\nRight: 200 300 "
+        },
+        {
+          "input": "6\\n1 2 4 5 6\\n3",
+          "output": "Left: 1 2 3 \\nPromoted: 4\\nRight: 5 6 "
+        },
+        {
+          "input": "3\\n40 50\\n60",
+          "output": "Left: 40 \\nPromoted: 50\\nRight: 60 "
+        },
+        {
+          "input": "4\\n20 40 60\\n10",
+          "output": "Left: 10 \\nPromoted: 20\\nRight: 40 60 "
+        }
+      ]
+    },
+    {
+      "question_number": 27,
+      "title": "Dijkstra on 2D Weighted Grid",
+      "category": "Recursion & Graphs",
+      "marks": 25,
+      "time_estimate_minutes": 65,
+      "content": "# Dijkstra Pathfinding on Grid (25 Marks)\\n\\nFind the shortest path weight from top-left (0,0) to bottom-right (N-1, M-1) in a grid where each cell has a non-negative traversal cost. You MUST implement a Min-priority queue manually as a binary heap array to optimize the search.\\n\\n## Problem Statement:\\n\\nUse Dijkstra's algorithm to explore the grid. Maintain a dynamic `dist[N][M]` matrix initialized to Infinity. Implement a Min-Heap from scratch using an array and pointer arithmetic for `heapifyUp` and `heapifyDown` operations. Each element in the heap will be a pair (distance, index) where index is `r*M + c`. Since structs are forbidden, use two parallel arrays or bit-shifting to store pairs.\\n\\n## Visualization (3x3 Grid):\\n\\n| 1 | 8 | 1 |\\n|---|---|---|\\n| 1 | 9 | 1 |\\n| 1 | 1 | 1 |\\n\\n**Start:** (0,0) with cost 1.\\n**Neighbor check:** (0,1) cost 9, (1,0) cost 2.\\n**Heap:** {(2, (1,0)), (9, (0,1))}\\n**Pop (2, (1,0)):** Explore from (1,0).\\n**Neighbor check of (1,0):** (1,1) cost 11, (2,0) cost 3.\\n**Heap:** {(3, (2,0)), (9, (0,1)), (11, (1,1))}\\n**Continue...** Final shortest path goes along the left and bottom edges: 1->1->1->1->1 = 5.\\n\\n## Requirements:\\n- Implement `int dijkstra(int** grid, int n, int m)`\\n- Implement a binary min-heap array manually\\n- Use ONLY pointer arithmetic for all array and heap operations\\n- No structs, classes, or `std::priority_queue`\\n- Handle memory allocation and deallocation for `dist` and `heap`\\n\\n## Constraints:\\n- 1 \u2264 N, M \u2264 50\\n- Costs are integers in [0, 100]\\n- Time Complexity: O(N*M * log(N*M))\\n\\n## Function Signatures:\\n```cpp\\nvoid heapifyUp(int* heapDist, int* heapIdx, int& size);\\nvoid heapifyDown(int* heapDist, int* heapIdx, int size, int index);\\nint dijkstra(int** grid, int n, int m);\\n```",
+      "starter_code": "#include <iostream>\\n#include <climits>\\nusing namespace std;\\n\\nint dijkstra(int** grid, int n, int m) {\\n    int** dist = new int*[n];\\n    for (int i = 0; i < n; i++) {\\n        *(dist + i) = new int[m];\\n        for (int j = 0; j < m; j++) *(*(dist + i) + j) = INT_MAX;\\n    }\\n\\n    int* heapDist = new int[n * m];\\n    int* heapIdx = new int[n * m];\\n    int heapSize = 0;\\n\\n    // TODO: Implement manual Min-Heap operations and Dijkstra loop\\n    \\n    return *(*(dist + n - 1) + m - 1);\\n}\\n\\nint main() {\\n    int n, m;\\n    cin >> n >> m;\\n    int** grid = new int*[n];\\n    for (int i = 0; i < n; i++) {\\n        *(grid + i) = new int[m];\\n        for (int j = 0; j < m; j++) cin >> *(*(grid + i) + j);\\n    }\\n\\n    cout << dijkstra(grid, n, m) << endl;\\n    return 0;\\n}",
+      "visible_test_cases": [
+        {
+          "input": "3 3\\n1 8 1\\n1 9 1\\n1 1 1",
+          "output": "5",
+          "explanation": "Path: (0,0)->(1,0)->(2,0)->(2,1)->(2,2). Weight: 1+1+1+1+1=5."
+        },
+        {
+          "input": "2 2\\n10 10\\n10 10",
+          "output": "30",
+          "explanation": "Shortest path (0,0)->(0,1)->(1,1) or (0,0)->(1,0)->(1,1) is 30."
+        }
+      ],
+      "hidden_test_cases": [
+        {
+          "input": "1 1\\n42",
+          "output": "42"
+        },
+        {
+          "input": "3 3\\n1 1 1\\n1 10 1\\n1 1 1",
+          "output": "5"
+        },
+        {
+          "input": "4 4\\n1 1 1 1\\n1 9 9 9\\n1 9 1 1\\n1 1 1 1",
+          "output": "7"
+        },
+        {
+          "input": "2 3\\n1 2 3\\n4 5 6",
+          "output": "12"
+        },
+        {
+          "input": "5 5\\n1 0 0 0 0\\n0 10 10 10 0\\n0 10 1 10 0\\n0 10 10 10 0\\n0 0 0 0 1",
+          "output": "9"
+        }
+      ]
+    },
+    {
+      "question_number": 28,
+      "title": "Multi-Stream Circular Dynamic Buffer",
+      "category": "Memory Management & Pointers",
+      "marks": 25,
+      "time_estimate_minutes": 60,
+      "content": "# Shared Circular Buffer Simulation (25 Marks)\\n\\nManage a single dynamic circular buffer shared by two data streams (A and B). Each stream has its own `head` and `tail` pointers. You must handle insertions and wrap-around logic within the same memory block.\\n\\n## Problem Statement:\\n\\nAllocate an array of size `L`. Stream A uses indices [0..L/2-1] and Stream B uses [L/2..L-1] as circular buffers. If a stream becomes full, it should not overwrite the other stream's region. Implement helper functions to peak and dequeue items from both independent streams.\\n\\n## Visualization (L=10):\\n\\n**Stream A (0-4), Stream B (5-9).**\\n\\n**Op 1: Enqueue A: 1, 2, 3.**\\nBuffer A: [1, 2, 3, ., .]\\n\\n**Op 2: Enqueue B: 10, 20.**\\nBuffer B: [10, 20, ., ., .]\\n\\n**Op 3: Dequeue A.**\\nResult: 1. Buffer A: [., 2, 3, ., .]\\n\\n**Op 4: Enqueue A: 4, 5, 6.**\\nBuffer A: [6, 2, 3, 4, 5] (6 wrapped to index 0).\\n\\n## Requirements:\\n- Implement `void enqueue(int* buffer, int start, int len, int& head, int& tail, int val)`\\n- Implement `int dequeue(int* buffer, int start, int len, int& head, int& tail)`\\n- Use ONLY pointer arithmetic (`*(buffer + i)`) \\n- Detect 'Full' and 'Empty' states using counters\\n- No structs, no classes\\n\\n## Constraints:\\n- Buffer size L \u2264 500\\n- Circular logic must correctly handle `(tail + 1) % len`\\n- Time Complexity: O(1) per operation\\n\\n## Function Signatures:\\n```cpp\\nvoid enqueue(int* buffer, int start, int len, int& head, int& tail, int& count, int val);\\nint dequeue(int* buffer, int start, int len, int& head, int& tail, int& count);\\n```",
+      "starter_code": "#include <iostream>\\nusing namespace std;\\n\\nvoid enqueue(int* buffer, int start, int len, int& head, int& tail, int& count, int val) {\\n    if (count == len) {\\n        cout << \"Full\" << endl;\\n        return;\\n    }\\n    *(buffer + start + tail) = val;\\n    tail = (tail + 1) % len;\\n    count++;\\n}\\n\\nint dequeue(int* buffer, int start, int len, int& head, int& tail, int& count) {\\n    if (count == 0) return -1;\\n    int val = *(buffer + start + head);\\n    head = (head + 1) % len;\\n    count--;\\n    return val;\\n}\\n\\nint main() {\\n    int l;\\n    cin >> l;\\n    int* buffer = new int[l];\\n    \\n    int hA = 0, tA = 0, cA = 0;\\n    int hB = 0, tB = 0, cB = 0;\\n    int lenA = l / 2, lenB = l - lenA;\\n\\n    int n;\\n    cin >> n;\\n    for (int i = 0; i < n; i++) {\\n        char s, op;\\n        cin >> s >> op;\\n        if (op == 'E') {\\n            int v; cin >> v;\\n            if (s == 'A') enqueue(buffer, 0, lenA, hA, tA, cA, v);\\n            else enqueue(buffer, lenA, lenB, hB, tB, cB, v);\\n        } else {\\n            int res;\\n            if (s == 'A') res = dequeue(buffer, 0, lenA, hA, tA, cA);\\n            else res = dequeue(buffer, lenA, lenB, hB, tB, cB);\\n            cout << res << \" \";\\n        }\\n    }\\n    cout << endl;\\n    return 0;\\n}",
+      "visible_test_cases": [
+        {
+          "input": "10 5\\nA E 1\\nA E 2\\nB E 10\\nA D\\nB D",
+          "output": "1 10 ",
+          "explanation": "A enqueues 1,2. B enqueues 10. A dequeues 1. B dequeues 10."
+        },
+        {
+          "input": "4 4\\nA E 1\\nA E 2\\nA E 3\\nA D",
+          "output": "Full\\n1 ",
+          "explanation": "A has size 2. 3rd enqueue fails. Dequeue returns 1."
+        }
+      ],
+      "hidden_test_cases": [
+        {
+          "input": "6 4\\nA E 1\\nA E 2\\nA E 3\\nA D",
+          "output": "1 "
+        },
+        {
+          "input": "100 2\\nB E 42\\nB D",
+          "output": "42 "
+        },
+        {
+          "input": "4 6\\nA E 1\\nA E 2\\nA D\\nA E 3\\nA E 4\\nA D",
+          "output": "1 2 "
+        },
+        {
+          "input": "10 4\\nA D\\nB D\\nA E 1\\nA D",
+          "output": "-1 -1 1 "
+        },
+        {
+          "input": "2 2\\nA E 1\\nA E 2",
+          "output": "Full"
+        }
+      ]
+    },
+    {
+      "question_number": 29,
+      "title": "Recursive Quadtree Matrix Rotation",
+      "category": "Recursion & 2D Arrays",
+      "marks": 25,
+      "time_estimate_minutes": 60,
+      "content": "# Divide-and-Conquer Matrix Rotation (25 Marks)\\n\\nRotate a square matrix of size 2^N by 90 degrees clockwise using a recursive quadrants-swapping approach.\\n\\n## Problem Statement:\\n\\nTo rotate a matrix recursively:\\n1. Base Case: If size is 1x1, do nothing.\\n2. Divide the matrix into 4 quadrants (Top-Left, Top-Right, Bottom-Left, Bottom-Right).\\n3. Recursively rotate each quadrant 90 degrees.\\n4. Swap the quadrants: TL goes to TR, TR to BR, BR to BL, and BL to TL.\\n\\n## Visualization (4x4):\\n\\n**Original:**\\n| TL | TR |\\n| BL | BR |\\n\\n**Step 1: Recurse on each quadrant.**\\n\\n**Step 2: Swap.**\\n| BL(rot) | TL(rot) |\\n| BR(rot) | TR(rot) |\\n\\n## Requirements:\\n- Implement `void rotateRecursive(int** mat, int r, int c, int size)`\\n- Use ONLY pointer arithmetic for all swapping logic\\n- No temporary matrices allowed (use in-place swapping element by element or a small temporary buffer for one quadrant)\\n- Matrix size is always a power of 2\\n\\n## Constraints:\\n- 1 \u2264 N \u2264 6 (Matrix size up to 64x64)\\n- Time Complexity: O(N log N) nodes processed, but each swap takes O(size^2), result in O(N^2)\\n- Space Complexity: O(log N) for recursion stack\\n\\n## Function Signatures:\\n```cpp\\nvoid rotateRecursive(int** mat, int r, int c, int size);\\n```",
+      "starter_code": "#include <iostream>\\nusing namespace std;\\n\\nvoid rotateRecursive(int** mat, int r, int c, int size) {\\n    if (size <= 1) return;\\n\\n    int half = size / 2;\\n    \\n    // TODO: Recurse for 4 quadrants\\n    \\n    // TODO: Swap quadrants using pointer arithmetic\\n    // (i, j) in TL <-> (i, j+half) in TR <-> (i+half, j+half) in BR <-> (i+half, j) in BL\\n}\\n\\nint main() {\\n    int n;\\n    cin >> n;\\n    int size = 1 << n;\\n    int** mat = new int*[size];\\n    for (int i = 0; i < size; i++) {\\n        *(mat + i) = new int[size];\\n        for (int j = 0; j < size; j++) cin >> *(*(mat + i) + j);\\n    }\\n\\n    rotateRecursive(mat, 0, 0, size);\\n\\n    for (int i = 0; i < size; i++) {\\n        for (int j = 0; j < size; j++) cout << *(*(mat + i) + j) << \" \";\\n        cout << endl;\\n    }\\n    return 0;\\n}",
+      "visible_test_cases": [
+        {
+          "input": "2\\n1 2 3 4\\n5 6 7 8\\n9 10 11 12\\n13 14 15 16",
+          "output": "13 9 5 1\\n14 10 6 2\\n15 11 7 3\\n16 12 8 4",
+          "explanation": "4x4 matrix (2^2) rotated clockwise."
+        },
+        {
+          "input": "1\\n1 2\\n3 4",
+          "output": "3 1\\n4 2",
+          "explanation": "2x2 rotation."
+        }
+      ],
+      "hidden_test_cases": [
+        {
+          "input": "0\\n42",
+          "output": "42"
+        },
+        {
+          "input": "1\\n10 20\\n30 40",
+          "output": "30 10\\n40 20"
+        },
+        {
+          "input": "2\\n0 0 1 1\\n0 0 1 1\\n2 2 3 3\\n2 2 3 3",
+          "output": "2 2 0 0\\n2 2 0 0\\n3 3 1 1\\n3 3 1 1"
+        },
+        {
+          "input": "3\\n1 1 1 1 2 2 2 2\\n1 1 1 1 2 2 2 2\\n1 1 1 1 2 2 2 2\\n1 1 1 1 2 2 2 2\\n3 3 3 3 4 4 4 4\\n3 3 3 3 4 4 4 4\\n3 3 3 3 4 4 4 4\\n3 3 3 3 4 4 4 4",
+          "output": "3 3 3 3 1 1 1 1\\n3 3 3 3 1 1 1 1\\n3 3 3 3 1 1 1 1\\n3 3 3 3 1 1 1 1\\n4 4 4 4 2 2 2 2\\n4 4 4 4 2 2 2 2\\n4 4 4 4 2 2 2 2\\n4 4 4 4 2 2 2 2"
+        },
+        {
+          "input": "2\\n1 2 3 4\\n8 7 6 5\\n9 10 11 12\\n16 15 14 13",
+          "output": "16 9 8 1\\n15 10 7 2\\n14 11 6 3\\n13 12 5 4"
+        }
+      ]
+    },
+    {
+      "question_number": 30,
+      "title": "Massive Word Search Pro",
+      "category": "Recursion & Backtracking",
+      "marks": 25,
+      "time_estimate_minutes": 65,
+      "content": "# Multi-Pattern Word Discovery (25 Marks)\\n\\nSearch for multiple target words in a 2D character grid simultaneously. A single character in the grid can be part of multiple words. Return the total number of successful matches found across all words.\\n\\n## Problem Statement:\\n\\nGiven an NxM grid and a list of W words, find how many times each word appears. Words can be formed in any of the 4 cardinal directions (Up, Down, Left, Right). Use recursion with backtracking for each word.\\n\\n## Visualization (3x3 Grid, Search \"CAT\", \"CAR\"):\\n\\n| C | A | T |\\n|---|---|---|\\n| A | R | . |\\n| T | . | . |\\n\\n**Word \"CAT\":**\\n1. Found at (0,0)->(0,1)->(0,2) (Horizontal)\\n2. Found at (0,0)->(1,0)->(2,0) (Vertical)\\nMatches: 2.\\n\\n**Word \"CAR\":**\\n1. Found at (0,0)->(1,0)->(1,1) (L-shaped - wait, problem says cardinal directions sequentially). \\nIf only strictly horizontal/vertical: Matches for \"CAR\": 1 (at (0,0)->(1,0)->(1,1) NO, only straight lines or adjacent cells? Let's use standard DFS adjacency).\\n\\n**Refined Logic:** Any adjacent cell (Up, Down, Left, Right). No diagonal.\\n\\n## Requirements:\\n- Implement `int searchAllWords(char** grid, int n, int m, char** words, int numWords)`\\n- Use a helper function `bool findMatch(char** grid, int n, int m, int r, int c, char* word, int index)`\\n- Use ONLY pointer arithmetic (`*(ptr + i)`) \\n- Avoid reusing the same grid cell for the *same* word instance by marking it visited (backtracking)\\n- No structs, classes, or global counters\\n\\n## Constraints:\\n- 1 \u2264 N, M \u2264 15\\n- 1 \u2264 NumWords \u2264 5\\n- Time Complexity: O(NumWords * N * M * 4^L)\\n\\n## Function Signatures:\\n```cpp\\nbool findMatch(char** grid, int n, int m, int r, int c, char* word, int index);\\nint searchAllWords(char** grid, int n, int m, char** words, int numWords);\\n```",
+      "starter_code": "#include <iostream>\\n#include <cstring>\\nusing namespace std;\\n\\nbool findMatch(char** grid, int n, int m, int r, int c, char* word, int index) {\\n    if (*(word + index) == '\\\\0') return true;\\n    if (r < 0 || r >= n || c < 0 || c >= m || *(*(grid + r) + c) != *(word + index)) return false;\\n\\n    char temp = *(*(grid + r) + c);\\n    *(*(grid + r) + c) = '#'; // Mark visited\\n    \\n    bool found = findMatch(grid, n, m, r + 1, c, word, index + 1) ||\\n                 findMatch(grid, n, m, r - 1, c, word, index + 1) ||\\n                 findMatch(grid, n, m, r, c + 1, word, index + 1) ||\\n                 findMatch(grid, n, m, r, c - 1, word, index + 1);\\n    \\n    *(*(grid + r) + c) = temp; // Unmark\\n    return found;\\n}\\n\\nint main() {\\n    int n, m, w;\\n    cin >> n >> m >> w;\\n    char** grid = new char*[n];\\n    for (int i = 0; i < n; i++) {\\n        *(grid + i) = new char[m];\\n        for (int j = 0; j < m; j++) cin >> *(*(grid + i) + j);\\n    }\\n\\n    char** words = new char*[w];\\n    for (int i = 0; i < w; i++) {\\n        *(words + i) = new char[50];\\n        cin >> *(words + i);\\n    }\\n\\n    int totalMatches = 0;\\n    // TODO: Loop through each word and each starting cell\\n    \\n    cout << totalMatches << endl;\\n    return 0;\\n}",
+      "visible_test_cases": [
+        {
+          "input": "3 3 2\\nC A T\\nA R .\\nT . .\\nCAT CAR",
+          "output": "2",
+          "explanation": "CAT found 1 time. CAR found 1 time. Total 2. (Note: standard DFS search)"
+        },
+        {
+          "input": "2 2 1\\nA A\\nA A\\nAAA",
+          "output": "4",
+          "explanation": "AAA can be found starting from each corner and moving through neighbors."
+        }
+      ],
+      "hidden_test_cases": [
+        {
+          "input": "1 3 1\\nA B C\\nABC",
+          "output": "1"
+        },
+        {
+          "input": "3 3 1\\nA A A\\nA A A\\nA A A\\nAAAAAAAAA",
+          "output": "0"
+        },
+        {
+          "input": "2 2 2\\nX Y\\nY X\\nXY YX",
+          "output": "4"
+        },
+        {
+          "input": "4 4 1\\nA B C D\\nE F G H\\nI J K L\\nM N O P\\nAFK",
+          "output": "0"
+        },
+        {
+          "input": "2 3 1\\nA B A\\nB A B\\nABA",
+          "output": "4"
         }
       ]
     }

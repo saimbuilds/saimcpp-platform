@@ -102,9 +102,30 @@ function App() {
                         <Route path="leaderboard" element={<Leaderboard />} />
                         <Route path="profile" element={<Profile />} />
                         <Route path="mock-exams" element={<MockExams />} />
-                        <Route path="mock-exam/:examId/instructions" element={<ExamInstructions />} />
-                        <Route path="mock-exam/:examId/exam" element={<ExamInterface />} />
+                        <Route path="mock-exams" element={<MockExams />} />
                     </Route>
+
+                    {/* Standalone Protected Routes (No Dashboard Layout) */}
+                    <Route
+                        path="/mock-exam/:examId/instructions"
+                        element={
+                            <ProtectedRoute>
+                                <OnboardingGuard>
+                                    <ExamInstructions />
+                                </OnboardingGuard>
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/mock-exam/:examId/exam"
+                        element={
+                            <ProtectedRoute>
+                                <OnboardingGuard>
+                                    <ExamInterface />
+                                </OnboardingGuard>
+                            </ProtectedRoute>
+                        }
+                    />
                     <Route path="/discover" element={<UserDiscovery />} />
                     <Route path="/edit-profile" element={<ProtectedRoute><EditProfile /></ProtectedRoute>} />
                     <Route path="/u/:username/:type" element={<FollowersPage />} />
