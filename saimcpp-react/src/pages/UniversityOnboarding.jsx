@@ -137,12 +137,53 @@ export default function UniversityOnboarding() {
                 return
             }
 
+            // Look up university_id from universities table
+            let universityId = null;
+            if (!showCustomUniversity) {
+                const universityMapping = {
+                    'FAST National University of Computer and Emerging Sciences': 'FAST-NUCES',
+                    'National University of Sciences and Technology (NUST)': 'NUST',
+                    'Lahore University of Management Sciences (LUMS)': 'LUMS',
+                    'COMSATS University Islamabad': 'COMSATS',
+                    'Ghulam Ishaq Khan Institute (GIKI)': 'GIKI',
+                    'University of Engineering and Technology (UET) Lahore': 'UET',
+                    'Pakistan Institute of Engineering and Applied Sciences (PIEAS)': 'PIEAS',
+                    'Air University Islamabad': 'AIR',
+                    'NED University of Engineering and Technology': 'NED',
+                    'University of Karachi': 'KU',
+                    'University of the Punjab': 'PU',
+                    'Quaid-i-Azam University': 'QAU'
+                };
+
+                const shortName = universityMapping[formData.university];
+                if (shortName) {
+                    const { data: uni } = await supabase
+                        .from('universities')
+                        .select('id')
+                        .eq('short_name', shortName)
+                        .single();
+
+                    universityId = uni?.id;
+                }
+            }
+
+            // If no match found or "Other" selected, use "OTHER" university
+            if (!universityId) {
+                const { data: uni } = await supabase
+                    .from('universities')
+                    .select('id')
+                    .eq('short_name', 'OTHER')
+                    .single();
+
+                universityId = uni?.id;
+            }
+
             // Update profile with all required fields
             const { error } = await supabase
                 .from('profiles')
                 .update({
                     full_name: formData.fullName,
-                    university_id: null, // You can map university to ID later
+                    university_id: universityId,
                     batch: formData.batch,
                     department: formData.department,
                     campus: formData.campus || 'Main Campus'

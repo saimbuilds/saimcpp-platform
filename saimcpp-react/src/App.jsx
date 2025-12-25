@@ -21,6 +21,7 @@ import LearningHub from './pages/LearningHub'
 import MockExams from './pages/MockExams'
 import ExamInstructions from './pages/ExamInstructions'
 import ExamInterface from './pages/ExamInterface'
+import Pricing from './pages/Pricing'
 
 // Components
 import MobileBlocker from './components/layout/MobileBlocker'
@@ -81,7 +82,11 @@ function App() {
                             )
                         }
                     />
-                    <Route path="/onboarding" element={<UniversityOnboarding />} />
+                    <Route path="/onboarding" element={
+                        <ProtectedRoute>
+                            <UniversityOnboarding />
+                        </ProtectedRoute>
+                    } />
                     <Route
                         path="/"
                         element={
@@ -101,7 +106,7 @@ function App() {
                         <Route path="dry-run" element={<Navigate to="/learning/pf/dry-runs" replace />} />
                         <Route path="leaderboard" element={<Leaderboard />} />
                         <Route path="profile" element={<Profile />} />
-                        <Route path="mock-exams" element={<MockExams />} />
+                        <Route path="pricing" element={<Pricing />} />
                         <Route path="mock-exams" element={<MockExams />} />
                     </Route>
 
@@ -129,14 +134,6 @@ function App() {
                     <Route path="/discover" element={<UserDiscovery />} />
                     <Route path="/edit-profile" element={<ProtectedRoute><EditProfile /></ProtectedRoute>} />
                     <Route path="/u/:username/:type" element={<FollowersPage />} />
-                    <Route
-                        path="/onboarding"
-                        element={
-                            <ProtectedRoute>
-                                <UniversityOnboarding />
-                            </ProtectedRoute>
-                        }
-                    />
                     <Route path="/u/:username" element={<UserProfile />} />
                     <Route
                         path="/problem/:id"

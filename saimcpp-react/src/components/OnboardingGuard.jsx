@@ -10,7 +10,7 @@ export default function OnboardingGuard({ children }) {
     useEffect(() => {
         if (initialized && user && profile) {
             // Check if profile is complete
-            // Required fields: full_name, department, campus
+            // Required fields: full_name, department, campus (NOT university_id for existing users)
             const isProfileComplete =
                 profile.full_name && profile.full_name.trim() !== '' &&
                 profile.department && profile.department.trim() !== '' &&
