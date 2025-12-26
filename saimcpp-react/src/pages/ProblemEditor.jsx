@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import Editor from '@monaco-editor/react'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 import { executeCode } from '../lib/api'
 import { useProblem } from '../hooks/useProblems'
 import { supabase } from '../lib/supabase'
@@ -226,7 +228,43 @@ int main() {
                         <div className="max-w-2xl space-y-6">
                             <section>
                                 <h3 className="mb-3 text-base font-semibold">Description</h3>
-                                <p className="text-sm leading-relaxed text-muted-foreground">{problem.description}</p>
+                                <div className="prose prose-invert max-w-none
+                                    prose-p:text-sm prose-p:leading-relaxed prose-p:text-muted-foreground
+                                    prose-headings:text-foreground prose-headings:font-semibold
+                                    prose-h1:text-xl prose-h2:text-lg prose-h3:text-base
+                                    prose-strong:text-foreground prose-strong:font-bold
+                                    prose-ul:text-sm prose-ul:text-muted-foreground
+                                    prose-ol:text-sm prose-ol:text-muted-foreground
+                                    prose-code:bg-secondary prose-code:text-accent-green prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:text-xs
+                                    prose-pre:bg-secondary prose-pre:p-4 prose-pre:rounded-lg prose-pre:my-4">
+                                    <ReactMarkdown
+                                        remarkPlugins={[remarkGfm]}
+                                        components={{
+                                            table: ({ node, ...props }) => (
+                                                <div className="overflow-x-auto my-6">
+                                                    <table className="border-collapse border-2 border-blue-500/30 w-auto mx-auto bg-blue-950/30 shadow-lg shadow-blue-500/10 rounded-lg overflow-hidden" {...props} />
+                                                </div>
+                                            ),
+                                            tr: ({ node, ...props }) => (
+                                                <tr className="border-b border-blue-500/20" {...props} />
+                                            ),
+                                            td: ({ node, ...props }) => (
+                                                <td className="border border-blue-500/30 bg-blue-900/40 p-3 text-center text-sm font-medium text-white min-w-[60px] min-h-[50px]" {...props} />
+                                            ),
+                                            th: ({ node, ...props }) => (
+                                                <th className="border border-blue-500/30 bg-blue-600/30 p-3 text-center font-bold text-blue-300 text-sm uppercase tracking-wide" {...props} />
+                                            ),
+                                            thead: ({ node, ...props }) => (
+                                                <thead className="bg-blue-800/20" {...props} />
+                                            ),
+                                            tbody: ({ node, ...props }) => (
+                                                <tbody className="bg-blue-950/20" {...props} />
+                                            ),
+                                        }}
+                                    >
+                                        {problem.description}
+                                    </ReactMarkdown>
+                                </div>
                             </section>
 
                             <section>

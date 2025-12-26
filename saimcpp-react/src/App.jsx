@@ -23,6 +23,8 @@ import ExamInstructions from './pages/ExamInstructions'
 import ExamInterface from './pages/ExamInterface'
 import Pricing from './pages/Pricing'
 import AmbassadorProgram from './pages/AmbassadorProgram'
+import Terms from './pages/Terms'
+import Privacy from './pages/Privacy'
 
 // Components
 import MobileBlocker from './components/layout/MobileBlocker'
@@ -159,6 +161,8 @@ function App() {
                     <Route path="/u/:username/:type" element={<FollowersPage />} />
                     <Route path="/u/:username" element={<UserProfile />} />
                     <Route path="/ambassadors" element={<AmbassadorProgram />} />
+                    <Route path="/terms" element={<Terms />} />
+                    <Route path="/privacy" element={<Privacy />} />
                     <Route
                         path="/problem/:id"
                         element={

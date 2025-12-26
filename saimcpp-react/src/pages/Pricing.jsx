@@ -48,8 +48,8 @@ export default function Pricing() {
             description: 'For students getting started',
             features: [
                 'Unlimited problem solving',
-                'Mock exams & timed tests',
-                'Global leaderboards',
+                'Unlimited mock exams',
+                'Basic leaderboards',
                 'Profile & achievements',
             ],
             cta: 'Current Plan',
@@ -61,9 +61,10 @@ export default function Pricing() {
             description: 'For serious competitors',
             features: [
                 'Everything in Free',
+                'Custom private rooms',
                 'AI-powered code review',
                 'Live competitions & prizes',
-                'Advanced analytics',
+                'Advanced analytics & insights',
                 'Priority support'
             ],
             cta: 'Join Waitlist',
@@ -78,7 +79,8 @@ export default function Pricing() {
                 'Custom problem creation',
                 'University portal & analytics',
                 'Dedicated competitions',
-                'Custom branding'
+                'Custom branding',
+                'SSO & LMS integration'
             ],
             cta: 'Contact Us',
             enterprise: true
@@ -98,7 +100,7 @@ export default function Pricing() {
                         Simple, transparent pricing
                     </h1>
                     <p className="text-xl text-muted-foreground">
-                        Start free. Upgrade when you need advanced features.
+                        Practice for free. Compete like a pro with AI-powered insights.
                     </p>
                 </motion.div>
 
@@ -112,8 +114,8 @@ export default function Pricing() {
                             transition={{ delay: index * 0.1 }}
                         >
                             <Card className={`relative overflow-hidden p-8 h-full flex flex-col ${tier.popular
-                                    ? 'border-2 border-purple-500 shadow-lg shadow-purple-500/10'
-                                    : 'border border-border'
+                                ? 'border-2 border-purple-500 shadow-lg shadow-purple-500/10'
+                                : 'border border-border'
                                 }`}>
                                 {tier.popular && (
                                     <div className="absolute right-4 top-4 rounded-full bg-purple-500 px-3 py-1 text-xs font-medium text-white">

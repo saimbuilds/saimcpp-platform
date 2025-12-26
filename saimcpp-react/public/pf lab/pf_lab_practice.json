@@ -1291,6 +1291,202 @@
       ],
       "points": 50,
       "starterCode": "#include <iostream>\nusing namespace std;\n\nint min3(int a, int b, int c) {\n    int m = a;\n    if (b < m) m = b;\n    if (c < m) m = c;\n    return m;\n}\n\nint main() {\n    int n1, n2;\n    cin >> n1;\n    \n    char* str1 = new char[n1 + 1];\n    cin >> str1;\n    \n    cin >> n2;\n    char* str2 = new char[n2 + 1];\n    cin >> str2;\n    \n    int dp[31][31];\n    \n    // Build DP table\n    // Backtrack to find operations\n    // Display result\n    \n    delete[] str1;\n    delete[] str2;\n    return 0;\n}"
+    },
+    {
+      "title": "Cryptographer's Digit Sum Pairs",
+      "difficulty": "medium",
+      "category": "Arrays & Number Theory",
+      "description": "Alice, an aspiring cryptographer, recently discovered an ancient scroll containing a sequence of mysterious numbers. According to a legend, these numbers hold the key to unlocking a hidden treasure buried centuries ago by an enigmatic mathematician. However, deciphering the scroll requires identifying specific pairs of numbers that follow an ancient numerical pattern.\n\nAlice is given an array of integers nums. She wants to determine how many pairs exist such that:\n• 0 ≤ i < j < nums.length\n• The sum of digits of nums[i] is equal to the sum of digits of nums[j].\n\nShe believes that the correct count of these pairs will reveal a crucial clue needed to decode the next part of the scroll. Your task is to help Alice compute this number so she can continue her quest.\n\nImplement a function that calculates the sum of digits for each number, then counts all valid pairs where the digit sums match.",
+      "inputFormat": "Line 1: N (size of the array)\nLine 2: N space-separated integers representing the array nums",
+      "outputFormat": "Single integer: the number of special pairs",
+      "constraints": "1 ≤ N ≤ 100\n1 ≤ nums[i] ≤ 10000\nAll elements are positive integers",
+      "sampleTestCases": [
+        {
+          "input": "4\n12 21 30 102",
+          "output": "3",
+          "explanation": "Pairs with equal digit sums: (12,21) both have sum 3, (12,30) both have sum 3, (21,30) both have sum 3. Total = 3 pairs."
+        }
+      ],
+      "hiddenTestCases": [
+        {
+          "input": "3\n1 2 3",
+          "output": "0"
+        },
+        {
+          "input": "5\n11 22 33 44 55",
+          "output": "10"
+        },
+        {
+          "input": "6\n10 19 28 37 46 55",
+          "output": "15"
+        },
+        {
+          "input": "4\n100 200 300 400",
+          "output": "0"
+        }
+      ],
+      "points": 30,
+      "starterCode": "#include <iostream>\nusing namespace std;\n\nint digitSum(int n) {\n    // Calculate sum of digits\n    int sum = 0;\n    while (n > 0) {\n        sum += n % 10;\n        n /= 10;\n    }\n    return sum;\n}\n\nint main() {\n    int n;\n    cin >> n;\n    \n    int* nums = new int[n];\n    for (int i = 0; i < n; i++) {\n        cin >> nums[i];\n    }\n    \n    // Count pairs with equal digit sums\n    int count = 0;\n    \n    // Your code here\n    \n    cout << count;\n    \n    delete[] nums;\n    return 0;\n}"
+    },
+    {
+      "title": "Restaurant Menu Price Analyzer",
+      "difficulty": "medium",
+      "category": "Arrays & Statistics",
+      "description": "James visits a restaurant, looks at the menu, and realizes that there is no price on it. Since he wanted to know the prices before he orders, he looked up the restaurant online and found different versions of the menu. He knew from experience that usually the menu which has the maximum number of items that have the maximum price on that item between the menus is the most updated one, and if there are multiple menus with that condition, the one with the maximum average price is the most updated one.\n\nHelp him find the most updated menu.\n\nIn other words, a price on an item is 'good' if it is the maximum price on that item among all menus, and a menu is the most updated one if it has the maximum number of good prices on it. If there are multiple menus with the maximum number of good prices, the menu with the higher price average is the most updated one.",
+      "inputFormat": "Line 1: M (number of menus) and N (number of items on each menu)\nNext M lines: N space-separated integers representing prices on each menu",
+      "outputFormat": "Single integer: the index (1-indexed) of the most updated menu",
+      "constraints": "1 ≤ M ≤ 50\n1 ≤ N ≤ 100\n1 ≤ price ≤ 10000",
+      "sampleTestCases": [
+        {
+          "input": "3 4\n10 20 30 40\n15 25 35 45\n12 22 32 42",
+          "output": "2",
+          "explanation": "Menu 2 has all maximum prices (15>10&12, 25>20&22, 35>30&32, 45>40&42). It has 4 good prices, which is the maximum."
+        }
+      ],
+      "hiddenTestCases": [
+        {
+          "input": "2 3\n10 20 30\n10 20 30",
+          "output": "1"
+        },
+        {
+          "input": "3 5\n5 10 15 20 25\n10 15 20 25 30\n8 12 18 22 28",
+          "output": "2"
+        },
+        {
+          "input": "4 3\n100 200 300\n150 200 250\n100 250 300\n150 250 300",
+          "output": "4"
+        }
+      ],
+      "points": 35,
+      "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int m, n;\n    cin >> m >> n;\n    \n    int** menus = new int*[m];\n    for (int i = 0; i < m; i++) {\n        menus[i] = new int[n];\n        for (int j = 0; j < n; j++) {\n            cin >> menus[i][j];\n        }\n    }\n    \n    // Find maximum price for each item across all menus\n    // Count good prices for each menu\n    // Calculate averages if needed\n    // Find the most updated menu\n    \n    // Cleanup\n    for (int i = 0; i < m; i++) {\n        delete[] menus[i];\n    }\n    delete[] menus;\n    \n    return 0;\n}"
+    },
+    {
+      "title": "Globe Country Range Selector",
+      "difficulty": "hard",
+      "category": "Arrays & Range Validation",
+      "description": "Little Jhool is just not a smart algorithmic coder, he regularly contributes to open source, too. This year, he's managed to be selected for a project in the prestigious Google Summer of Code. More than the project, he's happy about the money he's going to receive. He's already started day dreaming about what he will do with the money - he's settled on going to a tour of couple of countries. Now, he's a bit confused about which countries he wants to consider, so he buys a globe, and starts rotating it like some boss.\n\nThe globe has n different countries on it, labeled as 0, 1, 2, 3, 4... n-1. Since it is a globe, after n-1, the country order follows again. That is to say, if there are n countries - 0, 1, 2, 3, 4, ..., n-1, then their arrangement would be: first 0, then 1, then 2, ..., then n-1, and then again 0...\n\nFor example, if m = 6, then {4, 5, 0} can be a valid range of countries, {2} can be a valid range too, {3, 4, 5, 0, 1, 2} is a valid range too. Since it is a globe, the range can wrap around itself.\n\nNow, his girlfriend decides a range of countries. Since his girlfriend is confusing him a lot, he just wants to pick up ONLY ONE country from each range. He does NOT want any country to be chosen more than once for different ranges.\n\nGiven the number of countries and number of ranges (and their range specifications), help Little Jhool figure out if he'll be able to do this.",
+      "inputFormat": "Line 1: n (number of countries) and m (number of ranges)\nNext m lines: start and end of each range (inclusive, circular)",
+      "outputFormat": "'YES' if it's possible to select one country from each range without repetition, 'NO' otherwise",
+      "constraints": "1 ≤ n ≤ 1000\n1 ≤ m ≤ 100\n0 ≤ start, end < n",
+      "sampleTestCases": [
+        {
+          "input": "6 3\n0 2\n3 5\n1 3",
+          "output": "YES",
+          "explanation": "Can select: 0 from range1, 5 from range2, 3 from range3. No country is repeated."
+        }
+      ],
+      "hiddenTestCases": [
+        {
+          "input": "5 2\n0 4\n0 4",
+          "output": "YES"
+        },
+        {
+          "input": "3 4\n0 1\n1 2\n2 0\n0 2",
+          "output": "NO"
+        },
+        {
+          "input": "10 3\n0 3\n5 7\n8 9",
+          "output": "YES"
+        }
+      ],
+      "points": 40,
+      "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int n, m;\n    cin >> n >> m;\n    \n    int** ranges = new int*[m];\n    for (int i = 0; i < m; i++) {\n        ranges[i] = new int[2];\n        cin >> ranges[i][0] >> ranges[i][1];\n    }\n    \n    // Check if it's possible to select one country from each range\n    // Use backtracking or greedy approach\n    \n    // Cleanup\n    for (int i = 0; i < m; i++) {\n        delete[] ranges[i];\n    }\n    delete[] ranges;\n    \n    return 0;\n}"
+    },
+    {
+      "title": "Sweet Distribution Path Finder",
+      "difficulty": "medium",
+      "category": "2D Arrays & Simulation",
+      "description": "It's sweet distribution day in Micro's school. He's very happy. All the students in Micro's class are sitting on chairs which are arranged in a matrix of size N×M, i.e., there are N rows of chairs numbered from 1 to N and in each row there are M chairs numbered from 1 to M. Micro is sitting at coordinate (x, y) (chair y of row x).\n\nTeacher gives the box to a student sitting in one of the four corners: (1,1), (1,M), (N,1), or (N,M). Students have to take one sweet from the box and pass the box to the next student (student sitting to left, right, front or back).\n\nFor a student sitting at coordinate (r,c), he'll follow the following priority order:\n1. If there is a student in the Right who has not received sweet, then pass it right (r, c+1)\n2. If there is a student in the Left who has not received sweet, then pass it left (r, c-1)\n3. If there is a student in the Front who has not received sweet, then pass it front (r-1, c)\n4. If there is a student in the Back who has not received sweet, then pass it back (r+1, c)\n5. Shout 'Over', meaning that all students have received sweets\n\nNow, Micro is curious to find out the direction in which he'll have to pass the sweet box. Since there are a lot of students in Micro's class, it will take long for the box to reach him, and you know Micro, he just can't wait. So he asks you to find out the direction in which he'll have to pass the box, or will he have to shout 'Over'.",
+      "inputFormat": "Line 1: T (number of test cases)\nFor each test case:\n  Line 1: N and M (dimensions of the matrix)\n  Line 2: starting corner coordinates (sx, sy)\n  Line 3: Micro's coordinates (x, y)",
+      "outputFormat": "For each test case, output one of: 'Right', 'Left', 'Front', 'Back', or 'Over'",
+      "constraints": "1 ≤ T ≤ 100\n1 ≤ N, M ≤ 100\n1 ≤ x ≤ N, 1 ≤ y ≤ M\nStarting position is always a corner",
+      "sampleTestCases": [
+        {
+          "input": "2\n3 3\n1 1\n2 2\n4 5\n1 1\n3 4",
+          "output": "Right\nBack",
+          "explanation": "Test 1: Starting from (1,1), box reaches (2,2) and needs to go Right. Test 2: From (1,1), box reaches (3,4) and needs to go Back."
+        }
+      ],
+      "hiddenTestCases": [
+        {
+          "input": "1\n2 2\n1 1\n2 2",
+          "output": "Over"
+        },
+        {
+          "input": "1\n5 5\n1 1\n5 5",
+          "output": "Over"
+        },
+        {
+          "input": "1\n3 4\n1 1\n2 3",
+          "output": "Right"
+        }
+      ],
+      "points": 35,
+      "starterCode": "#include <iostream>\nusing namespace std;\n\nint main() {\n    int t;\n    cin >> t;\n    \n    while (t--) {\n        int n, m;\n        cin >> n >> m;\n        \n        int sx, sy;\n        cin >> sx >> sy;\n        \n        int x, y;\n        cin >> x >> y;\n        \n        // Simulate the sweet distribution path\n        // Determine direction at Micro's position\n        \n    }\n    \n    return 0;\n}"
+    },
+    {
+      "title": "Bitwise Subarray Counter",
+      "difficulty": "hard",
+      "category": "Arrays & Bit Manipulation",
+      "description": "You are given an array A of size N. Your task is to find the number of subarrays within the given array such that:\n• The Bitwise AND of all elements in the subarray has an odd number of set bits (i.e., 1s), and\n• The Bitwise XOR of all elements in the subarray has an even number of set bits (i.e., 1s)\n\nNote: A subarray of A is a contiguous part of the array A, i.e., A[i]...A[j] for some 1 ≤ i ≤ j ≤ N.\n\nFor each possible subarray, you need to:\n1. Calculate the AND of all elements\n2. Count the number of 1s in the binary representation of the AND result\n3. Calculate the XOR of all elements\n4. Count the number of 1s in the binary representation of the XOR result\n5. Check if AND has odd set bits AND XOR has even set bits",
+      "inputFormat": "Line 1: T (number of test cases)\nFor each test case:\n  Line 1: N (size of array A)\n  Line 2: N space-separated integers (elements of A)",
+      "outputFormat": "For each test case, print the count of valid subarrays in a new line",
+      "constraints": "1 ≤ T ≤ 10\n1 ≤ N ≤ 1000\n1 ≤ A[i] ≤ 10^9",
+      "sampleTestCases": [
+        {
+          "input": "2\n3\n1 2 3\n4\n4 5 6 7",
+          "output": "2\n4",
+          "explanation": "Test 1: Subarrays [1] (AND=1 has 1 bit, XOR=1 has 1 bit - invalid), [2,3] (AND=2 has 1 bit, XOR=1 has 1 bit - invalid). Valid count = 2 after checking all."
+        }
+      ],
+      "hiddenTestCases": [
+        {
+          "input": "1\n5\n7 7 7 7 7",
+          "output": "10"
+        },
+        {
+          "input": "1\n4\n1 3 5 7",
+          "output": "3"
+        },
+        {
+          "input": "1\n6\n2 4 8 16 32 64",
+          "output": "6"
+        }
+      ],
+      "points": 45,
+      "starterCode": "#include <iostream>\nusing namespace std;\n\nint countSetBits(int n) {\n    int count = 0;\n    while (n > 0) {\n        count += n & 1;\n        n >>= 1;\n    }\n    return count;\n}\n\nint main() {\n    int t;\n    cin >> t;\n    \n    while (t--) {\n        int n;\n        cin >> n;\n        \n        int* arr = new int[n];\n        for (int i = 0; i < n; i++) {\n            cin >> arr[i];\n        }\n        \n        int count = 0;\n        \n        // Check all subarrays\n        // Calculate AND and XOR for each\n        // Count set bits and validate conditions\n        \n        cout << count << endl;\n        \n        delete[] arr;\n    }\n    \n    return 0;\n}"
+    },
+    {
+      "title": "Security Grid Analyzer",
+      "difficulty": "hard",
+      "category": "2D Arrays & Matrix Analysis",
+      "description": "# Security Grid Analysis (Hard)\n\nA security company has hired you to locate the **most secure** and **most vulnerable** areas in a city. The city is represented as a grid of equal-sized blocks (the grid may be rectangular; its dimensions vary with the city's size).\n\n## Grid Representation\n\nEach block contains either:\n• **1** - a security officer is present, or\n• **0** - no security officer is present.\n\n## Your Tasks\n\nWrite a C++ program that identifies:\n\n### Task 1: Columns Completely Empty\nFind all columns where **every block** in the column contains **0**.\n\n### Task 2: Rows Completely Empty  \nFind all rows where **every block** in the row contains **0**.\n\n### Task 3: Largest Square of 1's\nFind the **largest square** consisting only of **1**'s (if several squares tie for maximum size, you may show any one of them).\n\n### Task 4: Clockwise Spiral Order\nDisplay elements of the grid in **clockwise spiral order** (Right, Down, Left, Up).\n\n## Example Visualization\n\n**Input Grid (5×6):**\n\n| Col 0 | Col 1 | Col 2 | Col 3 | Col 4 | Col 5 |\n|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|\n| 0 | 0 | 1 | 0 | 1 | 1 |\n| 1 | 0 | 0 | 0 | 0 | 1 |\n| 0 | 0 | 1 | 1 | 1 | 1 |\n| 0 | 0 | 1 | 0 | 1 | 1 |\n| 0 | 0 | 0 | 1 | 0 | 0 |\n\n**Analysis Results:**\n\n**Columns completely empty:** 1 (Column index 1 has all 0s)\n\n**Rows completely empty:** None\n\n**Largest square of 1's:** (2,4) to (3,5) - a 2×2 square\n\n**Clockwise spiral order:**\n```\n0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1\n```\n\n## Output Format\n\n• For tasks 1 & 2, output the exact **indices** of the qualifying rows or columns.\n• For task 3, output the **top-left** and **bottom-right** coordinates of the square (row-start, col-start) to (row-end, col-end).\n• For task 4, output the spiral sequence as space-separated values.\n\n## Constraints\n\n• Rows and columns must each be greater than 3 and less than 100 (3 < R, C < 100)\n• Do **not** use the `algorithm`, `cmath`, or `vector` libraries\n• Your code must not be hard coded, but you can initialize the grid by yourself\n• Dynamic memory allocation is **not** allowed\n• Input for the grid need **not** come from the user; you may fill it with randomly generated 0's and 1's for testing\n• Be sure to test with different row and column counts",
+      "inputFormat": "The grid is hardcoded or randomly generated in your program.\nNo user input required for the grid itself.\nRows (R) and Columns (C) should be defined as constants: 3 < R, C < 100",
+      "outputFormat": "Line 1: Columns completely empty (space-separated indices or 'None')\nLine 2: Rows completely empty (space-separated indices or 'None')\nLine 3: Largest square coordinates: (row-start, col-start) to (row-end, col-end) or 'None'\nLine 4: Clockwise spiral order (space-separated values)",
+      "constraints": "3 < Rows < 100\n3 < Columns < 100\nGrid values are 0 or 1\nNo dynamic memory allocation allowed\nNo algorithm, cmath, or vector libraries",
+      "sampleTestCases": [
+        {
+          "input": "Grid defined in code:\n5 6\n0 0 1 0 1 1\n1 0 0 0 0 1\n0 0 1 1 1 1\n0 0 1 0 1 1\n0 0 0 1 0 0",
+          "output": "Columns completely empty: 1\nRows completely empty: None\nLargest square of 1's: (2,4) to (3,5)\nClockwise spiral order:\n0 0 1 0 1 1 1 1 1 0 0 1 0 0 0 0 1 1 0 0 0 1 0 1 1 0 0 1 0 1",
+          "explanation": "Column 1 is all zeros. No rows are all zeros. The largest 2×2 square of 1's is at (2,4) to (3,5). Spiral traversal starts from top-left going right, then down, left, and up repeatedly."
+        }
+      ],
+      "hiddenTestCases": [
+        {
+          "input": "4 4\n0 0 0 0\n0 1 1 0\n0 1 1 0\n0 0 0 0",
+          "output": "Columns completely empty: 0 3\nRows completely empty: 0 3\nLargest square of 1's: (1,1) to (2,2)\nClockwise spiral order:\n0 0 0 0 0 0 0 0 1 1 1 1 0 0 0 0"
+        },
+        {
+          "input": "6 6\n1 1 1 1 1 1\n1 0 0 0 0 1\n1 0 1 1 0 1\n1 0 1 1 0 1\n1 0 0 0 0 1\n1 1 1 1 1 1",
+          "output": "Columns completely empty: None\nRows completely empty: None\nLargest square of 1's: (2,2) to (3,3)\nClockwise spiral order:\n1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 1 0 1 1 0 0 1 0 1 1 0 0 1 0 0 0 0 0 1"
+        },
+        {
+          "input": "4 5\n0 1 0 1 0\n0 1 0 1 0\n0 1 0 1 0\n0 1 0 1 0",
+          "output": "Columns completely empty: 0 2 4\nRows completely empty: None\nLargest square of 1's: None\nClockwise spiral order:\n0 1 0 1 0 0 0 0 1 1 1 1 0 0 0 1 0 1 0 1"
+        }
+      ],
+      "points": 50,
+      "starterCode": "#include <iostream>\nusing namespace std;\n\nconst int MAX_R = 100;\nconst int MAX_C = 100;\n\nint main() {\n    // Define your grid dimensions (3 < R, C < 100)\n    const int R = 5;\n    const int C = 6;\n    \n    // Initialize your grid (hardcoded or random)\n    int grid[MAX_R][MAX_C] = {\n        {0, 0, 1, 0, 1, 1},\n        {1, 0, 0, 0, 0, 1},\n        {0, 0, 1, 1, 1, 1},\n        {0, 0, 1, 0, 1, 1},\n        {0, 0, 0, 1, 0, 0}\n    };\n    \n    // Task 1: Find columns completely empty\n    \n    // Task 2: Find rows completely empty\n    \n    // Task 3: Find largest square of 1's\n    \n    // Task 4: Display in clockwise spiral order\n    \n    return 0;\n}"
     }
   ]
 }

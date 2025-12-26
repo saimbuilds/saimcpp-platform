@@ -19,7 +19,7 @@ const tracks = [
         description: 'Hands-on lab exercises for Programming Fundamentals. Practice problems designed for lab sessions.',
         icon: '🧪',
         color: 'from-cyan-600 to-cyan-400',
-        stats: { problems: 40, dryRuns: 0 }
+        stats: { problems: 46, dryRuns: 0 }
     },
     {
         id: 'op',
