@@ -30,6 +30,28 @@ export default function ProblemEditor() {
     // Load problem from database
     const { data: problem, isLoading } = useProblem(id)
 
+    // Check if user already has an accepted submission
+    useEffect(() => {
+        const checkExistingSubmission = async () => {
+            if (!user || !id) return
+
+            const { data, error } = await supabase
+                .from('submissions')
+                .select('status')
+                .eq('user_id', user.id)
+                .eq('problem_id', id)
+                .eq('status', 'accepted')
+                .limit(1)
+
+            if (!error && data && data.length > 0) {
+                setHasSubmitted(true)
+                setOutput('✅ You have already solved this problem!')
+            }
+        }
+
+        checkExistingSubmission()
+    }, [user, id])
+
     // Load saved code from localStorage
     useEffect(() => {
         if (problem) {
@@ -158,19 +180,26 @@ int main() {
 
     return (
         <div className="flex h-screen flex-col bg-background">
-            {/* Success Popup */}
+            {/* Success Popup - Professional Minimalist */}
             {showSuccess && (
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.8, y: -50 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.8, y: -50 }}
-                    className="fixed left-1/2 top-20 z-50 -translate-x-1/2 transform"
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                    className="fixed left-1/2 top-8 z-50 -translate-x-1/2 transform"
                 >
-                    <Card className="border-easy bg-easy/10 px-8 py-4 shadow-2xl">
-                        <div className="text-center">
-                            <div className="mb-2 text-4xl">🎉</div>
-                            <p className="text-xl font-bold text-easy">Accepted!</p>
-                            <p className="text-sm text-muted-foreground">Great work!</p>
+                    <Card className="border border-green-500/20 bg-white dark:bg-gray-900 px-6 py-4 shadow-xl">
+                        <div className="flex items-center gap-3">
+                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-500/10">
+                                <svg className="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                            <div>
+                                <p className="font-semibold text-gray-900 dark:text-white">Accepted!</p>
+                                <p className="text-sm text-gray-600 dark:text-gray-400">Great work</p>
+                            </div>
                         </div>
                     </Card>
                 </motion.div>
