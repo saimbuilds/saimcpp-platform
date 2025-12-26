@@ -127,8 +127,8 @@
       "sampleTestCases": [
         {
           "input": "10 20 30 40 50\n5 10 15 20 25\n8 12 16 20 24\n2 4 6 8 10",
-          "output": "MATCH 150",
-          "explanation": "Row sums: [150, 75, 80, 30]. Column sums: [25, 46, 67, 88, 109]. Row 0 sum (150) doesn't match any column. But we need to check all - actually none match in this case. Let me recalculate: Row0=150, Col0=25, Col1=46, Col2=67, Col3=88, Col4=109. Actually NO_MATCH. Wait, let me verify the example..."
+          "output": "NO_MATCH",
+          "explanation": "Row sums: [150, 75, 80, 30]. Column sums: [25, 46, 67, 88, 109]. No row sum matches any column sum, so output is NO_MATCH."
         }
       ],
       "hiddenTestCases": [
